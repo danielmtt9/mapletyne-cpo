@@ -27,25 +27,18 @@ jobs:
       matrix:
         service:
           - name: mapletyne-admin
-            context: ./mtt-admin
+            context: ./mapletyne-admin
             image: mapletyne-admin
           - name: mapletyne-chargeapp
-            context: ./mtt-charge-app
+            context: ./mapletyne-chargeapp
             image: mapletyne-chargeapp
           - name: mapletyne-core
-            context: ./opencpo-core
+            context: ./mapletyne-core
             image: mapletyne-core
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Ensure opencpo-core is present
-        if: matrix.service.name == 'mapletyne-core'
-        run: |
-          if [ ! -d "./opencpo-core" ] || [ ! -f "./opencpo-core/Dockerfile" ]; then
-            git clone https://github.com/opencpo/opencpo-core.git opencpo-core
-          fi
 
       - name: Set up QEMU (Multi-architecture support)
         uses: docker/setup-qemu-action@v3

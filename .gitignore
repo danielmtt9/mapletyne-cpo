@@ -24,6 +24,7 @@ opencpo-admin/
 opencpo-charge-app/
 opencpo-tester/
 opencpo-charger-farm/
+opencpo-admin.legacy/
 
 # OS & Editors
 .DS_Store

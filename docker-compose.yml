@@ -13,10 +13,11 @@ services:
 
   # ── Core CSMS ─────────────────────────────────────────────────────────────
 
-  ocpp-core:
+  mapletyne-core:
     build:
-      context: ./opencpo-core
+      context: ./mapletyne-core
       network: host
+    container_name: mapletyne-core
     restart: unless-stopped
     depends_on:
       redis:
@@ -31,8 +32,8 @@ services:
       # Database
       PG_HOST: ${PG_HOST:-host.docker.internal}
       PG_PORT: 5432
-      PG_NAME: ${POSTGRES_DB:-ocpp}
-      PG_USER: ${POSTGRES_USER:-ocpp}
+      PG_NAME: ${POSTGRES_DB:-mapletyne_cpo}
+      PG_USER: ${POSTGRES_USER:-cpo_admin}
       PG_PASSWORD: ${PG_PASSWORD:-CHANGE_ME_IN_PROD}
       # Redis
       REDIS_HOST: redis
@@ -42,14 +43,11 @@ services:
       SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
       MANAGEMENT_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
-      PUBLIC_URL: ${PUBLIC_URL:-https://opencpo.mapletyne.com}
-      # Backup / update paths
-      UPDATE_SCRIPT: /app/opencpo/update.sh
-      BACKUP_DIR: /app/backups
-      CORE_API_PUBLIC_URL: ${CORE_API_PUBLIC_URL:-https://api.opencpo.mapletyne.com}
+      PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
+      CORE_API_PUBLIC_URL: ${CORE_API_PUBLIC_URL:-https://api.mapletyne.com}
       KEYCLOAK_URL: ${KEYCLOAK_URL:-http://keycloak:8080/auth}
-      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-opencpo}
-      CORS_ORIGINS: ${CORS_ORIGINS:-https://opencpo.mapletyne.com,*}
+      KEYCLOAK_REALM: ${KEYCLOAK_REALM:-mapletyne}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://admin.mapletyne.com,https://app.mapletyne.com,*}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 15s
@@ -57,50 +55,50 @@ services:
       retries: 7
       start_period: 45s
     volumes:
-      - ./opencpo-core:/app:rw
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./:/app/opencpo:rw
+      - ./mapletyne-core:/app:rw
       - backup-data:/app/backups
 
   # ── Operator Dashboard ────────────────────────────────────────────────────
 
-  cpo-admin:
+  mapletyne-admin:
     build:
-      context: ./mtt-admin
+      context: ./mapletyne-admin
+    container_name: mapletyne-admin
     restart: unless-stopped
     ports:
       - "${CPO_ADMIN_PORT:-34000}:8080"  # Dashboard UI (host port 34000, container port 8080)
     environment:
-      OCPP_CORE_API: http://ocpp-core:8000
+      OCPP_CORE_API: http://mapletyne-core:8000
       CORE_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       JWT_SECRET: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
-      PUBLIC_URL: ${PUBLIC_URL:-https://opencpo.mapletyne.com}
+      PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
 
   # ── Driver PWA ────────────────────────────────────────────────────────────
 
-  charge-app:
+  mapletyne-chargeapp:
     build:
-      context: ./mtt-charge-app
+      context: ./mapletyne-chargeapp
       network: host
+    container_name: mapletyne-chargeapp
     restart: unless-stopped
     depends_on:
-      ocpp-core:
+      mapletyne-core:
         condition: service_healthy
     ports:
       - "${CHARGE_APP_PORT:-34003}:8003"  # Charge app (host port 34003)
     environment:
-      OCPP_CORE_API: http://ocpp-core:8000
+      OCPP_CORE_API: http://mapletyne-core:8000
       MANAGEMENT_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       CORE_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
-      PUBLIC_URL: ${CHARGE_APP_URL:-https://opencpo.mapletyne.com/app}
-      APP_TITLE: "MTT Charge"
-      SKIN: ${SKIN:-otaski}
+      PUBLIC_URL: ${CHARGE_APP_URL:-https://app.mapletyne.com}
+      APP_TITLE: "Mapletyne Charge"
+      SKIN: ${SKIN:-modern-emerald}
       PLUGINS: receipts,account,favorites,history
       DEFAULT_LANG: en
       JWT_SECRET: ${SECRET_KEY}
     volumes:
-      - ./mtt-charge-app:/app:rw
-      - ./mtt-charge-app/skins:/app/skins:rw
+      - ./mapletyne-chargeapp:/app:rw
+      - ./mapletyne-chargeapp/skins:/app/skins:rw
 
   # ── Compliance Tester ─────────────────────────────────────────────────────
 
