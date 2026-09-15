@@ -1,0 +1,207 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-container":"#e6ecff","surface-container-high":"#222a3d","status-online":"#10B981","secondary":"#adc6ff","outline-variant":"#3c4a42","secondary-fixed":"#d8e2ff","on-tertiary":"#650911","tertiary-fixed":"#ffdad7","on-primary-fixed":"#002113","surface-container-lowest":"#060e20","status-fault":"#F97316","on-tertiary-fixed-variant":"#842225","background":"#0b1326","surface-container-low":"#131b2e","on-error":"#690005","outline":"#86948a","on-secondary-fixed-variant":"#004395","on-background":"#dae2fd","tertiary-fixed-dim":"#ffb3af","surface-dim":"#0b1326","deep-charcoal":"#0F172A","surface-container-highest":"#2d3449","on-tertiary-container":"#711419","tertiary-container":"#fc7c78","secondary-container":"#0566d9","on-surface":"#dae2fd","inverse-surface":"#dae2fd","electric-blue":"#3B82F6","surface":"#0b1326","surface-container":"#171f33","tertiary":"#ffb3af","secondary-fixed-dim":"#adc6ff","surface-variant":"#2d3449","on-primary":"#003824","primary-fixed":"#6ffbbe","surface-elevation":"#1E293B","on-secondary-fixed":"#001a42","inverse-primary":"#006c49","error-container":"#93000a","on-primary-fixed-variant":"#005236","on-error-container":"#ffdad6","on-primary-container":"#00422b","surface-bright":"#31394d","inverse-on-surface":"#283044","primary":"#4edea3","on-tertiary-fixed":"#410005","status-offline":"#64748B","on-secondary":"#002e6a","on-surface-variant":"#bbcabf","surface-tint":"#4edea3","primary-fixed-dim":"#4edea3","primary-container":"#10b981","error":"#ffb4ab"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-desktop":"32px","table-row-height":"40px","margin-mobile":"16px","container-max":"1440px","unit":"4px","gutter":"16px"},"fontFamily":{"body-md":["Geist"],"headline-md":["Hanken Grotesk"],"code":["Geist"],"data-table":["Geist"],"body-lg":["Geist"],"headline-xl":["Hanken Grotesk"],"display-lg":["Hanken Grotesk"],"label-caps":["Geist"]},"fontSize":{"body-md":["16px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"1.2","fontWeight":"600"}],"code":["13px",{"lineHeight":"1.4","fontWeight":"400"}],"data-table":["14px",{"lineHeight":"1.2","letterSpacing":"0.01em","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"1.2","fontWeight":"600"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],"label-caps":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"700"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low flex flex-col border-r border-outline-variant/10 z-50"><div class="p-6 mb-4 flex items-center gap-3"><div class="w-8 h-8 bg-primary rounded flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">ev_station</span></div><span class="font-headline-md text-headline-md tracking-tight text-on-surface">OpenCPO</span></div><nav class="flex-1 px-3 space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container"><a aria-current="page" class="flex items-center gap-3 px-4 py-2.5 rounded transition-colors font-data-table bg-secondary-container text-on-secondary-container" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="chargers" href="#"><span class="material-symbols-outlined">charging_station</span>Chargers</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="sessions" href="#"><span class="material-symbols-outlined">receipt_long</span>Sessions</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="tariffs" href="#"><span class="material-symbols-outlined">payments</span>Tariffs</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="rfid-fleet" href="#"><span class="material-symbols-outlined">group</span>RFID &amp; Fleet</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="energy" href="#"><span class="material-symbols-outlined">bolt</span>Energy</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="roaming" href="#"><span class="material-symbols-outlined">public</span>Roaming</a></nav><div class="mt-auto p-4 border-t border-outline-variant/10 space-y-4"><div class="flex items-center justify-between px-2 text-label-caps font-label-caps text-on-surface-variant"><span>LIVE FEED</span><div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-status-online animate-pulse"></div><span class="text-[10px] text-status-online uppercase">Active</span></div></div><div class="flex flex-col gap-1"><a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors font-data-table text-data-table" data-path="settings" href="#"><span class="material-symbols-outlined">settings</span>Settings</a><div class="flex items-center gap-3 px-4 py-2"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="overflow-hidden"><p class="text-data-table font-data-table text-on-surface truncate">Admin User</p><p class="text-[10px] text-on-surface-variant uppercase">Super Admin</p></div></div></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-background/80 backdrop-blur-xl border-b border-outline-variant/10 z-40 flex items-center justify-between px-margin-desktop"><div class="flex items-center gap-6 flex-1"><div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded text-on-surface-variant border border-outline-variant/20 cursor-pointer hover:border-primary/50 transition-all"><span class="material-symbols-outlined text-[18px]">location_on</span><span class="font-data-table text-data-table">All Sites</span><span class="material-symbols-outlined text-[18px]">expand_more</span></div><div class="flex-1 max-w-md relative"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span><input class="w-full bg-surface-container-low border border-outline-variant/20 rounded h-10 pl-10 pr-4 font-body-md text-on-surface focus:outline-none focus:border-electric-blue transition-all" placeholder="Search commands or data (Cmd+K)" type="text"><span class="absolute right-3 top-1/2 -translate-y-1/2 bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] font-bold text-on-surface-variant">⌘K</span></div></div><div class="flex items-center gap-4"><div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container rounded text-on-surface border border-outline-variant/10"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span class="font-data-table text-data-table">Oct 24 - Oct 31</span></div><button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined">notifications</span></button></div></header><main class="flex-1 pt-16 bg-background p-margin-desktop"><div class="flex flex-col w-full gap-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter w-full">
+<div class="bg-surface-container rounded-lg p-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Today's Energy</span>
+<span class="material-symbols-outlined text-primary text-[20px]">bolt</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-on-surface font-headline-xl text-headline-xl tabular-nums">1,240.5</span>
+<span class="text-on-surface-variant font-body-md text-body-md">kWh</span>
+</div>
+<div class="flex items-center gap-1.5 text-status-online">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="font-data-table text-data-table">+12% vs yesterday</span>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-electric-blue/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Active Sessions</span>
+<div class="flex items-center gap-1.5">
+<div class="w-2 h-2 rounded-full bg-status-online animate-pulse"></div>
+<span class="text-[10px] text-status-online uppercase font-label-caps tracking-wider">Live</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-on-surface font-headline-xl text-headline-xl tabular-nums">42</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high rounded-full mt-4 overflow-hidden">
+<div class="h-full bg-electric-blue w-[42%]" style="transition: width 1s ease-in-out;"></div>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-status-online/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Network Health</span>
+<span class="material-symbols-outlined text-status-online text-[20px]">monitor_heart</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-on-surface font-headline-xl text-headline-xl tabular-nums">98.2%</span>
+</div>
+<div class="flex items-center gap-1.5 text-status-online mt-2">
+<span class="font-data-table text-data-table uppercase">Operational</span>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-wider">Total Revenue</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">payments</span>
+</div>
+<div class="flex items-baseline gap-2 mb-1">
+<span class="text-on-surface font-headline-xl text-headline-xl tabular-nums">€4,120.00</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant mt-2">
+<span class="font-data-table text-data-table">Today</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter w-full">
+<div class="lg:col-span-2 bg-surface-container rounded-lg p-6 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<div>
+<h2 class="text-on-surface font-headline-md text-headline-md tracking-tight">Live Network Load</h2>
+<p class="text-on-surface-variant font-body-md text-body-md mt-1">Total kW across network over last 24h</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-high rounded text-on-surface font-label-caps text-label-caps hover:bg-surface-bright transition-colors">1H</button>
+<button class="px-3 py-1 bg-primary/20 text-primary rounded font-label-caps text-label-caps">24H</button>
+<button class="px-3 py-1 bg-surface-container-high rounded text-on-surface font-label-caps text-label-caps hover:bg-surface-bright transition-colors">7D</button>
+</div>
+</div>
+<div class="flex-1 relative min-h-[300px] w-full">
+<svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1000 300">
+<defs>
+<linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#4edea3" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#4edea3" stop-opacity="0"></stop>
+</linearGradient>
+<linearGradient id="lineGradient" x1="0" x2="1" y1="0" y2="0">
+<stop offset="0%" stop-color="#3B82F6"></stop>
+<stop offset="50%" stop-color="#4edea3"></stop>
+<stop offset="100%" stop-color="#10B981"></stop>
+</linearGradient>
+</defs>
+<!-- Grid Lines -->
+<path d="M0 60 H1000 M0 120 H1000 M0 180 H1000 M0 240 H1000" fill="none" opacity="0.2" stroke="#3c4a42" stroke-dasharray="4,4" stroke-width="1"></path>
+<!-- Area -->
+<path d="M0 250 L50 240 L100 245 L150 230 L200 210 L250 220 L300 180 L350 160 L400 190 L450 150 L500 120 L550 140 L600 100 L650 80 L700 110 L750 90 L800 60 L850 80 L900 50 L950 40 L1000 60 L1000 300 L0 300 Z" fill="url(#areaGradient)"></path>
+<!-- Line -->
+<path d="M0 250 L50 240 L100 245 L150 230 L200 210 L250 220 L300 180 L350 160 L400 190 L450 150 L500 120 L550 140 L600 100 L650 80 L700 110 L750 90 L800 60 L850 80 L900 50 L950 40 L1000 60" fill="none" stroke="url(#lineGradient)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<!-- Current Value Point -->
+<circle cx="1000" cy="60" fill="#0b1326" r="6" stroke="#4edea3" stroke-width="3"></circle>
+<circle class="animate-ping" cx="1000" cy="60" fill="#4edea3" opacity="0.3" r="12" style="transform-origin: 1000px 60px;"></circle>
+</svg>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg p-6 flex flex-col">
+<h2 class="text-on-surface font-headline-md text-headline-md tracking-tight mb-6">Site Distribution</h2>
+<div class="relative flex-1 flex items-center justify-center min-h-[200px]">
+<svg class="w-48 h-48 transform -rotate-90" viewBox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="40" stroke="#2d3449" stroke-width="12"></circle>
+<!-- Faulted (Orange) - 5% -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#F97316" stroke-dasharray="12 239" stroke-dashoffset="0" stroke-width="12"></circle>
+<!-- Occupied (Blue) - 15% -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#3B82F6" stroke-dasharray="37 214" stroke-dashoffset="-12" stroke-width="12"></circle>
+<!-- Charging (Emerald) - 35% -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#10B981" stroke-dasharray="88 163" stroke-dashoffset="-49" stroke-width="12"></circle>
+<!-- Available (Primary Green) - 45% -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="#4edea3" stroke-dasharray="113 138" stroke-dashoffset="-137" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-on-surface font-headline-xl text-headline-xl tabular-nums">128</span>
+<span class="text-on-surface-variant font-label-caps text-label-caps">TOTAL CPs</span>
+</div>
+</div>
+<div class="mt-6 grid grid-cols-2 gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-primary"></div>
+<span class="text-on-surface-variant font-data-table text-data-table">Available (45%)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-status-online"></div>
+<span class="text-on-surface-variant font-data-table text-data-table">Charging (35%)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-electric-blue"></div>
+<span class="text-on-surface-variant font-data-table text-data-table">Occupied (15%)</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded bg-status-fault"></div>
+<span class="text-on-surface-variant font-data-table text-data-table">Faulted (5%)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container rounded-lg flex flex-col overflow-hidden">
+<div class="p-6 pb-4 flex items-center justify-between border-b border-surface-container-high/50">
+<h2 class="text-on-surface font-headline-md text-headline-md tracking-tight">Recent Activity</h2>
+<button class="text-primary hover:text-primary-fixed-dim transition-colors font-data-table text-data-table flex items-center gap-1">
+        View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50 h-table-row-height">
+<th class="px-6 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Timestamp</th>
+<th class="px-6 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Event Type</th>
+<th class="px-6 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Source</th>
+<th class="px-6 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold">Details</th>
+<th class="px-6 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider font-semibold text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high/50 font-data-table text-data-table">
+<tr class="h-table-row-height hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 text-on-surface-variant tabular-nums">10:42:15 AM</td>
+<td class="px-6 text-on-surface font-medium">Session Started</td>
+<td class="px-6 text-primary">CP_04_FRA</td>
+<td class="px-6 text-on-surface-variant truncate max-w-[200px]">Auth: RFID_A892F</td>
+<td class="px-6 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-label-caps bg-status-online/10 text-status-online uppercase">Success</span>
+</td>
+</tr>
+<tr class="h-table-row-height bg-surface-container-lowest/20 hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 text-on-surface-variant tabular-nums">10:41:03 AM</td>
+<td class="px-6 text-on-surface font-medium">User Authorized</td>
+<td class="px-6 text-primary">Mobile_App</td>
+<td class="px-6 text-on-surface-variant truncate max-w-[200px]">User_82 requesting CP_12</td>
+<td class="px-6 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-label-caps bg-status-online/10 text-status-online uppercase">Success</span>
+</td>
+</tr>
+<tr class="h-table-row-height hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 text-on-surface-variant tabular-nums">10:38:45 AM</td>
+<td class="px-6 text-on-surface font-medium">Connector Fault</td>
+<td class="px-6 text-status-fault">CP_08_BER</td>
+<td class="px-6 text-on-surface-variant truncate max-w-[200px] font-code text-code text-status-fault/80">ErrCode: OverVoltage_L1</td>
+<td class="px-6 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-label-caps bg-status-fault/10 text-status-fault uppercase">Alert</span>
+</td>
+</tr>
+<tr class="h-table-row-height bg-surface-container-lowest/20 hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 text-on-surface-variant tabular-nums">10:35:12 AM</td>
+<td class="px-6 text-on-surface font-medium">Session Ended</td>
+<td class="px-6 text-primary">CP_02_MUC</td>
+<td class="px-6 text-on-surface-variant truncate max-w-[200px]">Delivered 42.5 kWh</td>
+<td class="px-6 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-label-caps bg-status-online/10 text-status-online uppercase">Completed</span>
+</td>
+</tr>
+<tr class="h-table-row-height hover:bg-surface-container-high/30 transition-colors group">
+<td class="px-6 text-on-surface-variant tabular-nums">10:30:00 AM</td>
+<td class="px-6 text-on-surface font-medium">Heartbeat Received</td>
+<td class="px-6 text-on-surface-variant">System</td>
+<td class="px-6 text-on-surface-variant truncate max-w-[200px]">128/128 Nodes Online</td>
+<td class="px-6 text-right">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-label-caps bg-surface-container-highest text-on-surface-variant uppercase">Info</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div></main></div></body></html>

@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+{% block title %}{{ t.my_account | default('My Account') }} — {{ app_title }}{% endblock %}
+{% block content %}
+<div class="screen active" style="background: radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%); min-height: 100vh; display: flex; flex-direction: column;">
+  <!-- Header Bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
+    <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span>{{ t.map | default('Map') }}</span>
+    </a>
+    <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
+      <img src="/skin/logo.svg" alt="Brand Logo" style="height:24px; max-width:140px; object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png';" />
+    </a>
+    <div style="width:50px;"></div>
+  </div>
+
+  <div style="flex:1; padding:24px 20px max(32px, env(safe-area-inset-bottom)); max-width:480px; margin:0 auto; width:100%; box-sizing:border-box;">
+    
+    <div id="profile-error" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.3); color:#fca5a5; font-size:13px; line-height:1.4;"></div>
+    <div id="profile-success" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#86efac; font-size:13px; line-height:1.4;"></div>
+
+    <!-- View Mode -->
+    <div id="view-mode">
+      <!-- Avatar & Driver Badge -->
+      <div style="text-align:center; margin-bottom:28px;">
+        <div style="position:relative; display:inline-block; margin-bottom:12px;">
+          <div style="width:76px; height:76px; border-radius:50%; background:linear-gradient(135deg, #1e3a5f 0%, #0d2137 100%); border:2.5px solid #48e260; display:flex; align-items:center; justify-content:center; color:#ffffff; font-size:26px; font-weight:700; box-shadow:0 0 20px rgba(72, 226, 96, 0.25); text-transform:uppercase;">
+            {{ (profile.name[0] if profile.name else (profile.email[0] if profile.email else 'D')) }}
+          </div>
+          <div style="position:absolute; bottom:0; right:0; background:#48e260; color:#0b1326; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border:2px solid #0b1326;" title="Active OIDC Session">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+
+        <h1 style="font-size:22px; font-weight:700; color:#ffffff; margin:0 0 4px 0; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">
+          {{ profile.name or (profile.email.split('@')[0] if profile.email else 'Driver') }}
+        </h1>
+        <div style="display:flex; align-items:center; justify-content:center; gap:8px;">
+          <span style="font-size:13px; color:#94a3b8;">{{ profile.email }}</span>
+          <span style="display:inline-block; font-size:11px; font-weight:700; background:rgba(72, 226, 96, 0.15); color:#48e260; border:1px solid rgba(72, 226, 96, 0.3); padding:2px 8px; border-radius:10px;">
+            Driver
+          </span>
+        </div>
+      </div>
+
+      <!-- Profile Details Card -->
+      <div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:20px; padding:18px 20px; box-shadow:0 16px 36px rgba(0, 0, 0, 0.4); margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <span style="color:#94a3b8; font-size:14px;">{{ t.name | default('Name') }}</span>
+          <span style="color:#ffffff; font-weight:500; font-size:14px;">{{ profile.name or '—' }}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <span style="color:#94a3b8; font-size:14px;">{{ t.email | default('Email') }}</span>
+          <span style="color:#ffffff; font-weight:500; font-size:14px;">{{ profile.email }}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+          <span style="color:#94a3b8; font-size:14px;">{{ t.phone | default('Phone') }}</span>
+          <span style="color:#ffffff; font-weight:500; font-size:14px;">{{ profile.phone or '—' }}</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+          <span style="color:#94a3b8; font-size:14px;">Authentication</span>
+          <span style="color:#48e260; font-weight:600; font-size:12px; display:inline-flex; align-items:center; gap:4px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Keycloak IAM (OIDC)
+          </span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
+        <button onclick="showEdit()" style="width:100%; height:46px; border-radius:14px; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.12); color:#ffffff; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span>{{ t.edit_profile | default('Edit Profile') }}</span>
+        </button>
+
+        <a href="/app/account/history" style="text-decoration:none; width:100%; box-sizing:border-box; height:46px; border-radius:14px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.25); color:#48e260; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span>{{ t.my_sessions | default('Charging History & Receipts') }}</span>
+        </a>
+
+        <a href="/app/account/settings" style="text-decoration:none; width:100%; box-sizing:border-box; height:46px; border-radius:14px; background:rgba(255, 255, 255, 0.04); border:1px solid rgba(255, 255, 255, 0.08); color:#cbd5e1; font-size:14px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span>{{ t.settings | default('Settings & Preferences') }}</span>
+        </a>
+      </div>
+
+      <button onclick="doLogout()" style="width:100%; height:46px; border-radius:14px; background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.2); color:#fca5a5; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>{{ t.logout | default('Log Out') }}</span>
+      </button>
+    </div>
+
+    <!-- Edit Mode Card -->
+    <div id="edit-mode" style="display:none;">
+      <h2 style="font-size:20px; font-weight:700; color:#ffffff; margin-bottom:18px;">{{ t.edit_profile | default('Edit Profile') }}</h2>
+      
+      <div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:20px; padding:20px; box-shadow:0 16px 36px rgba(0, 0, 0, 0.4); margin-bottom:20px;">
+        <div style="margin-bottom:16px;">
+          <label style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">{{ t.name | default('Name') }}</label>
+          <input id="edit-name" type="text" value="{{ profile.name or '' }}" placeholder="Your name" style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 14px; outline:none;" />
+        </div>
+        <div>
+          <label style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">{{ t.phone | default('Phone') }}</label>
+          <input id="edit-phone" type="tel" value="{{ profile.phone or '' }}" placeholder="+44 7700 900077" style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 14px; outline:none;" />
+        </div>
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button onclick="doSave()" style="flex:1; height:48px; border-radius:14px; background:linear-gradient(135deg, #48e260 0%, #22c55e 100%); border:none; color:#0b1a10; font-size:15px; font-weight:700; cursor:pointer;">
+          {{ t.save | default('Save Changes') }}
+        </button>
+        <button onclick="hideEdit()" style="flex:1; height:48px; border-radius:14px; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.12); color:#ffffff; font-size:15px; font-weight:600; cursor:pointer;">
+          {{ t.cancel | default('Cancel') }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var I18N = {{ t | tojson if t is defined else '{}' }};
+function showEdit() { document.getElementById('view-mode').style.display='none'; document.getElementById('edit-mode').style.display='block'; document.getElementById('edit-name').focus(); }
+function hideEdit() { document.getElementById('edit-mode').style.display='none'; document.getElementById('view-mode').style.display='block'; }
+
+async function doSave() {
+  var errEl = document.getElementById('profile-error');
+  var successEl = document.getElementById('profile-success');
+  errEl.style.display = 'none'; successEl.style.display = 'none';
+  try {
+    var r = await fetch('/app/api/account/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: document.getElementById('edit-name').value.trim() || null,
+        phone: document.getElementById('edit-phone').value.trim() || null
+      })
+    });
+    var data = await r.json();
+    if (!r.ok || data.error) {
+      errEl.textContent = data.error || (I18N.save_failed || 'Save failed');
+      errEl.style.display = 'block';
+      return;
+    }
+    successEl.textContent = '✓ ' + (I18N.saved || 'Profile updated successfully');
+    successEl.style.display = 'block';
+    hideEdit();
+    setTimeout(function() { window.location.reload(); }, 600);
+  } catch(e) {
+    errEl.textContent = I18N.connection_error || 'Connection error';
+    errEl.style.display = 'block';
+  }
+}
+
+async function doLogout() {
+  try {
+    await fetch('/app/api/account/logout', { method: 'POST' });
+  } catch(e){}
+  window.location.href = '/app/';
+}
+</script>
+{% endblock %}

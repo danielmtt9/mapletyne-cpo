@@ -1,0 +1,431 @@
+{% extends "base.html" %}
+{% block title %}{{ t.charging | default('Charging') }} — Live Session{% endblock %}
+{% block content %}
+<div class="screen active" style="background:radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%);min-height:100vh;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(16,28,51,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:800;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/app/" style="color:#94a3b8;text-decoration:none;font-size:18px;display:inline-flex;align-items:center;gap:6px;font-weight:500;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        <span>{{ t.map | default('Map') }}</span>
+      </a>
+      <a href="/app/" style="display:flex;align-items:center;text-decoration:none;">
+        {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
+          <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+        {% else %}
+          <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
+        {% endif %}
+      </a>
+    </div>
+    <div id="live-connection-badge" style="display:flex;align-items:center;gap:6px;background:rgba(72,226,96,0.12);border:1px solid rgba(72,226,96,0.3);border-radius:14px;padding:4px 12px;font-size:11px;font-weight:700;color:#48e260;box-shadow:0 0 12px rgba(72,226,96,0.2);">
+      <span class="live-dot" style="background:#48e260;"></span> LIVE
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- State: waiting for payment -->
+    <div id="state-pending" style="display:none; text-align:center; padding:40px 0;">
+      <div class="spinner" style="margin-bottom:20px;"></div>
+      <div style="font-size:18px; font-weight:700; color:var(--text);">{{ t.waiting_payment | default('Authorising payment…') }}</div>
+      <div style="font-size:13px; color:var(--text3); margin-top:8px;">{{ t.waiting_payment_subtitle | default('Preparing your charging session') }}</div>
+    </div>
+
+    <!-- State: starting -->
+    <div id="state-starting" style="display:none; text-align:center; padding:30px 0;">
+      <div class="cable-pulse-anim">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#48e260" stroke-width="2">
+          <path d="M12 2v6m0 4v10M8 8h8M6 2v4M18 2v4"/>
+        </svg>
+      </div>
+      <div style="font-size:18px; font-weight:700; color:var(--text);">{{ t.session_starting | default('Connecting to Charger…') }}</div>
+      <div style="font-size:13px; color:var(--text2); margin-top:8px;">{{ t.session_starting_subtitle | default('Please ensure cable is plugged securely into your vehicle') }}</div>
+    </div>
+
+    <!-- State: finishing -->
+    <div id="state-finishing" style="display:none; text-align:center; padding:40px 0;">
+      <div class="spinner" style="margin-bottom:20px;"></div>
+      <div style="font-size:18px; font-weight:700; color:var(--text);">{{ t.session_finishing | default('Finalising session…') }}</div>
+      <div style="font-size:13px; color:var(--text3); margin-top:8px;">{{ t.session_finishing_subtitle | default('Unlocking connector & preparing receipt…') }}</div>
+    </div>
+
+    <!-- State: charging -->
+    <div id="state-charging" style="display:none;">
+
+      <!-- Charger info header -->
+      <div class="session-charger-info glass-card" id="charger-info">
+        <div class="session-charger-name" id="charger-name-val">—</div>
+        <div class="session-charger-detail" id="charger-detail-val">—</div>
+      </div>
+
+      <!-- Apple HIG Dual Concentric Activity Rings -->
+      <div class="activity-rings-wrap">
+        <svg class="activity-ring-svg" viewBox="0 0 200 200">
+          <!-- Outer Ring Background (SoC) -->
+          <circle class="ring-bg" cx="100" cy="100" r="82" stroke-width="14" />
+          <!-- Outer Ring Fill (SoC - Green) -->
+          <circle id="ring-soc-fill" class="ring-soc" cx="100" cy="100" r="82" stroke-width="14"
+                  stroke-dasharray="515.22" stroke-dashoffset="515.22" />
+
+          <!-- Inner Ring Background (Energy Delivered) -->
+          <circle class="ring-bg" cx="100" cy="100" r="62" stroke-width="12" />
+          <!-- Inner Ring Fill (Energy - Cyan) -->
+          <circle id="ring-kwh-fill" class="ring-kwh" cx="100" cy="100" r="62" stroke-width="12"
+                  stroke-dasharray="389.56" stroke-dashoffset="389.56" />
+        </svg>
+
+        <div class="rings-center-text">
+          <div class="rings-center-soc" id="center-soc-val">--%</div>
+          <div class="rings-center-label" id="center-soc-type">Battery SoC</div>
+        </div>
+      </div>
+
+      <!-- Live Power Gauge Banner -->
+      <div style="display:flex;align-items:baseline;justify-content:center;gap:6px;margin:8px 0 20px;">
+        <span style="font-size:36px;font-weight:800;color:#48e260;font-family:-apple-system,BlinkMacSystemFont,monospace;" id="power-val">0.0</span>
+        <span style="font-size:16px;font-weight:700;color:var(--text2);">kW</span>
+      </div>
+
+      <!-- Stats Grid Card (Glassmorphism) -->
+      <div class="session-stats glass-card" style="padding:16px 20px;border-radius:20px;">
+        <div class="stat-row">
+          <span class="stat-label">⚡ {{ t.energy | default('Delivered') }}</span>
+          <span class="stat-value mono" id="kwh-val">0.000 kWh</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">⏱ {{ t.duration | default('Duration') }}</span>
+          <span class="stat-value mono" id="duration-val">00:00:00</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">💰 {{ t.cost | default('Cost') }}</span>
+          <div style="text-align:right;">
+            <span class="stat-value mono" id="cost-val" style="color:#48e260;font-weight:700;">£0.00</span>
+            <div style="font-size:11px; color:var(--text3); margin-top:2px;">{{ t.incl_btw | default('incl. VAT') }}</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <span class="stat-label">📊 {{ t.power | default('Unit Rate') }}</span>
+          <span class="stat-value mono" id="rate-val">£0.35/kWh</span>
+        </div>
+      </div>
+
+      {# AC / Manual Battery SoC Estimation Controls #}
+      <details class="ac-battery-panel" style="margin-top:14px;cursor:pointer;">
+        <summary style="font-size:12px;font-weight:600;color:var(--text2);user-select:none;display:flex;align-items:center;gap:6px;">
+          ⚙️ Adjust AC Vehicle Battery Parameters
+        </summary>
+        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:8px;">
+            <div style="flex:1;">
+              <label style="font-size:10px;color:var(--text3);">Start SoC %</label>
+              <input type="number" id="live-start-soc" min="0" max="100" style="width:100%;padding:6px 8px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:13px;" />
+            </div>
+            <div style="flex:1;">
+              <label style="font-size:10px;color:var(--text3);">Capacity (kWh)</label>
+              <input type="number" id="live-battery-kwh" min="10" max="200" step="0.5" style="width:100%;padding:6px 8px;border-radius:8px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:13px;" />
+            </div>
+          </div>
+          <button onclick="saveLiveSocParams()" class="btn btn-outline" style="padding:6px 12px;font-size:12px;">Save Parameters</button>
+        </div>
+      </details>
+
+      <!-- 15-Min Overstay Grace Banner (shown on completion or idle state) -->
+      <div id="overstay-banner" class="overstay-banner" style="display:none;">
+        <span style="font-size:24px;">⏳</span>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#eab308;" id="overstay-title">Grace Period: Move Vehicle</div>
+          <div style="font-size:11px;color:var(--text2);" id="overstay-desc">15 min grace period to disconnect cable before idle fee applies.</div>
+          <div style="font-size:14px;font-weight:700;color:var(--text);margin-top:2px;" id="overstay-timer">15:00</div>
+        </div>
+      </div>
+
+      <!-- Action Buttons: Stop Charging + Emergency Cable Unlock -->
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-danger" id="stop-btn" onclick="confirmStop()" style="font-size:15px;font-weight:700;padding:14px;">
+          ■ {{ t.stop_charging | default('Stop Charging Session') }}
+        </button>
+
+        <button class="btn-unlock-cable" id="unlock-btn" onclick="triggerCableUnlock()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+          </svg>
+          Emergency Unlock Cable
+        </button>
+      </div>
+    </div>
+
+    <div id="session-status-note" class="info-note" style="display:none;margin-top:16px;"></div>
+    <div id="session-error" style="margin-top:16px;"></div>
+
+    <!-- Stuck session warning (shown after 90s in starting state) -->
+    <div id="stuck-warning" style="display:none;margin-top:20px;padding:16px;background:rgba(239,68,68,0.12);border:1px solid #ef4444;border-radius:14px;text-align:center;">
+      <div style="font-size:16px;font-weight:700;color:#ef4444;margin-bottom:8px;">⚠️ {{ t.charger_not_responding | default('Charger not responding') }}</div>
+      <button class="btn btn-danger" onclick="cancelStuckSession()" style="width:100%;">
+        {{ t.cancel_return_home | default('Cancel and go back') }}
+      </button>
+    </div>
+  </div>
+
+  <div class="app-footer">
+    {{ t.powered_by | default('Powered by ' ~ app_title) }}
+  </div>
+</div>
+
+<script>
+var SESSION_ID = {{ session_id | tojson }};
+var I18N = {{ t | tojson if t is defined else '{}' }};
+var _durationStart = null;
+var _pollInterval = null;
+var _durationInterval = null;
+var _eventSource = null;
+var _lastKwh = 0;
+var _lastCost = 0;
+var _currencySymbol = '£';
+var _currencyCode = 'GBP';
+
+// Activity Ring Circumferences
+var SOC_CIRCUMFERENCE = 2 * Math.PI * 82; // 515.22
+var KWH_CIRCUMFERENCE = 2 * Math.PI * 62; // 389.56
+
+function formatDuration(ms) {
+  var seconds = Math.floor(ms / 1000);
+  if (seconds < 0) return '00:00:00';
+  var h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+  var m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+  var s = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return h + ':' + m + ':' + s;
+}
+
+function formatCurrency(amount) {
+  return _currencySymbol + Number(amount).toFixed(2);
+}
+
+function showState(state) {
+  ['pending', 'starting', 'finishing', 'charging'].forEach(function(s) {
+    var el = document.getElementById('state-' + s);
+    if (el) el.style.display = (s === state) ? '' : 'none';
+  });
+}
+
+function updateActivityRings(socPct, kwhDelivered, isEstimated) {
+  var socEl = document.getElementById('center-soc-val');
+  var typeEl = document.getElementById('center-soc-type');
+  var socRing = document.getElementById('ring-soc-fill');
+  var kwhRing = document.getElementById('ring-kwh-fill');
+
+  if (socPct !== null && socPct !== undefined && socPct >= 0) {
+    var socClamped = Math.min(100, Math.max(0, socPct));
+    socEl.textContent = Math.round(socClamped) + '%';
+    typeEl.textContent = isEstimated ? 'Estimated SoC (AC)' : 'Battery SoC (DC)';
+    typeEl.style.color = isEstimated ? '#00B0E4' : '#48e260';
+
+    var socOffset = SOC_CIRCUMFERENCE - (socClamped / 100) * SOC_CIRCUMFERENCE;
+    socRing.style.strokeDashoffset = socOffset;
+  } else {
+    socEl.textContent = '--%';
+    typeEl.textContent = 'Energy Delivering';
+    socRing.style.strokeDashoffset = SOC_CIRCUMFERENCE;
+  }
+
+  // Energy ring relative to 50kWh benchmark or delivered amount
+  var kwhProgress = Math.min(100, (kwhDelivered / 50) * 100);
+  var kwhOffset = KWH_CIRCUMFERENCE - (kwhProgress / 100) * KWH_CIRCUMFERENCE;
+  kwhRing.style.strokeDashoffset = kwhOffset;
+}
+
+function updateUIWithSession(session) {
+  if (!session) return;
+
+  if (session.currency) {
+    _currencyCode = session.currency;
+    if (_currencyCode.toUpperCase() === 'GBP') _currencySymbol = '£';
+    else if (_currencyCode.toUpperCase() === 'EUR') _currencySymbol = '€';
+    else if (_currencyCode.toUpperCase() === 'USD') _currencySymbol = '$';
+  }
+
+  if (session.payment_status === 'pending') {
+    showState('pending');
+    return;
+  }
+
+  if (['failed', 'expired', 'canceled'].includes(session.payment_status)) {
+    clearInterval(_pollInterval);
+    clearInterval(_durationInterval);
+    if (_eventSource) _eventSource.close();
+    showState('finishing');
+    document.getElementById('session-error').innerHTML =
+      '<div class="error-card">Session ' + session.payment_status + '. Please try again.</div>';
+    return;
+  }
+
+  if (session.stopped_at) {
+    showState('finishing');
+    clearInterval(_pollInterval);
+    clearInterval(_durationInterval);
+    if (_eventSource) _eventSource.close();
+    localStorage.removeItem('active_session_id');
+    setTimeout(function() { window.location.href = '/app/receipt/' + SESSION_ID; }, 1800);
+    return;
+  }
+
+  if (!session.started_at && session.payment_status === 'authorized' && !session.ocpp_transaction_id) {
+    showState('starting');
+    return;
+  }
+
+  // Active Charging State
+  showState('charging');
+
+  if (!_durationStart) {
+    var ts = session.started_at || session.created_at;
+    _durationStart = ts ? new Date(ts).getTime() : Date.now();
+  }
+
+  var kwh = parseFloat(session.kwh_delivered || 0);
+  var powerKw = parseFloat(session.current_kw || 0);
+  var rate = parseFloat(session.rate_kwh || 0.35);
+  var cost = parseFloat(session.total_cost !== undefined ? session.total_cost : (kwh * rate * 1.21));
+
+  _lastKwh = kwh;
+  _lastCost = cost;
+
+  document.getElementById('power-val').textContent = powerKw.toFixed(1);
+  document.getElementById('kwh-val').textContent = kwh.toFixed(3) + ' kWh';
+  document.getElementById('cost-val').textContent = formatCurrency(cost);
+  document.getElementById('rate-val').textContent = formatCurrency(rate * 1.21) + '/kWh';
+
+  updateActivityRings(session.soc_pct, kwh, session.is_estimated_soc);
+
+  if (session.cp_id) {
+    document.getElementById('charger-name-val').textContent = session.cp_id;
+    document.getElementById('charger-detail-val').textContent = 'Connector ' + (session.connector_id || 1);
+  }
+
+  // Check Overstay Warning
+  if (session.idle_duration_seconds > 0 || (powerKw === 0 && kwh > 0 && session.started_at)) {
+    var overstayEl = document.getElementById('overstay-banner');
+    if (overstayEl) overstayEl.style.display = 'flex';
+  }
+}
+
+async function pollSession() {
+  try {
+    var r = await fetch('/app/api/sessions/' + SESSION_ID + '/poll');
+    var session = await r.json();
+    updateUIWithSession(session);
+  } catch(e) {
+    console.warn('Poll error:', e);
+  }
+}
+
+function initSSE() {
+  if (!('EventSource' in window)) return;
+  try {
+    _eventSource = new EventSource('/api/v1/events/stream?session_id=' + SESSION_ID);
+    _eventSource.onmessage = function(event) {
+      try {
+        var data = JSON.parse(event.data);
+        if (data && data.session_id === SESSION_ID) {
+          updateUIWithSession(data);
+        }
+      } catch(err) {}
+    };
+    _eventSource.onerror = function() {
+      // Fallback seamlessly to polling if SSE drops
+      if (_eventSource) {
+        _eventSource.close();
+        _eventSource = null;
+      }
+    };
+  } catch(e) {}
+}
+
+async function triggerCableUnlock() {
+  if (!confirm('Request connector solenoid unlock from station?')) return;
+  var btn = document.getElementById('unlock-btn');
+  btn.disabled = true;
+  btn.textContent = 'Unlocking Solenoid…';
+
+  try {
+    var r = await fetch('/app/api/sessions/' + SESSION_ID + '/unlock', {method: 'POST'});
+    var res = await r.json();
+    if (res.unlocked) {
+      alert('Unlock command sent to charger successfully.');
+    } else {
+      alert(res.detail || 'Could not unlock connector.');
+    }
+  } catch(e) {
+    alert('Failed to send unlock command.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg> Emergency Unlock Cable';
+  }
+}
+
+async function saveLiveSocParams() {
+  var start = parseInt(document.getElementById('live-start-soc').value || '', 10) || null;
+  var cap = parseFloat(document.getElementById('live-battery-kwh').value || '') || null;
+  try {
+    await fetch('/app/api/sessions/' + SESSION_ID + '/soc-params', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({driver_start_soc_pct: start, battery_capacity_kwh: cap})
+    });
+    alert('Battery parameters updated.');
+    pollSession();
+  } catch(e) {
+    alert('Failed to update battery parameters.');
+  }
+}
+
+async function cancelStuckSession() {
+  clearInterval(_pollInterval);
+  clearInterval(_durationInterval);
+  if (_eventSource) _eventSource.close();
+  try {
+    await fetch('/app/api/sessions/' + SESSION_ID + '/cancel', {method: 'POST'});
+  } catch(e) {}
+  localStorage.removeItem('active_session_id');
+  window.location.href = '/app/';
+}
+
+async function confirmStop() {
+  var kwhTxt = _lastKwh.toFixed(3) + ' kWh';
+  var costTxt = formatCurrency(_lastCost) + ' (' + (I18N.incl_btw || 'incl. VAT') + ')';
+  var msg = (I18N.confirm_stop || 'Are you sure you want to stop charging?') + '\n\n' +
+            'Charged: ' + kwhTxt + '\n' +
+            'Cost:    ' + costTxt;
+  if (!confirm(msg)) return;
+
+  var btn = document.getElementById('stop-btn');
+  btn.disabled = true;
+  btn.textContent = (I18N.stopping || 'Stopping…');
+
+  try {
+    await fetch('/app/api/sessions/' + SESSION_ID + '/stop', {method: 'POST'});
+    clearInterval(_pollInterval);
+    clearInterval(_durationInterval);
+    if (_eventSource) _eventSource.close();
+    localStorage.removeItem('active_session_id');
+    window.location.href = '/app/receipt/' + SESSION_ID;
+  } catch(e) {
+    document.getElementById('session-error').innerHTML =
+      '<div class="error-card">Could not stop the charger. Please try again.</div>';
+    btn.disabled = false;
+    btn.textContent = '■ Stop Charging Session';
+  }
+}
+
+_durationInterval = setInterval(function() {
+  if (_durationStart) {
+    var elapsed = Date.now() - _durationStart;
+    document.getElementById('duration-val').textContent = formatDuration(elapsed);
+  }
+}, 1000);
+
+showState('starting');
+initSSE();
+pollSession();
+_pollInterval = setInterval(pollSession, 3000);
+</script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}{{ t.settings | default('Settings') }} — {{ (branding.company_name if branding is defined and branding.company_name else app_title) }}{% endblock %}
+{% block content %}
+<div class="screen active" style="padding-bottom:110px;">
+  <!-- Header Bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(11,19,38,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:800;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="/app/" style="color:var(--text2,#94a3b8);text-decoration:none;font-size:20px;line-height:1;padding:4px 8px;border-radius:8px;background:rgba(255,255,255,0.05);">←</a>
+      <a href="/app/" style="display:flex;align-items:center;text-decoration:none;gap:10px;">
+        {% if branding is defined and branding and branding.logo_data_uri %}
+          <img src="{{ branding.logo_data_uri }}" alt="{{ branding.company_name }}" style="height:26px;max-width:140px;object-fit:contain;" />
+        {% else %}
+          <img src="/skin/logo.svg" alt="Brand Logo" style="height:26px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png';" />
+        {% endif %}
+      </a>
+    </div>
+    <span style="font-size:12px;font-weight:600;color:var(--accent,#48e260);background:rgba(72,226,96,0.12);padding:4px 10px;border-radius:12px;border:1px solid rgba(72,226,96,0.25);">
+      {{ (branding.company_name if branding is defined and branding.company_name else 'MTT Charge') }}
+    </span>
+  </div>
+
+  <div class="page-content" style="max-width:480px;margin:0 auto;padding:24px 18px;">
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:20px;">{{ t.settings | default('Settings & Profile') }}</h2>
+
+    {% if flags is defined and flags.get('multi_language') %}
+    <!-- Language section -->
+    <div style="background:rgba(23,35,53,0.7);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+      <div style="font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">
+        {{ t.language | default('Language') }}
+      </div>
+      <div style="display:flex;gap:12px;">
+        <a href="?lang=nl" style="
+          flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+          padding:12px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;
+          background:{% if lang == 'nl' or not lang %}var(--accent,#48e260);color:#0b1326{% else %}rgba(255,255,255,0.04);color:var(--text2,#94a3b8);border:1px solid rgba(255,255,255,0.08){% endif %};
+        ">
+          🇳🇱 Nederlands
+        </a>
+        <a href="?lang=en" style="
+          flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+          padding:12px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;
+          background:{% if lang == 'en' %}var(--accent,#48e260);color:#0b1326{% else %}rgba(255,255,255,0.04);color:var(--text2,#94a3b8);border:1px solid rgba(255,255,255,0.08){% endif %};
+        ">
+          🇬🇧 English
+        </a>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Account section -->
+    <div style="background:rgba(23,35,53,0.7);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+      <div style="font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">
+        {{ t.profile | default('Account Access') }}
+      </div>
+
+      {% if account is defined and account %}
+        <!-- Logged in -->
+        <a href="/app/account/profile" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;color:var(--text1,#fff);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);color:var(--electric-blue,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:18px;">👤</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;">{{ t.profile | default('My Profile') }}</div>
+              <div style="font-size:12px;color:var(--text3,#64748b);">{{ account.get('email', 'Logged in') }}</div>
+            </div>
+          </div>
+          <span style="color:var(--text3,#64748b);font-weight:600;">›</span>
+        </a>
+        <a href="/app/account/history" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;text-decoration:none;color:var(--text1,#fff);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(72,226,96,0.12);color:var(--accent,#48e260);display:flex;align-items:center;justify-content:center;font-size:18px;">⚡</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;">{{ t.history | default('Charging History') }}</div>
+              <div style="font-size:12px;color:var(--text3,#64748b);">View past sessions & receipts</div>
+            </div>
+          </div>
+          <span style="color:var(--text3,#64748b);font-weight:600;">›</span>
+        </a>
+      {% else %}
+        <!-- Not logged in -->
+        <a href="/app/account/login" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;color:var(--text1,#fff);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);color:var(--electric-blue,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:18px;">🔑</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;">{{ t.login | default('Log in') }}</div>
+              <div style="font-size:12px;color:var(--text3,#64748b);">Access saved cards & live sessions</div>
+            </div>
+          </div>
+          <span style="color:var(--text3,#64748b);font-weight:600;">›</span>
+        </a>
+        <a href="/app/account/register" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;text-decoration:none;color:var(--text1,#fff);">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:rgba(72,226,96,0.12);color:var(--accent,#48e260);display:flex;align-items:center;justify-content:center;font-size:18px;">✨</div>
+            <div>
+              <div style="font-size:15px;font-weight:600;">{{ t.register | default('Create an Account') }}</div>
+              <div style="font-size:12px;color:var(--text3,#64748b);">Fast checkout & driver perks</div>
+            </div>
+          </div>
+          <span style="color:var(--text3,#64748b);font-weight:600;">›</span>
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- App Info & Support Section -->
+    <div style="background:rgba(23,35,53,0.7);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;margin-bottom:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);">
+      <div style="font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:14px;">
+        Network & Support
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text2,#94a3b8);">
+        <div style="display:flex;justify-content:space-between;">
+          <span>Network Operator</span>
+          <span style="color:#fff;font-weight:600;">{{ (branding.company_name if branding is defined and branding.company_name else 'MTT Charge') }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span>Support Contact</span>
+          <span style="color:var(--accent,#48e260);font-weight:500;">{{ (branding.support_email if branding is defined and branding.support_email else 'support@mapletyne.com') }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span>Currency Default</span>
+          <span style="color:#fff;font-weight:600;">{{ (branding.currency if branding is defined and branding.currency else 'GBP') }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
+          <span>App Version</span>
+          <span style="color:var(--text3,#64748b);font-family:monospace;">v2.4.0 (Production)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default('en') }}">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="{{ (branding.bg_color if branding is defined and branding.bg_color else '#0b1326') }}" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="{{ (branding.company_name if branding is defined and branding.company_name else 'MTT Charge') }}" />
+  <link rel="manifest" href="/app/manifest.json?v=5" />
+  <link rel="apple-touch-icon" href="{{ (branding.logo_data_uri if branding is defined and branding.logo_data_uri else '/app/static/icon-192.png?v=5') }}" />
+  <link rel="apple-touch-icon" sizes="512x512" href="{{ (branding.logo_data_uri if branding is defined and branding.logo_data_uri else '/app/static/icon-512.png?v=5') }}" />
+  <title>{% block title %}{{ (branding.company_name if branding is defined and branding.company_name else app_title) }}{% endblock %}</title>
+  <link rel="icon" href="{{ (branding.favicon_url or branding.logo_data_uri or '/skin/favicon.svg?v=5') if branding is defined else '/skin/favicon.svg?v=5' }}" type="image/svg+xml" />
+  <link rel="stylesheet" href="/app/static/style.css?v=5" />
+  <link rel="stylesheet" href="/skin/style.css?v=5" />
+  <link rel="stylesheet" href="/app/static/leaflet.css?v=2" />
+  <script src="/app/static/leaflet.js?v=2"></script>
+  <script src="/app/static/htmx.min.js?v=2" defer></script>
+  <script>window.FEATURES = {{ flags | tojson if flags is defined else '{}' }};</script>
+  <script>window.BRANDING = {{ branding | tojson if branding is defined else '{}' }};</script>
+  <style>
+    :root {
+      {% if branding is defined and branding %}
+        {% if branding.primary_color %}--primary: {{ branding.primary_color }}; --accent: {{ branding.primary_color }};{% endif %}
+        {% if branding.bg_color %}--bg: {{ branding.bg_color }}; --bg-deep: {{ branding.bg_color }};{% endif %}
+        {% if branding.card_color %}--card: {{ branding.card_color }}; --card-bg: {{ branding.card_color }};{% endif %}
+        {% if branding.secondary_color %}--bg2: {{ branding.secondary_color }};{% endif %}
+        {% if branding.accent_color %}--electric-blue: {{ branding.accent_color }};{% endif %}
+      {% endif %}
+    }
+    #app {
+      padding-bottom: max(115px, calc(95px + env(safe-area-inset-bottom)));
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body style="background:var(--bg,#0b1326);color:var(--text,#f1f5f9);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display',system-ui,sans-serif;">
+  <!-- PWA Install Banner -->
+  <div id="pwa-install-banner" style="display:none;position:fixed;top:12px;right:12px;z-index:1200;background:rgba(23,35,53,0.85);border:1px solid var(--accent,#48e260);border-radius:20px;padding:6px 14px;box-shadow:0 8px 24px rgba(0,0,0,0.5);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:center;gap:8px;">
+    <span style="font-size:13px;font-weight:600;color:var(--text,#fff);">📲 Install {{ (branding.company_name if branding is defined and branding.company_name else 'MTT Charge') }}</span>
+    <button id="pwa-install-btn" style="background:var(--accent,#48e260);color:#0b1a10;border:none;border-radius:12px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;">Install</button>
+    <button id="pwa-dismiss-btn" style="background:none;border:none;color:var(--text3,#64748b);font-size:14px;cursor:pointer;padding:0 2px;">✕</button>
+  </div>
+
+  <div id="app">
+    {% block content %}{% endblock %}
+  </div>
+
+  <nav id="app-nav" style="position:fixed;bottom:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-around;background:rgba(16,28,51,0.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:1px solid rgba(255,255,255,0.08);padding:10px 0 max(12px,env(safe-area-inset-bottom));box-shadow:0 -10px 30px rgba(0,0,0,0.35);">
+    <a href="/app/" id="nav-map" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--text3,#64748b);padding:4px 16px;transition:color 0.2s;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
+      <span style="font-size:11px;font-weight:500;">{{ t.tab_map | default('Map') }}</span>
+    </a>
+    <a href="/app/#scan" id="nav-scan" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--text3,#64748b);padding:4px 16px;transition:color 0.2s;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span style="font-size:11px;font-weight:500;">{{ t.tab_scan | default('Scan') }}</span>
+    </a>
+    <a href="{% if account is defined and account %}/app/account/profile{% elif flags is defined and flags.get('account_login') %}/app/account/login{% else %}/app/account/settings{% endif %}" id="nav-account" style="display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--text3,#64748b);padding:4px 16px;transition:color 0.2s;">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0112 0v1"/></svg>
+      <span style="font-size:11px;font-weight:500;">{{ t.tab_account | default('Account') }}</span>
+    </a>
+  </nav>
+  <script>(function(){var p=location.pathname,a='nav-map';if(p.indexOf('/account')!==-1)a='nav-account';var e=document.getElementById(a);if(e)e.style.color='var(--accent,#00B0E4)';})()</script>
+
+  <script>
+    // ── Service Worker Registration ──
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/app/sw.js', { scope: '/app/' })
+          .then(function(reg) {
+            console.log('PWA ServiceWorker registered with scope:', reg.scope);
+          })
+          .catch(function(err) {
+            navigator.serviceWorker.register('/app/static/sw.js', { scope: '/app/' }).catch(function(){});
+          });
+      });
+    }
+
+    // ── PWA Install Prompt Listener ──
+    var deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      var banner = document.getElementById('pwa-install-banner');
+      if (banner && !sessionStorage.getItem('pwa_dismissed')) {
+        banner.style.display = 'flex';
+      }
+    });
+
+    document.getElementById('pwa-install-btn')?.addEventListener('click', function() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choiceResult) {
+          if (choiceResult.outcome === 'accepted') {
+            document.getElementById('pwa-install-banner').style.display = 'none';
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
+
+    document.getElementById('pwa-dismiss-btn')?.addEventListener('click', function() {
+      document.getElementById('pwa-install-banner').style.display = 'none';
+      sessionStorage.setItem('pwa_dismissed', '1');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "Otaski",
+  "version": "1.0",
+  "mode": "dark",
+  "colors": {
+    "primary": "#48e260",
+    "secondary": "#c1c8c3",
+    "background": "#0d150d",
+    "card": "#2f372d",
+    "border": "#3d4a3b"
+  },
+  "fonts": {
+    "headline": "Space Grotesk",
+    "body": "Inter",
+    "mono": "'Roboto Mono', monospace"
+  },
+  "logo": "logo.svg",
+  "favicon": "favicon.svg"
+}

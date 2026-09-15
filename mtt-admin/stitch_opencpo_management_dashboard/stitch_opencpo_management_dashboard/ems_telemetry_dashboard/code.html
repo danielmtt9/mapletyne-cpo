@@ -1,0 +1,195 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-container":"#e6ecff","surface-container-high":"#222a3d","status-online":"#10B981","secondary":"#adc6ff","outline-variant":"#3c4a42","secondary-fixed":"#d8e2ff","on-tertiary":"#650911","tertiary-fixed":"#ffdad7","on-primary-fixed":"#002113","surface-container-lowest":"#060e20","status-fault":"#F97316","on-tertiary-fixed-variant":"#842225","background":"#0b1326","surface-container-low":"#131b2e","on-error":"#690005","outline":"#86948a","on-secondary-fixed-variant":"#004395","on-background":"#dae2fd","tertiary-fixed-dim":"#ffb3af","surface-dim":"#0b1326","deep-charcoal":"#0F172A","surface-container-highest":"#2d3449","on-tertiary-container":"#711419","tertiary-container":"#fc7c78","secondary-container":"#0566d9","on-surface":"#dae2fd","inverse-surface":"#dae2fd","electric-blue":"#3B82F6","surface":"#0b1326","surface-container":"#171f33","tertiary":"#ffb3af","secondary-fixed-dim":"#adc6ff","surface-variant":"#2d3449","on-primary":"#003824","primary-fixed":"#6ffbbe","surface-elevation":"#1E293B","on-secondary-fixed":"#001a42","inverse-primary":"#006c49","error-container":"#93000a","on-primary-fixed-variant":"#005236","on-error-container":"#ffdad6","on-primary-container":"#00422b","surface-bright":"#31394d","inverse-on-surface":"#283044","primary":"#4edea3","on-tertiary-fixed":"#410005","status-offline":"#64748B","on-secondary":"#002e6a","on-surface-variant":"#bbcabf","surface-tint":"#4edea3","primary-fixed-dim":"#4edea3","primary-container":"#10b981","error":"#ffb4ab"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-desktop":"32px","table-row-height":"40px","margin-mobile":"16px","container-max":"1440px","unit":"4px","gutter":"16px"},"fontFamily":{"body-md":["Geist"],"headline-md":["Hanken Grotesk"],"code":["Geist"],"data-table":["Geist"],"body-lg":["Geist"],"headline-xl":["Hanken Grotesk"],"display-lg":["Hanken Grotesk"],"label-caps":["Geist"]},"fontSize":{"body-md":["16px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"1.2","fontWeight":"600"}],"code":["13px",{"lineHeight":"1.4","fontWeight":"400"}],"data-table":["14px",{"lineHeight":"1.2","letterSpacing":"0.01em","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"1.2","fontWeight":"600"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],"label-caps":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"700"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"></head><body class="bg-background font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low flex flex-col border-r border-outline-variant/10 z-50"><div class="p-6 mb-4 flex items-center gap-3"><div class="w-8 h-8 bg-primary rounded flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">ev_station</span></div><span class="font-headline-md text-headline-md tracking-tight text-on-surface">OpenCPO</span></div><nav class="flex-1 px-3 space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container"><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="chargers" href="#"><span class="material-symbols-outlined">charging_station</span>Chargers</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="sessions" href="#"><span class="material-symbols-outlined">receipt_long</span>Sessions</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="tariffs" href="#"><span class="material-symbols-outlined">payments</span>Tariffs</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="rfid-fleet" href="#"><span class="material-symbols-outlined">group</span>RFID &amp; Fleet</a><a aria-current="page" class="flex items-center gap-3 px-4 py-2.5 rounded transition-colors font-data-table bg-secondary-container text-on-secondary-container" data-path="energy" href="#"><span class="material-symbols-outlined">bolt</span>Energy</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="roaming" href="#"><span class="material-symbols-outlined">public</span>Roaming</a></nav><div class="mt-auto p-4 border-t border-outline-variant/10 space-y-4"><div class="flex items-center justify-between px-2 text-label-caps font-label-caps text-on-surface-variant"><span>LIVE FEED</span><div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-status-online animate-pulse"></div><span class="text-[10px] text-status-online uppercase">Active</span></div></div><div class="flex flex-col gap-1"><a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors font-data-table text-data-table" data-path="settings" href="#"><span class="material-symbols-outlined">settings</span>Settings</a><div class="flex items-center gap-3 px-4 py-2"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="overflow-hidden"><p class="text-data-table font-data-table text-on-surface truncate">Admin User</p><p class="text-[10px] text-on-surface-variant uppercase">Super Admin</p></div></div></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-background/80 backdrop-blur-xl border-b border-outline-variant/10 z-40 flex items-center justify-between px-margin-desktop"><div class="flex items-center gap-6 flex-1"><div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded text-on-surface-variant border border-outline-variant/20 cursor-pointer hover:border-primary/50 transition-all"><span class="material-symbols-outlined text-[18px]">location_on</span><span class="font-data-table text-data-table">All Sites</span><span class="material-symbols-outlined text-[18px]">expand_more</span></div><div class="flex-1 max-w-md relative"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span><input class="w-full bg-surface-container-low border border-outline-variant/20 rounded h-10 pl-10 pr-4 font-body-md text-on-surface focus:outline-none focus:border-electric-blue transition-all" placeholder="Search commands or data (Cmd+K)" type="text"><span class="absolute right-3 top-1/2 -translate-y-1/2 bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] font-bold text-on-surface-variant">⌘K</span></div></div><div class="flex items-center gap-4"><div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container rounded text-on-surface border border-outline-variant/10"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span class="font-data-table text-data-table">Oct 24 - Oct 31</span></div><button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined">notifications</span></button></div></header><main class="flex-1 pt-16 bg-background p-margin-desktop"><div class="flex flex-col w-full gap-8">
+<div class="flex justify-between items-end mb-4">
+<div>
+<h1 class="text-display-lg font-display-lg text-on-surface">Energy Management</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant mt-2">Real-time power flow and telemetry for Site Alpha.</p>
+</div>
+<div class="flex gap-4">
+<div class="relative group cursor-pointer bg-surface-container-high px-4 py-2 rounded">
+<div class="flex items-center gap-2">
+<span class="text-data-table font-data-table text-on-surface">Site Alpha</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">expand_more</span>
+</div>
+<div class="absolute right-0 top-full mt-2 w-48 bg-surface-container-highest rounded shadow-xl hidden group-hover:block z-50">
+<div class="p-2 flex flex-col gap-1">
+<div class="px-3 py-2 text-data-table font-data-table text-primary bg-primary/10 rounded cursor-pointer">Site Alpha</div>
+<div class="px-3 py-2 text-data-table font-data-table text-on-surface hover:bg-surface-container-high rounded cursor-pointer transition-colors">Site Beta</div>
+<div class="px-3 py-2 text-data-table font-data-table text-on-surface hover:bg-surface-container-high rounded cursor-pointer transition-colors">Site Gamma</div>
+</div>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-4 py-2 rounded font-data-table text-data-table shadow-sm hover:shadow-md transition-shadow flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">settings</span> Edit Strategy
+      </button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Power Flow Viz (Simplified) -->
+<div class="lg:col-span-2 bg-surface-container rounded-xl p-6 shadow-md flex flex-col gap-6 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+<div class="flex justify-between items-center z-10">
+<h2 class="text-headline-md font-headline-md text-on-surface">Real-time Power Flow</h2>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-online animate-pulse"></span>
+<span class="text-label-caps font-label-caps text-status-online tracking-widest">LIVE</span>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center py-12 z-10">
+<div class="grid grid-cols-3 gap-12 w-full max-w-2xl relative">
+<!-- Grid -->
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-high rounded-xl relative shadow-sm hover:-translate-y-1 transition-transform">
+<span class="material-symbols-outlined text-[40px] text-electric-blue mb-2">electrical_services</span>
+<span class="text-headline-md font-headline-md text-on-surface">142<span class="text-body-md font-body-md text-on-surface-variant ml-1">kW</span></span>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-1">GRID (IMPORT)</span>
+<!-- Flow line -->
+<svg class="absolute -right-12 top-1/2 -translate-y-1/2 w-12 h-2 text-electric-blue" preserveAspectRatio="none" viewBox="0 0 100 10"><path d="M0 5 L100 5" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"><animate attributeName="stroke-dashoffset" dur="0.5s" from="8" repeatCount="indefinite" to="0"></animate></path></svg>
+</div>
+<!-- Central Node (Site) -->
+<div class="flex flex-col items-center justify-center p-8 bg-surface-elevation rounded-full relative shadow-md z-10 border-[4px] border-surface-container hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[48px] text-primary mb-2">domain</span>
+<span class="text-headline-xl font-headline-xl text-primary">230<span class="text-body-md font-body-md text-on-surface-variant ml-1">kW</span></span>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-1">TOTAL LOAD</span>
+</div>
+<!-- Solar -->
+<div class="flex flex-col items-center justify-center p-6 bg-surface-container-high rounded-xl relative shadow-sm hover:-translate-y-1 transition-transform">
+<span class="material-symbols-outlined text-[40px] text-status-fault mb-2">solar_power</span>
+<span class="text-headline-md font-headline-md text-on-surface">45<span class="text-body-md font-body-md text-on-surface-variant ml-1">kW</span></span>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-1">SOLAR</span>
+<!-- Flow line -->
+<svg class="absolute -left-12 top-1/2 -translate-y-1/2 w-12 h-2 text-status-fault" preserveAspectRatio="none" viewBox="0 0 100 10"><path d="M100 5 L0 5" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"><animate attributeName="stroke-dashoffset" dur="0.5s" from="8" repeatCount="indefinite" to="0"></animate></path></svg>
+</div>
+<!-- Chargers -->
+<div class="col-start-2 flex flex-col items-center justify-center p-6 bg-surface-container-high rounded-xl relative mt-12 shadow-sm hover:-translate-y-1 transition-transform">
+<span class="material-symbols-outlined text-[40px] text-secondary mb-2">ev_station</span>
+<span class="text-headline-md font-headline-md text-on-surface">185<span class="text-body-md font-body-md text-on-surface-variant ml-1">kW</span></span>
+<span class="text-label-caps font-label-caps text-on-surface-variant mt-1">EV CHARGERS</span>
+<!-- Flow line (Vertical) -->
+<svg class="absolute left-1/2 -top-12 -translate-x-1/2 w-2 h-12 text-secondary" preserveAspectRatio="none" viewBox="0 0 10 100"><path d="M5 0 L5 100" stroke="currentColor" stroke-dasharray="4 4" stroke-width="2"><animate attributeName="stroke-dashoffset" dur="0.5s" from="8" repeatCount="indefinite" to="0"></animate></path></svg>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Strategy & Battery -->
+<div class="flex flex-col gap-6">
+<!-- Strategy Card -->
+<div class="bg-surface-container rounded-xl p-6 shadow-md relative overflow-hidden">
+<div class="absolute right-0 top-0 w-32 h-32 bg-primary/10 rounded-bl-full pointer-events-none"></div>
+<h3 class="text-label-caps font-label-caps text-on-surface-variant mb-4 tracking-wider">ACTIVE STRATEGY</h3>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-[32px] text-primary">model_training</span>
+<span class="text-headline-md font-headline-md text-on-surface">Peak Shaving</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant/10">
+<span class="text-data-table font-data-table text-on-surface-variant">Target Limit</span>
+<span class="text-code font-code text-on-surface">200 kW</span>
+</div>
+<div class="flex justify-between items-center pb-2 border-b border-outline-variant/10">
+<span class="text-data-table font-data-table text-on-surface-variant">Algorithm</span>
+<span class="text-code font-code text-on-surface">AI Predictive</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-data-table font-data-table text-on-surface-variant">Last Updated</span>
+<span class="text-code font-code text-on-surface">10 min ago</span>
+</div>
+</div>
+</div>
+<!-- Battery Telemetry -->
+<div class="bg-surface-container rounded-xl p-6 shadow-md flex-1 flex flex-col justify-between group hover:shadow-lg transition-shadow relative">
+<div>
+<h3 class="text-label-caps font-label-caps text-on-surface-variant mb-4 tracking-wider">BESS STATUS (SOC)</h3>
+<div class="flex items-baseline gap-2 mb-2">
+<span class="text-display-lg font-display-lg text-primary">78</span>
+<span class="text-headline-md font-headline-md text-primary">%</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden mt-4">
+<div class="h-full bg-primary w-[78%] relative">
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-6">
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1">DISCHARGE</p>
+<p class="text-body-lg font-body-lg text-on-surface">43 kW</p>
+</div>
+<div>
+<p class="text-label-caps font-label-caps text-on-surface-variant mb-1">TEMP</p>
+<p class="text-body-lg font-body-lg text-on-surface">28.4 °C</p>
+</div>
+</div>
+<span class="material-symbols-outlined absolute bottom-6 right-6 text-[48px] text-surface-container-highest group-hover:text-surface-bright transition-colors pointer-events-none">battery_charging_full</span>
+</div>
+</div>
+</div>
+<!-- Historical Load & Telemetry Grid Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Historical Chart -->
+<div class="lg:col-span-2 bg-surface-container rounded-xl p-6 shadow-md h-96 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-headline-md font-headline-md text-on-surface">Historical Load</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded text-label-caps font-label-caps hover:text-on-surface transition-colors">1D</button>
+<button class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded text-label-caps font-label-caps hover:text-on-surface transition-colors">1W</button>
+<button class="px-3 py-1 bg-primary/10 text-primary rounded text-label-caps font-label-caps">1M</button>
+</div>
+</div>
+<div class="flex-1 relative w-full flex items-end gap-2 p-4">
+<!-- Placeholder Bar Chart Visual -->
+<div class="w-full h-full flex items-end justify-between gap-1 opacity-80" id="hist-chart-container">
+<!-- JS will populate bars here -->
+</div>
+</div>
+</div>
+<!-- Telemetry Grid -->
+<div class="bg-surface-container rounded-xl p-6 shadow-md flex flex-col gap-4">
+<h3 class="text-label-caps font-label-caps text-on-surface-variant tracking-wider">INVERTER TELEMETRY</h3>
+<div class="bg-surface-container-high rounded p-3 flex justify-between items-center">
+<span class="text-data-table font-data-table text-on-surface-variant">L1 Voltage</span>
+<span class="text-code font-code text-on-surface">230.1 V</span>
+</div>
+<div class="bg-surface-container-high rounded p-3 flex justify-between items-center">
+<span class="text-data-table font-data-table text-on-surface-variant">L2 Voltage</span>
+<span class="text-code font-code text-on-surface">229.8 V</span>
+</div>
+<div class="bg-surface-container-high rounded p-3 flex justify-between items-center">
+<span class="text-data-table font-data-table text-on-surface-variant">L3 Voltage</span>
+<span class="text-code font-code text-on-surface">230.5 V</span>
+</div>
+<div class="bg-surface-container-high rounded p-3 flex justify-between items-center">
+<span class="text-data-table font-data-table text-on-surface-variant">Frequency</span>
+<span class="text-code font-code text-primary">50.02 Hz</span>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant/10 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-status-online text-[16px]">check_circle</span>
+<span class="text-data-table font-data-table text-on-surface">Inverter Online</span>
+</div>
+<span class="text-label-caps font-label-caps text-on-surface-variant">UPDATED JUST NOW</span>
+</div>
+</div>
+</div>
+</div>
+<script>
+   // Generate some placeholder bars for the historical chart
+   document.addEventListener('DOMContentLoaded', () => {
+      const container = document.getElementById('hist-chart-container');
+      if(container) {
+         for(let i=0; i<24; i++) {
+            const height = 20 + Math.random() * 80; // 20% to 100%
+            const bar = document.createElement('div');
+            bar.className = 'w-full bg-electric-blue rounded-t hover:bg-primary transition-colors cursor-pointer relative group';
+            bar.style.height = `${height}%`;
+            
+            // Tooltip
+            const tooltip = document.createElement('div');
+            tooltip.className = 'absolute -top-10 left-1/2 -translate-x-1/2 bg-surface-container-highest text-on-surface text-label-caps font-label-caps px-2 py-1 rounded hidden group-hover:block whitespace-nowrap z-20 shadow-md pointer-events-none';
+            tooltip.textContent = `${Math.floor(height * 2.5)} kWh`;
+            bar.appendChild(tooltip);
+
+            container.appendChild(bar);
+         }
+      }
+   });
+</script></main></div></body></html>

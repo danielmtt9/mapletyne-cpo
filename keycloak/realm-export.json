@@ -1,0 +1,179 @@
+{
+  "id": "opencpo",
+  "realm": "opencpo",
+  "displayName": "OpenCPO Mission Control",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "accessTokenLifespan": 3600,
+  "ssoSessionIdleTimeout": 86400,
+  "ssoSessionMaxLifespan": 2592000,
+  "roles": {
+    "realm": [
+      {
+        "name": "cpo-admin",
+        "description": "Full administrative authority across CSMS, PKI, backups, and settings"
+      },
+      {
+        "name": "site-operator",
+        "description": "Charge point control, telemetry monitoring, and tariff assignment"
+      },
+      {
+        "name": "billing-manager",
+        "description": "CDR billing reconciliation, financial splits, and tariffs"
+      },
+      {
+        "name": "fleet-manager",
+        "description": "Corporate RFID tokens and vehicle fleet assignments"
+      },
+      {
+        "name": "driver",
+        "description": "EV driver mobile charge app and personal tokens"
+      }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "opencpo-admin-ui",
+      "name": "OpenCPO Mission Control Admin Dashboard",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ]
+    },
+    {
+      "clientId": "opencpo-charge-app",
+      "name": "OpenCPO Driver Mobile PWA",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "serviceAccountsEnabled": false,
+      "fullScopeAllowed": true,
+      "redirectUris": [
+        "*"
+      ],
+      "webOrigins": [
+        "*"
+      ],
+      "defaultClientScopes": [
+        "web-origins",
+        "acr",
+        "roles",
+        "profile",
+        "email"
+      ]
+    },
+    {
+      "clientId": "opencpo-backend",
+      "name": "OpenCPO Core CSMS Backend Service",
+      "enabled": true,
+      "publicClient": false,
+      "secret": "opencpo_kc_backend_secret_2026",
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": false,
+      "fullScopeAllowed": true,
+      "defaultClientScopes": [
+        "roles",
+        "profile",
+        "email"
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "daniel.a@mapletynetechnologies.com",
+      "email": "daniel.a@mapletynetechnologies.com",
+      "firstName": "Daniel",
+      "lastName": "Aroko",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "cpo-admin"
+      ]
+    },
+    {
+      "username": "daniel.a@otaskies.com",
+      "email": "daniel.a@otaskies.com",
+      "firstName": "Daniel",
+      "lastName": "Aroko",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "cpo-admin"
+      ]
+    },
+    {
+      "username": "operator@opencpo.com",
+      "email": "operator@opencpo.com",
+      "firstName": "Site",
+      "lastName": "Operator",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "operator123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "site-operator"
+      ]
+    },
+    {
+      "username": "driver@opencpo.com",
+      "email": "driver@opencpo.com",
+      "firstName": "EV",
+      "lastName": "Driver",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "driver123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": [
+        "driver"
+      ]
+    }
+  ]
+}

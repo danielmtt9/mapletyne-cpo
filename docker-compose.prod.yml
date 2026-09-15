@@ -1,0 +1,174 @@
+version: '3.8'
+
+# Global Logging Anchor to prevent host disk exhaustion (CIS Docker 5.12)
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: "5"
+
+# Global Security Hardening Anchor (CIS Docker 5.2, 5.3)
+x-security: &default-security
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+
+services:
+
+  # ── In-Memory State & Event Streams ───────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: mapletyne-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "512mb", "--maxmemory-policy", "allkeys-lru"]
+    user: "999:999" # Non-root redis user (CIS Docker 4.1)
+    read_only: true
+    <<: *default-security
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    volumes:
+      - redis-data:/data
+    networks:
+      - mapletyne-internal
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 64M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Core CSMS & Management Backend ───────────────────────────────────────
+  mapletyne-core:
+    image: ${IMAGE_REGISTRY:-ghcr.io}/${IMAGE_OWNER:-mapletyne}/mapletyne-core:${IMAGE_TAG:-latest}
+    container_name: mapletyne-core
+    restart: unless-stopped
+    stop_signal: SIGTERM
+    stop_grace_period: 30s # Drains OCPP WebSocket sessions gracefully
+    <<: *default-security
+    cap_add:
+      - NET_BIND_SERVICE
+    depends_on:
+      redis:
+        condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Resolves host DB on Linux Docker daemons
+    ports:
+      - "${OCPP_16_WS_PORT:-34100}:9100"     # OCPP 1.6J WebSocket
+      - "${OCPP_201_WS_PORT:-34201}:9201"    # OCPP 2.0.1 WebSocket
+      - "${MANAGEMENT_API_PORT:-34800}:8000" # Management REST API + Prometheus /metrics
+    environment:
+      PG_HOST: ${PG_HOST:-host.docker.internal}
+      PG_PORT: ${PG_PORT:-5432}
+      PG_NAME: ${POSTGRES_DB:-mapletyne_cpo}
+      PG_USER: ${POSTGRES_USER:-cpo_admin}
+      PG_PASSWORD: ${POSTGRES_PASSWORD:-CHANGE_IN_PRODUCTION}
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: ${SECRET_KEY:-mapletyne-production-secret-key-replace-me}
+      MANAGEMENT_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_IN_PRODUCTION}
+      PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
+      CORE_API_PUBLIC_URL: ${CORE_API_PUBLIC_URL:-https://api.mapletyne.com}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://admin.mapletyne.com,https://app.mapletyne.com,*}
+      LOG_FORMAT: json
+      LOG_LEVEL: info
+    volumes:
+      - backup-data:/app/backups
+    networks:
+      - mapletyne-internal
+      - mapletyne-public
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1536M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ── Operator Dashboard Web UI ───────────────────────────────────────────
+  mapletyne-admin:
+    image: ${IMAGE_REGISTRY:-ghcr.io}/${IMAGE_OWNER:-mapletyne}/mapletyne-admin:${IMAGE_TAG:-latest}
+    container_name: mapletyne-admin
+    restart: unless-stopped
+    <<: *default-security
+    ports:
+      - "${ADMIN_PORT:-34000}:8080"
+    environment:
+      OCPP_CORE_API: http://mapletyne-core:8000
+      CORE_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_IN_PRODUCTION}
+      PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
+    networks:
+      - mapletyne-internal
+      - mapletyne-public
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
+  # ── Driver Mobile PWA Application ───────────────────────────────────────
+  mapletyne-chargeapp:
+    image: ${IMAGE_REGISTRY:-ghcr.io}/${IMAGE_OWNER:-mapletyne}/mapletyne-chargeapp:${IMAGE_TAG:-latest}
+    container_name: mapletyne-chargeapp
+    restart: unless-stopped
+    <<: *default-security
+    depends_on:
+      mapletyne-core:
+        condition: service_healthy
+    ports:
+      - "${CHARGEAPP_PORT:-34003}:8003"
+    environment:
+      OCPP_CORE_API: http://mapletyne-core:8000
+      MANAGEMENT_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_IN_PRODUCTION}
+      PUBLIC_URL: ${CHARGEAPP_URL:-https://app.mapletyne.com}
+      APP_TITLE: "Mapletyne Charge"
+      SKIN: ${SKIN:-modern-emerald}
+      PLUGINS: receipts,account,favorites,history
+      DEFAULT_LANG: en
+    networks:
+      - mapletyne-internal
+      - mapletyne-public
+    logging: *default-logging
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+
+networks:
+  mapletyne-internal:
+    driver: bridge
+    internal: true
+  mapletyne-public:
+    driver: bridge
+
+volumes:
+  redis-data:
+  backup-data:

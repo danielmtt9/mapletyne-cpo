@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
+
+/* OpenCPO Charge App Skin — Production Theme */
+/* Generated via OpenCPO Branding Studio & Google Stitch Engine */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #151221;
+  --bg2: #0d2137;
+  --bg3: #132f4c;
+  --bg-deep: #151221;
+  --card: #201b33;
+  --card2: rgba(255,255,255,0.05);
+  --card-hover: #132f4c;
+  --border: #1e3a5f;
+  --border-strong: #1e3a5f;
+  --accent: #9C27B0;
+  --accent2: #9C27B0cc;
+  --on-accent: #ffffff;
+  --green: #22c55e;
+  --green-bright: #22c55e;
+  --red: #ff1744;
+  --yellow: #eab308;
+  --text: #f8f5fc;
+  --text1: #f8f5fc;
+  --text2: #b3a9c7;
+  --text3: #64748b;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --font-headline: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: Roboto Mono;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navigation */
+#app-nav {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+
+/* Cards and Surfaces */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* Primary & Secondary Buttons */
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 14px #9C27B040;
+}
+
+.btn-stop {
+  background: var(--red);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+/* Status Badges */
+.badge-available {
+  background: #22c55e20;
+  color: var(--green);
+  border: 1px solid #22c55e40;
+}
+.badge-charging {
+  background: #9C27B020;
+  color: var(--accent);
+  border: 1px solid #9C27B040;
+}
+.badge-faulted {
+  background: #ff174420;
+  color: var(--red);
+  border: 1px solid #ff174440;
+}

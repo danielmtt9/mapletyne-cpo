@@ -1,0 +1,25 @@
+{
+  "name": "Apex Hypercharge",
+  "version": "1.0",
+  "mode": "dark",
+  "colors": {
+    "primary": "#9C27B0",
+    "secondary": "#84BD00",
+    "background": "#151221",
+    "card": "#201b33",
+    "border": "#1a3a5c"
+  },
+  "fonts": {
+    "headline": [
+      "Space Grotesk",
+      "sans-serif"
+    ],
+    "body": [
+      "Inter",
+      "sans-serif"
+    ],
+    "mono": "'Roboto Mono', monospace"
+  },
+  "logo": "logo.svg",
+  "favicon": "favicon.svg"
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"on-secondary-container":"#e6ecff","surface-container-high":"#222a3d","status-online":"#10B981","secondary":"#adc6ff","outline-variant":"#3c4a42","secondary-fixed":"#d8e2ff","on-tertiary":"#650911","tertiary-fixed":"#ffdad7","on-primary-fixed":"#002113","surface-container-lowest":"#060e20","status-fault":"#F97316","on-tertiary-fixed-variant":"#842225","background":"#0b1326","surface-container-low":"#131b2e","on-error":"#690005","outline":"#86948a","on-secondary-fixed-variant":"#004395","on-background":"#dae2fd","tertiary-fixed-dim":"#ffb3af","surface-dim":"#0b1326","deep-charcoal":"#0F172A","surface-container-highest":"#2d3449","on-tertiary-container":"#711419","tertiary-container":"#fc7c78","secondary-container":"#0566d9","on-surface":"#dae2fd","inverse-surface":"#dae2fd","electric-blue":"#3B82F6","surface":"#0b1326","surface-container":"#171f33","tertiary":"#ffb3af","secondary-fixed-dim":"#adc6ff","surface-variant":"#2d3449","on-primary":"#003824","primary-fixed":"#6ffbbe","surface-elevation":"#1E293B","on-secondary-fixed":"#001a42","inverse-primary":"#006c49","error-container":"#93000a","on-primary-fixed-variant":"#005236","on-error-container":"#ffdad6","on-primary-container":"#00422b","surface-bright":"#31394d","inverse-on-surface":"#283044","primary":"#4edea3","on-tertiary-fixed":"#410005","status-offline":"#64748B","on-secondary":"#002e6a","on-surface-variant":"#bbcabf","surface-tint":"#4edea3","primary-fixed-dim":"#4edea3","primary-container":"#10b981","error":"#ffb4ab"},"borderRadius":{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},"spacing":{"margin-desktop":"32px","table-row-height":"40px","margin-mobile":"16px","container-max":"1440px","unit":"4px","gutter":"16px"},"fontFamily":{"body-md":["Geist"],"headline-md":["Hanken Grotesk"],"code":["Geist"],"data-table":["Geist"],"body-lg":["Geist"],"headline-xl":["Hanken Grotesk"],"display-lg":["Hanken Grotesk"],"label-caps":["Geist"]},"fontSize":{"body-md":["16px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-md":["24px",{"lineHeight":"1.2","fontWeight":"600"}],"code":["13px",{"lineHeight":"1.4","fontWeight":"400"}],"data-table":["14px",{"lineHeight":"1.2","letterSpacing":"0.01em","fontWeight":"500"}],"body-lg":["18px",{"lineHeight":"1.5","fontWeight":"400"}],"headline-xl":["32px",{"lineHeight":"1.2","fontWeight":"600"}],"display-lg":["48px",{"lineHeight":"1.1","letterSpacing":"-0.02em","fontWeight":"700"}],"label-caps":["12px",{"lineHeight":"1","letterSpacing":"0.05em","fontWeight":"700"}]}}}}</script><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&amp;family=Hanken+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/></head><body class="bg-background font-body-md text-on-surface"><aside class="fixed left-0 top-0 h-full w-64 bg-surface-container-low flex flex-col border-r border-outline-variant/10 z-50"><div class="p-6 mb-4 flex items-center gap-3"><div class="w-8 h-8 bg-primary rounded flex items-center justify-center"><span class="material-symbols-outlined text-on-primary">ev_station</span></div><span class="font-headline-md text-headline-md tracking-tight text-on-surface">OpenCPO</span></div><nav class="flex-1 px-3 space-y-1" data-active-classes="bg-secondary-container text-on-secondary-container"><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="dashboard" href="#"><span class="material-symbols-outlined">dashboard</span>Dashboard</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="chargers" href="#"><span class="material-symbols-outlined">charging_station</span>Chargers</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="sessions" href="#"><span class="material-symbols-outlined">receipt_long</span>Sessions</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="tariffs" href="#"><span class="material-symbols-outlined">payments</span>Tariffs</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="rfid-fleet" href="#"><span class="material-symbols-outlined">group</span>RFID &amp; Fleet</a><a aria-current="page" class="flex items-center gap-3 px-4 py-2.5 rounded transition-colors font-data-table bg-secondary-container text-on-secondary-container" data-path="energy" href="#"><span class="material-symbols-outlined">bolt</span>Energy</a><a class="flex items-center gap-3 px-4 py-2.5 rounded text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors font-data-table text-data-table" data-path="roaming" href="#"><span class="material-symbols-outlined">public</span>Roaming</a></nav><div class="mt-auto p-4 border-t border-outline-variant/10 space-y-4"><div class="flex items-center justify-between px-2 text-label-caps font-label-caps text-on-surface-variant"><span>LIVE FEED</span><div class="flex items-center gap-1.5"><div class="w-2 h-2 rounded-full bg-status-online animate-pulse"></div><span class="text-[10px] text-status-online uppercase">Active</span></div></div><div class="flex flex-col gap-1"><a class="flex items-center gap-3 px-4 py-2 rounded text-on-surface-variant hover:text-on-surface transition-colors font-data-table text-data-table" data-path="settings" href="#"><span class="material-symbols-outlined">settings</span>Settings</a><div class="flex items-center gap-3 px-4 py-2"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="overflow-hidden"><p class="text-data-table font-data-table text-on-surface truncate">Admin User</p><p class="text-[10px] text-on-surface-variant uppercase">Super Admin</p></div></div></div></div></aside><div class="pl-64 flex flex-col min-h-screen"><header class="fixed top-0 left-64 right-0 h-16 bg-background/80 backdrop-blur-xl border-b border-outline-variant/10 z-40 flex items-center justify-between px-margin-desktop"><div class="flex items-center gap-6 flex-1"><div class="flex items-center gap-2 px-3 py-1.5 bg-surface-container-high rounded text-on-surface-variant border border-outline-variant/20 cursor-pointer hover:border-primary/50 transition-all"><span class="material-symbols-outlined text-[18px]">location_on</span><span class="font-data-table text-data-table">All Sites</span><span class="material-symbols-outlined text-[18px]">expand_more</span></div><div class="flex-1 max-w-md relative"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span><input class="w-full bg-surface-container-low border border-outline-variant/20 rounded h-10 pl-10 pr-4 font-body-md text-on-surface focus:outline-none focus:border-electric-blue transition-all" placeholder="Search commands or data (Cmd+K)" type="text"/><span class="absolute right-3 top-1/2 -translate-y-1/2 bg-surface-container-highest px-1.5 py-0.5 rounded text-[10px] font-bold text-on-surface-variant">⌘K</span></div></div><div class="flex items-center gap-4"><div class="flex items-center gap-2 px-4 py-1.5 bg-surface-container rounded text-on-surface border border-outline-variant/10"><span class="material-symbols-outlined text-[18px]">calendar_today</span><span class="font-data-table text-data-table">Oct 24 - Oct 31</span></div><button class="p-2 text-on-surface-variant hover:text-on-surface transition-colors"><span class="material-symbols-outlined">notifications</span></button></div></header><main class="flex-1 pt-16 bg-background p-margin-desktop"><div class="flex flex-col w-full gap-gutter">
+<!-- Header & KPIs -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-margin-desktop">
+<div class="col-span-1 md:col-span-2 flex flex-col justify-end pb-2">
+<h1 class="text-display-lg font-display-lg text-on-surface mb-2">Tariffs &amp; Pricing</h1>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-lg">Manage dynamic pricing models, base tariffs, and customer-specific markups to optimize network revenue.</p>
+</div>
+<!-- Active Tariffs KPI -->
+<div class="bg-surface-container-low rounded-lg p-6 relative overflow-hidden group hover:bg-surface-container transition-colors duration-300">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-widest">Active Tariffs</span>
+<span class="material-symbols-outlined text-primary text-[20px]">assignment</span>
+</div>
+<div class="flex items-baseline gap-2 relative z-10">
+<span class="text-display-lg font-display-lg text-on-surface">14</span>
+<span class="text-body-md font-body-md text-status-online flex items-center"><span class="material-symbols-outlined text-[14px]">arrow_upward</span> 2</span>
+</div>
+</div>
+<!-- Avg Margin KPI -->
+<div class="bg-surface-container-low rounded-lg p-6 relative overflow-hidden group hover:bg-surface-container transition-colors duration-300">
+<div class="absolute -right-4 -top-4 w-24 h-24 bg-secondary/5 rounded-full blur-xl group-hover:bg-secondary/10 transition-colors"></div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<span class="text-label-caps font-label-caps text-on-surface-variant uppercase tracking-widest">Avg. Margin</span>
+<span class="material-symbols-outlined text-secondary text-[20px]">percent</span>
+</div>
+<div class="flex items-baseline gap-2 relative z-10">
+<span class="text-display-lg font-display-lg text-on-surface">18.5</span>
+<span class="text-body-md font-body-md text-on-surface-variant">%</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mt-4 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</section>
+<!-- Live Spot Price & Dynamic Tiers Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-margin-desktop">
+<!-- Spot Price Indicator -->
+<div class="lg:col-span-4 bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 flex flex-col justify-between" id="spot-price-container">
+<div>
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-status-online animate-pulse"></div>
+<h2 class="text-label-caps font-label-caps text-on-surface-variant uppercase">Live Spot Price (EPEX)</h2>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">show_chart</span>
+</div>
+<div class="flex items-end gap-3 mb-2">
+<span class="text-display-lg font-display-lg text-primary" id="current-spot-price">0.142</span>
+<span class="text-headline-md font-headline-md text-on-surface-variant mb-1">€ / kWh</span>
+</div>
+<div class="flex items-center gap-2 text-status-online text-code font-code">
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span> 0.015 € vs 1h ago
+        </div>
+</div>
+<!-- Mini Sparkline for Spot Price -->
+<div class="h-16 mt-6 w-full relative">
+<svg class="w-full h-full overflow-visible preserve-3d" preserveaspectratio="none" viewbox="0 0 200 40">
+<defs>
+<lineargradient id="spot-gradient" x1="0" x2="0" y1="0" y2="1">
+<stop class="text-primary" offset="0%" stop-color="currentColor" stop-opacity="0.2"></stop>
+<stop class="text-primary" offset="100%" stop-color="currentColor" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 30 C 20 30, 40 10, 60 15 C 80 20, 100 5, 120 10 C 140 15, 160 35, 180 25 L 200 20 L 200 40 L 0 40 Z" fill="url(#spot-gradient)"></path>
+<path class="text-primary" d="M0 30 C 20 30, 40 10, 60 15 C 80 20, 100 5, 120 10 C 140 15, 160 35, 180 25 L 200 20" fill="none" stroke="currentColor" stroke-width="2" vector-effect="non-scaling-stroke"></path>
+<circle class="text-primary" cx="200" cy="20" fill="currentColor" r="3"></circle>
+</svg>
+</div>
+</div>
+<!-- Dynamic Pricing Tiers -->
+<div class="lg:col-span-8 bg-surface-container rounded-lg p-6 border border-outline-variant/10">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-headline-md font-headline-md text-on-surface">Pricing Config &amp; Tiers</h2>
+<button class="px-4 py-2 bg-surface-container-highest hover:bg-surface-bright text-on-surface text-code font-code rounded transition-colors flex items-center gap-2 border border-outline-variant/20">
+<span class="material-symbols-outlined text-[16px]">settings</span> Adjust Strategy
+        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="pricing-tiers-grid">
+<!-- Tier Cards (Populated by JS mockup) -->
+<div class="bg-surface-container-low p-5 rounded border border-outline-variant/20 flex flex-col h-full group hover:border-primary/30 transition-colors">
+<div class="flex justify-between items-start mb-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[16px]">public</span>
+</div>
+<span class="px-2 py-1 bg-surface-container-highest rounded text-label-caps font-label-caps text-on-surface-variant">DEFAULT</span>
+</div>
+<h3 class="text-body-lg font-headline-md text-on-surface mb-1">Public Ad-hoc</h3>
+<p class="text-code font-code text-on-surface-variant mb-4 flex-1">Standard roaming and unregistered users.</p>
+<div class="flex justify-between items-end mt-auto pt-4 border-t border-outline-variant/10">
+<span class="text-label-caps font-label-caps text-on-surface-variant">MARKUP</span>
+<span class="text-body-lg font-headline-md text-on-surface">+25%</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded border border-outline-variant/20 flex flex-col h-full group hover:border-electric-blue/30 transition-colors">
+<div class="flex justify-between items-start mb-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[16px]">local_shipping</span>
+</div>
+</div>
+<h3 class="text-body-lg font-headline-md text-on-surface mb-1">Corporate Fleet</h3>
+<p class="text-code font-code text-on-surface-variant mb-4 flex-1">Contracted B2B partners. High volume.</p>
+<div class="flex justify-between items-end mt-auto pt-4 border-t border-outline-variant/10">
+<span class="text-label-caps font-label-caps text-on-surface-variant">MARKUP</span>
+<span class="text-body-lg font-headline-md text-on-surface">+10%</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-5 rounded border border-outline-variant/20 flex flex-col h-full group hover:border-tertiary/30 transition-colors">
+<div class="flex justify-between items-start mb-3">
+<div class="w-8 h-8 rounded bg-surface-container-highest flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined text-[16px]">star</span>
+</div>
+</div>
+<h3 class="text-body-lg font-headline-md text-on-surface mb-1">VIP Subscribe</h3>
+<p class="text-code font-code text-on-surface-variant mb-4 flex-1">Monthly paying members. Priority charging.</p>
+<div class="flex justify-between items-end mt-auto pt-4 border-t border-outline-variant/10">
+<span class="text-label-caps font-label-caps text-on-surface-variant">MARKUP</span>
+<span class="text-body-lg font-headline-md text-on-surface">+5%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tariffs Data Table -->
+<section class="bg-surface-container-low rounded-lg border border-outline-variant/10 flex flex-col flex-1 min-h-[500px]">
+<!-- Table Header Toolbar -->
+<div class="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-outline-variant/10">
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface">Tariff Master List</h2>
+<p class="text-data-table font-data-table text-on-surface-variant mt-1">Manage base rates applied to charging sessions.</p>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<div class="relative flex-1 sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/20 rounded h-9 pl-9 pr-3 text-data-table font-data-table text-on-surface focus:outline-none focus:border-primary transition-colors" placeholder="Search tariffs..." type="text"/>
+</div>
+<button class="h-9 px-4 bg-primary hover:bg-primary-fixed-dim text-on-primary font-data-table text-data-table rounded flex items-center gap-2 transition-colors whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">add</span> Create Tariff
+        </button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-x-auto w-full">
+<table class="w-full text-left border-collapse min-w-[900px]">
+<thead>
+<tr class="bg-surface-container-lowest border-b border-outline-variant/10">
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider w-1/4">Name / ID</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider w-24">Curr.</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider text-right">Energy / kWh</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider text-right">Time / min</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider text-right">Idle / min</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider text-right">Flat Fee</th>
+<th class="px-6 h-[40px] text-label-caps font-label-caps text-on-surface-variant font-normal uppercase tracking-wider text-right w-24">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5 bg-surface-container-low" id="tariff-table-body">
+<!-- Populated by JS -->
+</tbody>
+</table>
+</div>
+<!-- Table Footer / Pagination Placeholder -->
+<div class="mt-auto p-4 border-t border-outline-variant/10 flex justify-between items-center bg-surface-container-lowest rounded-b-lg">
+<span class="text-code font-code text-on-surface-variant">Showing 1-10 of 24 tariffs</span>
+<div class="flex gap-1">
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-surface-container-high text-on-surface transition-colors">1</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">2</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">3</button>
+<button class="w-8 h-8 rounded flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<script>
+  // Mock Data & Interaction Logic
+  document.addEventListener('DOMContentLoaded', () => {
+    
+    // 1. Render Table Data
+    const mockTariffs = [
+      { id: "TRF-A109", name: "Standard AC Public", curr: "EUR", energy: 0.45, time: 0.00, idle: 0.05, flat: 0.00 },
+      { id: "TRF-D204", name: "Fast DC 50kW+", curr: "EUR", energy: 0.65, time: 0.00, idle: 0.10, flat: 0.50 },
+      { id: "TRF-U991", name: "Ultra-Fast 150kW+", curr: "EUR", energy: 0.79, time: 0.00, idle: 0.20, flat: 1.00 },
+      { id: "TRF-N002", name: "Nightly AC Low", curr: "EUR", energy: 0.35, time: 0.00, idle: 0.00, flat: 0.00 },
+      { id: "TRF-F554", name: "Fleet Partner Basic", curr: "EUR", energy: 0.40, time: 0.00, idle: 0.05, flat: 0.00 },
+      { id: "TRF-T111", name: "Time Based Urban", curr: "EUR", energy: 0.20, time: 0.15, idle: 0.15, flat: 0.00 },
+      { id: "TRF-S888", name: "Subscription Base", curr: "EUR", energy: 0.39, time: 0.00, idle: 0.05, flat: 0.00 },
+    ];
+
+    const tbody = document.getElementById('tariff-table-body');
+    let rowsHtml = '';
+
+    mockTariffs.forEach((t, i) => {
+      // Alternating row background for readability in high density
+      const bgClass = i % 2 === 0 ? 'bg-transparent' : 'bg-surface-container/30';
+      
+      rowsHtml += `
+        <tr class="${bgClass} hover:bg-surface-container-high transition-colors group">
+          <td class="px-6 h-[40px] py-1 whitespace-nowrap">
+            <div class="flex flex-col justify-center">
+              <span class="text-data-table font-data-table text-on-surface leading-tight">${t.name}</span>
+              <span class="text-[11px] font-code text-on-surface-variant leading-tight">${t.id}</span>
+            </div>
+          </td>
+          <td class="px-6 h-[40px] whitespace-nowrap">
+            <span class="px-2 py-0.5 bg-surface-container-highest rounded text-[10px] font-code text-on-surface-variant">${t.curr}</span>
+          </td>
+          <td class="px-6 h-[40px] whitespace-nowrap text-right">
+            <span class="text-code font-code text-on-surface">${t.energy.toFixed(2)}</span>
+          </td>
+          <td class="px-6 h-[40px] whitespace-nowrap text-right">
+            <span class="text-code font-code ${t.time > 0 ? 'text-on-surface' : 'text-on-surface-variant/40'}">${t.time.toFixed(2)}</span>
+          </td>
+           <td class="px-6 h-[40px] whitespace-nowrap text-right">
+            <span class="text-code font-code ${t.idle > 0 ? 'text-status-fault' : 'text-on-surface-variant/40'}">${t.idle.toFixed(2)}</span>
+          </td>
+          <td class="px-6 h-[40px] whitespace-nowrap text-right">
+            <span class="text-code font-code ${t.flat > 0 ? 'text-on-surface' : 'text-on-surface-variant/40'}">${t.flat.toFixed(2)}</span>
+          </td>
+          <td class="px-6 h-[40px] whitespace-nowrap text-right">
+             <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+               <button class="p-1 text-on-surface-variant hover:text-electric-blue transition-colors" title="Edit">
+                 <span class="material-symbols-outlined text-[18px]">edit</span>
+               </button>
+               <button class="p-1 text-on-surface-variant hover:text-error transition-colors" title="Delete">
+                 <span class="material-symbols-outlined text-[18px]">delete</span>
+               </button>
+             </div>
+          </td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = rowsHtml;
+
+    // 2. Simulate Live Spot Price fluctuation
+    const spotPriceEl = document.getElementById('current-spot-price');
+    let currentPrice = 0.142;
+    
+    setInterval(() => {
+      // Fluctuate slightly up or down
+      const change = (Math.random() - 0.5) * 0.002;
+      currentPrice = Math.max(0.05, currentPrice + change);
+      
+      // Update DOM
+      spotPriceEl.textContent = currentPrice.toFixed(3);
+      
+      // Subtle color flash to indicate update
+      spotPriceEl.classList.add('text-electric-blue');
+      setTimeout(() => {
+        spotPriceEl.classList.remove('text-electric-blue');
+      }, 500);
+      
+    }, 4500);
+  });
+</script></main></div></body></html>

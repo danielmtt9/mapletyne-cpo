@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #080d1a;
+    --on-background: #f8fafc;
+    --surface-container-lowest: #040814;
+    --surface-container-low: #0c1427;
+    --surface-container: #111c35;
+    --surface-container-high: #192644;
+    --surface-container-highest: #233256;
+    --on-surface: #f8fafc;
+    --on-surface-variant: #cbd5e1;
+    --outline: #94a3b8;
+    --outline-variant: #475569;
+    --primary: #4edea3;
+    --primary-container: #10b981;
+    --on-primary: #003824;
+    --secondary: #3b82f6;
+    --secondary-container: #0566d9;
+    --on-secondary-container: #e6ecff;
+    --status-online: #10b981;
+    --status-fault: #f97316;
+    --status-offline: #64748b;
+    --electric-blue: #3b82f6;
+  }
+
+  * {
+    border-color: rgba(255, 255, 255, 0.12);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--on-surface);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Geist", "SF Pro Text", sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Accessible Focus Rings conforming to WCAG 2.2 */
+  :focus-visible {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
+  }
+
+  /* Universal high-contrast inputs */
+  input, select, textarea {
+    color: #f8fafc;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    color: #94a3b8;
+    opacity: 1;
+  }
+}
+
+/* Apple Materials & Glassmorphic Utilities */
+@layer utilities {
+  .apple-glass {
+    background-color: rgba(12, 20, 39, 0.90);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.35);
+  }
+
+  .material-sidebar {
+    background-color: rgba(8, 13, 26, 0.95);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-right: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .material-titlebar {
+    background-color: rgba(8, 13, 26, 0.90);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  .material-card {
+    background-color: rgba(17, 28, 53, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.35);
+    border-radius: 16px;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .material-card:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.45);
+  }
+
+  .material-sheet {
+    background-color: rgba(12, 20, 39, 0.96);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65);
+  }
+}
+
+/* Tabular numbers for telemetry data */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom Sleek Apple-style Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38);
+}
+

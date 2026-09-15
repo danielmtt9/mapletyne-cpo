@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family='Roboto+Mono',+monospace:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap');
+
+/* OpenCPO Charge App Skin — Production Theme */
+/* Generated via OpenCPO Branding Studio & Google Stitch Engine */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #0b1326;
+  --bg2: #171f33;
+  --bg3: #222a3d;
+  --bg-deep: #0b1326;
+  --card: #2d3449;
+  --card2: rgba(255,255,255,0.05);
+  --card-hover: #222a3d;
+  --border: #3d4a3b;
+  --border-strong: #3d4a3b;
+  --accent: #48e260;
+  --accent2: #48e260cc;
+  --on-accent: #ffffff;
+  --green: #c8c6c5;
+  --green-bright: #c8c6c5;
+  --red: #ffb4ab;
+  --yellow: #eab308;
+  --text: #dae2fd;
+  --text1: #dae2fd;
+  --text2: #bccbb6;
+  --text3: #64748b;
+  --radius: 16px;
+  --radius-sm: 8px;
+  --font-headline: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navigation */
+#app-nav {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+}
+
+/* Cards and Surfaces */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* Primary & Secondary Buttons */
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+}
+.btn-primary:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 14px #48e26040;
+}
+
+.btn-stop {
+  background: var(--red);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+/* Status Badges */
+.badge-available {
+  background: #c8c6c520;
+  color: var(--green);
+  border: 1px solid #c8c6c540;
+}
+.badge-charging {
+  background: #48e26020;
+  color: var(--accent);
+  border: 1px solid #48e26040;
+}
+.badge-faulted {
+  background: #ffb4ab20;
+  color: var(--red);
+  border: 1px solid #ffb4ab40;
+}

@@ -1,0 +1,504 @@
+{% extends "base.html" %}
+{% block title %}{{ t.register | default('Create Driver Account') }} — {{ app_title }}{% endblock %}
+{% block content %}
+<div class="screen active" style="background: radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%); min-height: 100vh; display: flex; flex-direction: column;">
+  <!-- Header Bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
+    <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span>{{ t.back | default('Back') }}</span>
+    </a>
+    <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
+      {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
+        <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:24px; max-width:140px; object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+      {% else %}
+        <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px; max-width:140px; object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
+      {% endif %}
+    </a>
+    <div style="width:50px;"></div>
+  </div>
+
+  <!-- Main Registration Container -->
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px 20px 60px; max-width:460px; margin:0 auto; width:100%; box-sizing:border-box;">
+    
+    <!-- Step 1: Form Card -->
+    <div id="step-1-card">
+      <div style="text-align:center; margin-bottom:24px;">
+        <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:16px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#48e260; margin-bottom:14px; box-shadow:0 8px 24px rgba(72, 226, 96, 0.15);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="8.5" cy="7" r="4"></circle>
+            <line x1="20" y1="8" x2="20" y2="14"></line>
+            <line x1="23" y1="11" x2="17" y2="11"></line>
+          </svg>
+        </div>
+        <h1 style="font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#ffffff; margin:0 0 6px 0; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">
+          {{ t.create_account | default('Create Driver Account') }}
+        </h1>
+        <p style="font-size:14px; color:#94a3b8; margin:0; line-height:1.4;">
+          {{ t.register_subtitle | default('Track charging sessions, download VAT invoices, and start remote charging.') }}
+        </p>
+      </div>
+
+      <!-- Form Box -->
+      <div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:24px; padding:24px; box-shadow:0 20px 40px rgba(0, 0, 0, 0.45);">
+        
+        <div id="reg-error" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.3); color:#fca5a5; font-size:13px; line-height:1.4; align-items:center; gap:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="reg-error-text"></span>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label for="reg-name" style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">
+            {{ t.name | default('Full Name') }}
+          </label>
+          <input 
+            id="reg-name" 
+            type="text" 
+            placeholder="Jane Doe" 
+            autocomplete="name" 
+            style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 14px; outline:none; transition:all 0.2s;"
+            onfocus="this.style.borderColor='#48e260'; this.style.boxShadow='0 0 0 3px rgba(72, 226, 96, 0.2)';"
+            onblur="this.style.borderColor='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='none';"
+          />
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label for="reg-email" style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">
+            {{ t.email | default('Email Address') }} <span style="color:#48e260;">*</span>
+          </label>
+          <input 
+            id="reg-email" 
+            type="email" 
+            inputmode="email" 
+            placeholder="driver@example.com" 
+            autocomplete="email" 
+            style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 14px; outline:none; transition:all 0.2s;"
+            onfocus="this.style.borderColor='#48e260'; this.style.boxShadow='0 0 0 3px rgba(72, 226, 96, 0.2)';"
+            onblur="this.style.borderColor='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='none';"
+          />
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label for="reg-phone" style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">
+            {{ t.phone | default('Phone Number') }} <span style="color:#64748b; font-weight:400;">({{ t.optional | default('Optional') }})</span>
+          </label>
+          <input 
+            id="reg-phone" 
+            type="tel" 
+            inputmode="tel" 
+            placeholder="+44 7700 900077" 
+            autocomplete="tel" 
+            style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 14px; outline:none; transition:all 0.2s;"
+            onfocus="this.style.borderColor='#48e260'; this.style.boxShadow='0 0 0 3px rgba(72, 226, 96, 0.2)';"
+            onblur="this.style.borderColor='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='none';"
+          />
+        </div>
+
+        <div style="margin-bottom:24px;">
+          <label for="reg-password" style="display:block; font-size:13px; font-weight:600; color:#cbd5e1; margin-bottom:6px;">
+            {{ t.password | default('Create Password') }} <span style="color:#48e260;">*</span>
+          </label>
+          <div style="position:relative;">
+            <input 
+              id="reg-password" 
+              type="password" 
+              placeholder="Minimum 6 characters" 
+              autocomplete="new-password" 
+              style="width:100%; box-sizing:border-box; height:46px; border-radius:12px; background:rgba(10, 19, 30, 0.6); border:1px solid rgba(255, 255, 255, 0.15); color:#ffffff; font-size:15px; padding:0 40px 0 14px; outline:none; transition:all 0.2s;"
+              onfocus="this.style.borderColor='#48e260'; this.style.boxShadow='0 0 0 3px rgba(72, 226, 96, 0.2)';"
+              onblur="this.style.borderColor='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='none';"
+            />
+            <button 
+              type="button" 
+              onclick="toggleRegPassword()" 
+              style="position:absolute; right:10px; top:50%; transform:translateY(-50%); background:none; border:none; color:#94a3b8; cursor:pointer; padding:4px;">
+              <svg id="reg-eye" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <button 
+          id="reg-init-btn" 
+          onclick="initiateRegistration()" 
+          style="width:100%; height:50px; border-radius:14px; background:linear-gradient(135deg, #48e260 0%, #22c55e 100%); border:none; color:#0b1a10; font-size:16px; font-weight:700; letter-spacing:0.3px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 8px 20px rgba(72, 226, 96, 0.3); transition:all 0.2s ease;">
+          <span>{{ t.send_verification_code | default('Continue to Verification') }}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+
+      </div>
+
+      <!-- Sign In Link -->
+      <div style="margin-top:24px; text-align:center;">
+        <a href="/app/account/login" style="color:#94a3b8; text-decoration:none; font-size:14px;">
+          {{ t.already_account | default('Already have an account?') }} 
+          <strong style="color:#48e260; font-weight:600; margin-left:4px;">{{ t.login | default('Sign In') }}</strong>
+        </a>
+      </div>
+    </div>
+
+
+    <!-- Step 2: 6-Digit OTP Verification Card -->
+    <div id="step-2-card" style="display:none;">
+      <div style="text-align:center; margin-bottom:24px;">
+        <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:16px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#48e260; margin-bottom:14px; box-shadow:0 8px 24px rgba(72, 226, 96, 0.15);">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+          </svg>
+        </div>
+        <h1 style="font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#ffffff; margin:0 0 6px 0; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">
+          {{ t.verify_email | default('Verify Your Email') }}
+        </h1>
+        <p style="font-size:14px; color:#94a3b8; margin:0; line-height:1.4;">
+          We sent a 6-digit verification code to <br/><strong id="display-target-email" style="color:#ffffff;"></strong>
+        </p>
+      </div>
+
+      <div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:24px; padding:24px; box-shadow:0 20px 40px rgba(0, 0, 0, 0.45);">
+        
+        <div id="otp-error" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.3); color:#fca5a5; font-size:13px; line-height:1.4; align-items:center; gap:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span id="otp-error-text"></span>
+        </div>
+
+        <div id="otp-success" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#86efac; font-size:13px; line-height:1.4; align-items:center; gap:8px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="otp-success-text"></span>
+        </div>
+
+        <!-- 6 OTP Digit Inputs -->
+        <div style="display:flex; justify-content:space-between; gap:8px; margin-bottom:20px;">
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" autofocus autocomplete="one-time-code" />
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+          <input class="otp-box" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" />
+        </div>
+
+        <button 
+          id="verify-btn" 
+          onclick="verifyOtp()" 
+          style="width:100%; height:50px; border-radius:14px; background:linear-gradient(135deg, #48e260 0%, #22c55e 100%); border:none; color:#0b1a10; font-size:16px; font-weight:700; letter-spacing:0.3px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 8px 20px rgba(72, 226, 96, 0.3); transition:all 0.2s ease;">
+          <span>{{ t.verify_and_activate | default('Verify & Complete Registration') }}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </button>
+
+        <div style="margin-top:20px; display:flex; align-items:center; justify-content:space-between; font-size:13px;">
+          <span id="timer-display" style="color:#94a3b8; font-variant-numeric:tabular-nums;">Expires in: <strong style="color:#ffffff;">10:00</strong></span>
+          <button id="resend-btn" onclick="resendOtp()" style="background:none; border:none; color:#48e260; font-weight:600; cursor:pointer; padding:4px 0; font-size:13px;" disabled>
+            Resend Code
+          </button>
+        </div>
+
+        <div style="margin-top:16px; border-top:1px solid rgba(255,255,255,0.08); padding-top:16px; text-align:center;">
+          <button onclick="backToStep1()" style="background:none; border:none; color:#94a3b8; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:4px;">
+            <span>← Edit details / change email</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+.otp-box {
+  width: 52px;
+  height: 58px;
+  border-radius: 14px;
+  background: rgba(10, 19, 30, 0.8);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, monospace;
+  outline: none;
+  transition: all 0.2s ease;
+}
+.otp-box:focus {
+  border-color: #48e260;
+  box-shadow: 0 0 0 3px rgba(72, 226, 96, 0.25);
+  background: rgba(10, 19, 30, 0.95);
+}
+@media (max-width: 380px) {
+  .otp-box {
+    width: 44px;
+    height: 50px;
+    font-size: 20px;
+  }
+}
+</style>
+
+<script>
+var I18N = {{ t | tojson if t is defined else '{}' }};
+var countdownTimer = null;
+var resendCooldown = 60;
+var resendInterval = null;
+var registeredEmail = "";
+
+function toggleRegPassword() {
+  var pw = document.getElementById('reg-password');
+  var eye = document.getElementById('reg-eye');
+  if (pw.type === 'password') {
+    pw.type = 'text';
+    eye.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+  } else {
+    pw.type = 'password';
+    eye.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
+
+// ── Setup 6-Box OTP Interactivity ──
+var otpBoxes = document.querySelectorAll('.otp-box');
+otpBoxes.forEach(function(box, idx) {
+  box.addEventListener('input', function(e) {
+    var val = box.value.replace(/[^0-9]/g, '');
+    box.value = val;
+    if (val && idx < otpBoxes.length - 1) {
+      otpBoxes[idx + 1].focus();
+    }
+    checkFullOtp();
+  });
+
+  box.addEventListener('keydown', function(e) {
+    if (e.key === 'Backspace' && !box.value && idx > 0) {
+      otpBoxes[idx - 1].focus();
+    } else if (e.key === 'Enter') {
+      verifyOtp();
+    }
+  });
+
+  box.addEventListener('paste', function(e) {
+    e.preventDefault();
+    var pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '').slice(0, 6);
+    if (!pasted) return;
+    for (var i = 0; i < pasted.length; i++) {
+      if (otpBoxes[i]) otpBoxes[i].value = pasted[i];
+    }
+    if (pasted.length < 6 && otpBoxes[pasted.length]) {
+      otpBoxes[pasted.length].focus();
+    } else if (otpBoxes[5]) {
+      otpBoxes[5].focus();
+    }
+    checkFullOtp();
+  });
+});
+
+function getOtpValue() {
+  var code = '';
+  otpBoxes.forEach(function(b) { code += b.value.trim(); });
+  return code;
+}
+
+function checkFullOtp() {
+  if (getOtpValue().length === 6) {
+    verifyOtp();
+  }
+}
+
+function backToStep1() {
+  clearInterval(countdownTimer);
+  clearInterval(resendInterval);
+  document.getElementById('step-2-card').style.display = 'none';
+  document.getElementById('step-1-card').style.display = 'block';
+}
+
+// ── Step 1: Initiate ──
+async function initiateRegistration() {
+  var name = document.getElementById('reg-name').value.trim();
+  var email = document.getElementById('reg-email').value.trim();
+  var phone = document.getElementById('reg-phone').value.trim();
+  var pw = document.getElementById('reg-password').value;
+
+  var err = document.getElementById('reg-error');
+  var errText = document.getElementById('reg-error-text');
+  var btn = document.getElementById('reg-init-btn');
+
+  err.style.display = 'none';
+
+  if (!email || !email.includes('@')) {
+    errText.textContent = I18N.invalid_email || 'Please enter a valid email address.';
+    err.style.display = 'flex';
+    document.getElementById('reg-email').focus();
+    return;
+  }
+  if (!pw || pw.length < 6) {
+    errText.textContent = I18N.password_too_short || 'Password must be at least 6 characters.';
+    err.style.display = 'flex';
+    document.getElementById('reg-password').focus();
+    return;
+  }
+
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  btn.innerHTML = '<span>Sending Code…</span>';
+
+  try {
+    var r = await fetch('/app/api/account/register/initiate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name || null,
+        email: email,
+        phone: phone || null,
+        password: pw,
+        language: 'en'
+      })
+    });
+    var data = await r.json();
+
+    if (!r.ok || data.error) {
+      errText.textContent = data.error || data.detail || (I18N.register_failed || 'Registration initiation failed.');
+      err.style.display = 'flex';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = '<span>' + (I18N.send_verification_code || 'Continue to Verification') + '</span>';
+      return;
+    }
+
+    // Move to Step 2
+    registeredEmail = email;
+    document.getElementById('display-target-email').textContent = email;
+    document.getElementById('step-1-card').style.display = 'none';
+    document.getElementById('step-2-card').style.display = 'block';
+    
+    // Clear boxes
+    otpBoxes.forEach(function(b) { b.value = ''; });
+    otpBoxes[0].focus();
+
+    startOtpCountdown(600);
+    startResendCooldown(45);
+
+  } catch(e) {
+    errText.textContent = I18N.connection_error || 'Network error. Please try again.';
+    err.style.display = 'flex';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.innerHTML = '<span>' + (I18N.send_verification_code || 'Continue to Verification') + '</span>';
+  }
+}
+
+function startOtpCountdown(seconds) {
+  clearInterval(countdownTimer);
+  var timerEl = document.getElementById('timer-display');
+  var remaining = seconds;
+  countdownTimer = setInterval(function() {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(countdownTimer);
+      timerEl.innerHTML = '<span style="color:#ef4444;">Code expired. Please request a new code.</span>';
+      return;
+    }
+    var m = Math.floor(remaining / 60);
+    var s = remaining % 60;
+    timerEl.innerHTML = 'Expires in: <strong style="color:#ffffff;">' + (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s + '</strong>';
+  }, 1000);
+}
+
+function startResendCooldown(seconds) {
+  clearInterval(resendInterval);
+  var btn = document.getElementById('resend-btn');
+  btn.disabled = true;
+  var count = seconds;
+  btn.textContent = 'Resend in ' + count + 's';
+  btn.style.opacity = '0.5';
+
+  resendInterval = setInterval(function() {
+    count--;
+    if (count <= 0) {
+      clearInterval(resendInterval);
+      btn.disabled = false;
+      btn.textContent = 'Resend Code';
+      btn.style.opacity = '1';
+    } else {
+      btn.textContent = 'Resend in ' + count + 's';
+    }
+  }, 1000);
+}
+
+async function resendOtp() {
+  var err = document.getElementById('otp-error');
+  var success = document.getElementById('otp-success');
+  var successText = document.getElementById('otp-success-text');
+  err.style.display = 'none';
+  success.style.display = 'none';
+
+  try {
+    var r = await fetch('/app/api/account/register/resend-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: registeredEmail })
+    });
+    var data = await r.json();
+    if (!r.ok || data.error) {
+      document.getElementById('otp-error-text').textContent = data.error || 'Could not resend code.';
+      err.style.display = 'flex';
+      return;
+    }
+    successText.textContent = 'A new 6-digit code has been emailed.';
+    success.style.display = 'flex';
+    startOtpCountdown(600);
+    startResendCooldown(60);
+  } catch(e) {
+    document.getElementById('otp-error-text').textContent = 'Network error while resending.';
+    err.style.display = 'flex';
+  }
+}
+
+// ── Step 2: Verify & Activate ──
+async function verifyOtp() {
+  var code = getOtpValue();
+  var err = document.getElementById('otp-error');
+  var errText = document.getElementById('otp-error-text');
+  var btn = document.getElementById('verify-btn');
+
+  err.style.display = 'none';
+
+  if (code.length !== 6) {
+    errText.textContent = 'Please enter all 6 digits of your verification code.';
+    err.style.display = 'flex';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.style.opacity = '0.7';
+  btn.innerHTML = '<span>Verifying & Provisioning Keycloak…</span>';
+
+  try {
+    var r = await fetch('/app/api/account/register/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: registeredEmail, code: code })
+    });
+    var data = await r.json();
+
+    if (!r.ok || data.error) {
+      errText.textContent = data.error || data.detail || 'Verification code is invalid or expired.';
+      err.style.display = 'flex';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.innerHTML = '<span>' + (I18N.verify_and_activate || 'Verify & Complete Registration') + '</span>';
+      return;
+    }
+
+    // Success!
+    btn.style.background = '#48e260';
+    btn.innerHTML = '<span>✓ Account Created & Authenticated</span>';
+    setTimeout(function() {
+      window.location.href = '/app/account/profile';
+    }, 500);
+
+  } catch(e) {
+    errText.textContent = I18N.connection_error || 'Network error. Please try again.';
+    err.style.display = 'flex';
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.innerHTML = '<span>' + (I18N.verify_and_activate || 'Verify & Complete Registration') + '</span>';
+  }
+}
+</script>
+{% endblock %}

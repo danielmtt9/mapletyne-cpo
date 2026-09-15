@@ -1,0 +1,90 @@
+name: Build & Publish Mapletyne Containers to GHCR
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  # Converts repository owner to lowercase for valid docker image naming
+  IMAGE_OWNER: ${{ github.repository_owner }}
+
+jobs:
+  build-and-push:
+    name: Build & Push ${{ matrix.service.name }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        service:
+          - name: mapletyne-admin
+            context: ./mtt-admin
+            image: mapletyne-admin
+          - name: mapletyne-chargeapp
+            context: ./mtt-charge-app
+            image: mapletyne-chargeapp
+          - name: mapletyne-core
+            context: ./opencpo-core
+            image: mapletyne-core
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure opencpo-core is present
+        if: matrix.service.name == 'mapletyne-core'
+        run: |
+          if [ ! -d "./opencpo-core" ] || [ ! -f "./opencpo-core/Dockerfile" ]; then
+            git clone https://github.com/opencpo/opencpo-core.git opencpo-core
+          fi
+
+      - name: Set up QEMU (Multi-architecture support)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sanitize image name to lowercase
+        id: image-name
+        run: |
+          OWNER_LOWER=$(echo "${{ env.IMAGE_OWNER }}" | tr '[:upper:]' '[:lower:]')
+          echo "image=${{ env.REGISTRY }}/${OWNER_LOWER}/${{ matrix.service.image }}" >> $GITHUB_OUTPUT
+
+      - name: Extract Docker metadata & tags
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ steps.image-name.outputs.image }}
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha,format=short
+
+      - name: Build and push container image
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ matrix.service.context }}
+          file: ${{ matrix.service.context }}/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

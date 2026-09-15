@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+{% block title %}{{ t.charging | default('Charging') }} — {{ display_name }}{% endblock %}
+{% block content %}
+<div class="screen active" style="background:radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%);min-height:100vh;">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(16,28,51,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:800;">
+    <a href="/app/" style="color:#94a3b8;text-decoration:none;font-size:18px;display:inline-flex;align-items:center;gap:6px;font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span>{{ t.back | default('Back') }}</span>
+    </a>
+    <a href="/app/" style="display:flex;align-items:center;text-decoration:none;">
+      {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
+        <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+      {% else %}
+        <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
+      {% endif %}
+    </a>
+    <div style="width:50px;"></div>
+  </div>
+
+  <div class="page-content">
+    <div class="charger-card">
+      <div class="charger-location" style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;min-width:0;">
+          <span class="location-icon">📍</span>
+          <span class="location-name">{{ display_name }}</span>
+        </div>
+        {% if flags.get('favorites') %}
+        <button
+          id="fav-btn"
+          class="fav-btn"
+          onclick="toggleFavorite('{{ cp_id }}', '{{ display_name | e }}', '{{ address | default('', true) | e }}', {{ lat | default('null') }}, {{ lng | default('null') }})"
+          title="{{ t.save_favorite | default('Save as favourite') }}"
+          aria-label="{{ t.favorites | default('Favourite') }}"
+          style="
+            background:none; border:none; cursor:pointer; padding:4px;
+            font-size:22px; line-height:1; flex-shrink:0;
+            color:#64748b; transition:color 0.15s, transform 0.15s;
+          "
+        >♡</button>
+        {% endif %}
+      </div>
+      <h2 class="charger-title">⚡ {{ t.connector | default('Connector') }} {{ connector }}</h2>
+      {% if evse_id %}
+        <div style="font-size:12px;color:var(--text3);margin-bottom:12px;font-family:monospace;">{{ evse_id }}</div>
+      {% endif %}
+
+      {# Status badge #}
+      {% if conn_status == "Available" %}
+        <div class="status-badge available">● {{ t.available | default('Available') }}</div>
+      {% elif conn_status == "Preparing" %}
+        <div class="status-badge preparing"><span class="live-dot" style="background:var(--yellow);"></span> {{ t.preparing | default('Cable connected') }}</div>
+      {% elif conn_status in ["Charging", "SuspendedEV", "SuspendedEVSE", "Finishing"] %}
+        <div class="status-badge occupied">🔵 {{ t.occupied_in_use | default('In use') }}</div>
+      {% else %}
+        <div class="status-badge available">● {{ t.available | default('Available') }}</div>
+      {% endif %}
+
+      {# Rate display #}
+      <div class="rate-display">
+        <div class="rate-value">
+          {% if rate_value %}{{ rate_value }}{% else %}—{% endif %}
+        </div>
+        <div class="rate-label">{{ rate_label }}</div>
+        <div class="rate-note">{{ t.incl_btw | default('incl. VAT') }} &bull; {{ t.rate_updated | default('Updated every 15 min') }}</div>
+      </div>
+
+      {# Step guide #}
+      <div class="step-guide">
+        <div class="step-item {% if conn_status == 'Available' %}active{% elif conn_status == 'Preparing' %}done{% endif %}">
+          <span class="step-icon">{% if conn_status == 'Preparing' %}✅{% else %}🔌{% endif %}</span>
+          <div>
+            <div class="step-title">
+              {% if conn_status == 'Preparing' %}{{ t.step1_connected | default('Step 1: Cable connected ✓') }}{% else %}{{ t.step1_connect | default('Step 1: Connect the cable') }}{% endif %}
+            </div>
+            <div class="step-desc">{{ t.step1_desc | default('Connect the charging cable to your car') }}</div>
+          </div>
+        </div>
+        <div class="step-item {% if conn_status == 'Preparing' %}active{% endif %}">
+          <span class="step-icon">💳</span>
+          <div>
+            <div class="step-title">{{ t.step2_pay | default('Step 2: Pay') }}</div>
+            <div class="step-desc">{{ t.step2_desc | default('Pay securely') }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-note">
+        {{ t.preauth_prefix | default("A") }} <strong>{{ preauth_amount }} {{ t.preauth_label | default('authorisation') }}</strong> {{ t.preauth_suffix | default('will be taken.') }}
+        {{ t.preauth_detail | default('You only pay for the energy actually consumed.') }}
+      </div>
+
+      {% if charger_error %}
+        <div class="error-card">{{ t.charger_warning | default('Warning: could not retrieve charger status.') }}</div>
+      {% endif %}
+
+      {# Cost Estimator — flag-gated #}
+      {% if flags.get('cost_estimator') %}
+      <div id="cost-estimator"
+           data-tariff="{{ tariff_kwh_raw }}"
+           data-power="{{ charger_power_kw }}"
+           style="margin:20px 0; padding:16px; background:var(--card2, rgba(255,255,255,0.05)); border:1px solid var(--accent, #48e260); border-radius:16px;">
+        <div style="font-size:14px; font-weight:600; color:var(--accent,#48e260); margin-bottom:12px;">🔢 {{ t.estimator_title | default('Cost estimate') }}</div>
+        <label for="kwh-slider" style="font-size:13px; color:var(--text2,#c0d0e0); display:block; margin-bottom:8px;">
+          {{ t.estimator_slider_label | default('How much do you want to charge?') }}
+        </label>
+        <input type="range" id="kwh-slider" min="5" max="100" step="1" value="30"
+               style="width:100%; accent-color:var(--accent,#48e260); cursor:pointer;" />
+        <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div>
+            <div id="est-cost" style="font-size:20px; font-weight:700; color:var(--text1,#fff);">—</div>
+            <div style="font-size:11px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.incl_btw | default('incl. VAT') }}</div>
+          </div>
+          <div style="text-align:right;">
+            <div id="est-time" style="font-size:14px; font-weight:600; color:var(--text2,#c0d0e0);">—</div>
+            <div style="font-size:11px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.estimated_time | default('estimated charge time') }}</div>
+          </div>
+        </div>
+      </div>
+      <script>
+      (function() {
+        var el = document.getElementById('cost-estimator');
+        var slider = document.getElementById('kwh-slider');
+        var tariff = parseFloat(el.dataset.tariff) || 0;
+        var power = parseFloat(el.dataset.power) || 0;
+        var I18N = window.I18N || {};
+
+        function update() {
+          var kwh = parseInt(slider.value, 10);
+          if (tariff > 0) {
+            var cost = kwh * tariff * 1.21;
+            document.getElementById('est-cost').textContent =
+              '~£' + cost.toFixed(2) + ' ' + (I18N.estimator_kwh_selected ? 'for ' + kwh + ' kWh' : 'for ' + kwh + ' kWh');
+          } else {
+            document.getElementById('est-cost').textContent = kwh + ' kWh ' + (I18N.estimator_kwh_selected || 'selected');
+          }
+          if (power > 0) {
+            var mins = Math.round((kwh / power) * 60);
+            var h = Math.floor(mins / 60);
+            var m = mins % 60;
+            var at = I18N.estimator_charge_time_at || 'at';
+            var minLabel = I18N.estimator_minutes || 'min';
+            var timeStr = h > 0 ? ('~' + h + ' h ' + m + ' min') : ('~' + m + ' ' + minLabel);
+            document.getElementById('est-time').textContent = timeStr + ' ' + at + ' ' + power + ' kW';
+          } else {
+            document.getElementById('est-time').textContent = '';
+          }
+        }
+
+        slider.addEventListener('input', update);
+        update();
+      })();
+      </script>
+      {% endif %}
+
+      {# AC / Manual Battery SoC Estimation Inputs #}
+      <details class="ac-battery-panel" style="margin-bottom:16px;cursor:pointer;">
+        <summary style="font-size:13px;font-weight:600;color:var(--accent,#48e260);user-select:none;display:flex;align-items:center;gap:6px;">
+          ⚙️ Optional: Vehicle Battery Settings (AC SoC Estimation)
+        </summary>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;justify-content:space-between;gap:8px;">
+            <div style="flex:1;">
+              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Start Battery %</label>
+              <input type="number" id="driver-start-soc" min="0" max="100" placeholder="20"
+                     style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
+            </div>
+            <div style="flex:1;">
+              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Target Battery %</label>
+              <input type="number" id="driver-target-soc" min="10" max="100" placeholder="80"
+                     style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
+            </div>
+            <div style="flex:1;">
+              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Capacity (kWh)</label>
+              <input type="number" id="driver-battery-kwh" min="10" max="200" step="0.5" placeholder="60"
+                     style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);">
+            Used to calculate battery percentage on AC chargers (Type 2) where vehicle does not report native telemetry over Control Pilot.
+          </div>
+        </div>
+      </details>
+
+      {# Start button — only enabled when Available or Preparing #}
+      {% if conn_status in ["Charging", "SuspendedEV", "SuspendedEVSE", "Finishing"] %}
+        <button class="btn btn-primary" disabled>{{ t.charger_busy | default('Charger in use') }}</button>
+      {% elif account is defined and account %}
+        <button id="direct-start-btn" onclick="startDirectSession()" class="btn btn-primary btn-ready">
+          ⚡ {{ t.start_charging | default('Start charging now') }} →
+        </button>
+      {% else %}
+        <a href="/app/auth/{{ cp_id }}/{{ connector }}{% if qr_code %}?qr_code={{ qr_code }}{% if site_id %}&site_id={{ site_id }}{% endif %}{% if evse_id %}&evse_id={{ evse_id }}{% endif %}{% endif %}" class="btn btn-primary">
+          {{ t.start_charging | default('Start charging') }} →
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 120s Cable Insertion Modal -->
+  <div id="cable-insertion-modal" class="cable-modal-backdrop" style="display:none;">
+    <div class="cable-modal-box">
+      <div class="cable-pulse-anim">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#48e260" stroke-width="2">
+          <path d="M12 2v6m0 4v10M8 8h8M6 2v4M18 2v4"/>
+        </svg>
+      </div>
+      <h3 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">Plug Cable into Vehicle</h3>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">
+        Please connect the charging cable to your car. Authorisation active for <strong id="modal-timer-sec" style="color:#48e260;">120</strong>s.
+      </p>
+
+      <div class="countdown-bar-wrap">
+        <div id="modal-countdown-bar" class="countdown-bar-fill"></div>
+      </div>
+
+      <div style="font-size:12px;color:var(--text3);margin-bottom:20px;">
+        Locking cable solenoid & waiting for vehicle handshake…
+      </div>
+
+      <button id="modal-cancel-btn" onclick="cancelPendingCableSession()" class="btn btn-outline" style="width:100%;border-color:#ef4444;color:#ef4444;">
+        Cancel Session & Release Pre-Auth
+      </button>
+    </div>
+  </div>
+
+  <script>
+  var _activePendingSessionId = null;
+  var _countdownTimer = null;
+  var _countdownSecondsLeft = 120;
+  var _cablePollInterval = null;
+
+  async function startDirectSession() {
+    var btn = document.getElementById('direct-start-btn');
+    btn.disabled = true;
+    btn.textContent = 'Authorising…';
+
+    var startSoc = parseInt(document.getElementById('driver-start-soc')?.value || '', 10) || null;
+    var targetSoc = parseInt(document.getElementById('driver-target-soc')?.value || '', 10) || null;
+    var batteryKwh = parseFloat(document.getElementById('driver-battery-kwh')?.value || '') || null;
+
+    try {
+      var r = await fetch('/app/api/sessions/create', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          cp_id: '{{ cp_id }}',
+          connector_id: parseInt('{{ connector }}', 10),
+          driver_email: '{{ account.email if account.email is defined else "" }}',
+          driver_start_soc_pct: startSoc,
+          driver_target_soc_pct: targetSoc,
+          battery_capacity_kwh: batteryKwh,
+          currency: 'GBP'
+        })
+      });
+      var data = await r.json();
+      if (data.session_id) {
+        _activePendingSessionId = data.session_id;
+        localStorage.setItem('active_session_id', data.session_id);
+
+        // If connector is already connected (Preparing), navigate directly to session screen
+        if ('{{ conn_status }}' === 'Preparing') {
+          window.location.href = '/app/session/' + data.session_id;
+          return;
+        }
+
+        // Show 120s Cable Insertion Modal
+        showCableModal();
+      } else if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.error || 'Could not start session');
+        btn.disabled = false;
+        btn.textContent = '⚡ Start charging now →';
+      }
+    } catch(e) {
+      alert('Connection error');
+      btn.disabled = false;
+      btn.textContent = '⚡ Start charging now →';
+    }
+  }
+
+  function showCableModal() {
+    var modal = document.getElementById('cable-insertion-modal');
+    modal.style.display = 'flex';
+    _countdownSecondsLeft = 120;
+    updateModalTimerDisplay();
+
+    _countdownTimer = setInterval(function() {
+      _countdownSecondsLeft--;
+      updateModalTimerDisplay();
+      if (_countdownSecondsLeft <= 0) {
+        clearInterval(_countdownTimer);
+        clearInterval(_cablePollInterval);
+        cancelPendingCableSession();
+      }
+    }, 1000);
+
+    // Poll session to detect vehicle plug-in
+    _cablePollInterval = setInterval(async function() {
+      if (!_activePendingSessionId) return;
+      try {
+        var r = await fetch('/app/api/sessions/' + _activePendingSessionId + '/poll');
+        var s = await r.json();
+        if (s.started_at || s.current_kw > 0 || (s.payment_status === 'authorized' && s.ocpp_transaction_id)) {
+          clearInterval(_countdownTimer);
+          clearInterval(_cablePollInterval);
+          window.location.href = '/app/session/' + _activePendingSessionId;
+        }
+      } catch(err) {
+        console.warn('Cable poll error', err);
+      }
+    }, 2500);
+  }
+
+  function updateModalTimerDisplay() {
+    var el = document.getElementById('modal-timer-sec');
+    var bar = document.getElementById('modal-countdown-bar');
+    if (el) el.textContent = _countdownSecondsLeft;
+    if (bar) bar.style.width = ((_countdownSecondsLeft / 120) * 100) + '%';
+  }
+
+  async function cancelPendingCableSession() {
+    clearInterval(_countdownTimer);
+    clearInterval(_cablePollInterval);
+    var modal = document.getElementById('cable-insertion-modal');
+    if (modal) modal.style.display = 'none';
+
+    if (_activePendingSessionId) {
+      try {
+        await fetch('/app/api/sessions/' + _activePendingSessionId + '/cancel', {method: 'POST'});
+      } catch(e) {}
+      localStorage.removeItem('active_session_id');
+      _activePendingSessionId = null;
+    }
+
+    var btn = document.getElementById('direct-start-btn');
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = '⚡ Start charging now →';
+    }
+  }
+  </script>
+
+  <div class="app-footer">
+    {{ t.powered_by | default('Powered by ' ~ app_title) }}
+  </div>
+</div>
+
+{% if flags.get('favorites') %}
+<script>
+(function () {
+  var CP_ID = '{{ cp_id }}';
+  var FAV_KEY = 'favorites';
+  var I18N = window.I18N || {};
+
+  function loadFavorites() {
+    try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function saveFavorites(favs) {
+    localStorage.setItem(FAV_KEY, JSON.stringify(favs));
+  }
+
+  function isSaved(cpId) {
+    return loadFavorites().some(function (f) { return f.cp_id === cpId; });
+  }
+
+  function updateBtn(saved) {
+    var btn = document.getElementById('fav-btn');
+    if (!btn) return;
+    btn.textContent = saved ? '♥' : '♡';
+    btn.style.color = saved ? '#ef4444' : '#64748b';
+    btn.style.transform = saved ? 'scale(1.15)' : 'scale(1)';
+    btn.title = saved
+      ? (I18N.remove_favorite || 'Remove from favourites')
+      : (I18N.save_favorite || 'Save as favourite');
+  }
+
+  window.toggleFavorite = function (cpId, name, address, lat, lng) {
+    var favs = loadFavorites();
+    var idx = favs.findIndex(function (f) { return f.cp_id === cpId; });
+    var saving = idx === -1;
+
+    if (saving) {
+      favs.push({ cp_id: cpId, name: name, address: address, lat: lat, lng: lng });
+    } else {
+      favs.splice(idx, 1);
+    }
+    saveFavorites(favs);
+    updateBtn(saving);
+
+    var method = saving ? 'POST' : 'DELETE';
+    fetch('/api/favorites/' + encodeURIComponent(cpId), { method: method })
+      .catch(function () { /* offline OK */ });
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    updateBtn(isSaved(CP_ID));
+  });
+})();
+</script>
+{% endif %}
+{% endblock %}
