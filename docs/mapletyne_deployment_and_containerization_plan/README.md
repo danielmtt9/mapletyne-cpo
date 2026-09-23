@@ -17,6 +17,7 @@ This folder contains all specifications, deployment manifests, operational runbo
 | [**`05_MANAGEMENT_API_INVENTORY_UPDATE.md`**](./05_MANAGEMENT_API_INVENTORY_UPDATE.md) | Updated REST management API reference for Depot Cockpit, external SCADA/EMS overrides, and OCPP 2.0.1 smart charging. |
 | [**`06_GHCR_AND_REPLICABILITY_GUIDE.md`**](./06_GHCR_AND_REPLICABILITY_GUIDE.md) | Automated GitHub Actions CI/CD $\rightarrow$ GitHub Container Registry (`ghcr.io`) $\rightarrow$ Zero-Install Server Deployment. |
 | [**`07_DATABASE_TENANCY_AND_NAMING_SPEC.md`**](./07_DATABASE_TENANCY_AND_NAMING_SPEC.md) | Multi-tenant database isolation, deterministic 4-segment naming (`mapletyne_{env}_{tenant}_{domain}`), and Redis streams. |
+| [**`08_PROVISIONING_PARAMETERS_AND_FORMATS.md`**](./08_PROVISIONING_PARAMETERS_AND_FORMATS.md) | Parameter dictionary, Kubernetes Helm `values.yaml`, Docker `.env`, and automated JSON API provisioning schemas. |
 
 ---
 
