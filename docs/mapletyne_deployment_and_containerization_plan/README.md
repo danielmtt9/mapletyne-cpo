@@ -16,6 +16,7 @@ This folder contains all specifications, deployment manifests, operational runbo
 | [**`04_KUBERNETES_AND_HELM_SPEC.md`**](./04_KUBERNETES_AND_HELM_SPEC.md) | Multi-tenant namespace isolation (`tenant-<slug>`), Helm chart templates, Traefik Ingress, Cert-Manager TLS, and SkyOp EMS orchestration. |
 | [**`05_MANAGEMENT_API_INVENTORY_UPDATE.md`**](./05_MANAGEMENT_API_INVENTORY_UPDATE.md) | Updated REST management API reference for Depot Cockpit, external SCADA/EMS overrides, and OCPP 2.0.1 smart charging. |
 | [**`06_GHCR_AND_REPLICABILITY_GUIDE.md`**](./06_GHCR_AND_REPLICABILITY_GUIDE.md) | Automated GitHub Actions CI/CD $\rightarrow$ GitHub Container Registry (`ghcr.io`) $\rightarrow$ Zero-Install Server Deployment. |
+| [**`07_DATABASE_TENANCY_AND_NAMING_SPEC.md`**](./07_DATABASE_TENANCY_AND_NAMING_SPEC.md) | Multi-tenant database isolation, deterministic 4-segment naming (`mapletyne_{env}_{tenant}_{domain}`), and Redis streams. |
 
 ---
 

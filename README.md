@@ -97,6 +97,7 @@ Full architectural specifications and guides are located in [`docs/mapletyne_dep
 - [`04_KUBERNETES_AND_HELM_SPEC.md`](./docs/mapletyne_deployment_and_containerization_plan/04_KUBERNETES_AND_HELM_SPEC.md)
 - [`05_MANAGEMENT_API_INVENTORY_UPDATE.md`](./docs/mapletyne_deployment_and_containerization_plan/05_MANAGEMENT_API_INVENTORY_UPDATE.md)
 - [`06_GHCR_AND_REPLICABILITY_GUIDE.md`](./docs/mapletyne_deployment_and_containerization_plan/06_GHCR_AND_REPLICABILITY_GUIDE.md)
+- [`07_DATABASE_TENANCY_AND_NAMING_SPEC.md`](./docs/mapletyne_deployment_and_containerization_plan/07_DATABASE_TENANCY_AND_NAMING_SPEC.md)
 
 ---
 
