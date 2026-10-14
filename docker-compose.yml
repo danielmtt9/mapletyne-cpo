@@ -71,6 +71,11 @@ services:
       context: ./mapletyne-admin
     container_name: mapletyne-admin
     restart: unless-stopped
+    depends_on:
+      mapletyne-core:
+        condition: service_healthy
+      mapletyne-chargeapp:
+        condition: service_started
     ports:
       - "${CPO_ADMIN_PORT:-34000}:8080"  # Dashboard UI (host port 34000, container port 8080)
     environment:
