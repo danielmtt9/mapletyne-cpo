@@ -57,6 +57,10 @@ services:
     volumes:
       - ./mapletyne-core:/app:rw
       - backup-data:/app/backups
+    networks:
+      default:
+        aliases:
+          - ocpp-core
 
   # ── Operator Dashboard ────────────────────────────────────────────────────
 
@@ -72,6 +76,10 @@ services:
       CORE_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       JWT_SECRET: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
+    networks:
+      default:
+        aliases:
+          - cpo-admin
 
   # ── Driver PWA ────────────────────────────────────────────────────────────
 
@@ -99,6 +107,10 @@ services:
     volumes:
       - ./mapletyne-chargeapp:/app:rw
       - ./mapletyne-chargeapp/skins:/app/skins:rw
+    networks:
+      default:
+        aliases:
+          - charge-app
 
   # ── Compliance Tester ─────────────────────────────────────────────────────
 
@@ -110,7 +122,7 @@ services:
     ports:
       - "${COMPLIANCE_PORT:-34090}:8090"  # Tester (host port 34090)
     environment:
-      DEFAULT_WS_URL: ws://ocpp-core:9100
+      DEFAULT_WS_URL: ws://mapletyne-core:9100
 
   # ── Virtual Charger Farm ──────────────────────────────────────────────────
 
@@ -120,13 +132,13 @@ services:
       network: host
     restart: unless-stopped
     depends_on:
-      ocpp-core:
+      mapletyne-core:
         condition: service_healthy
     ports:
       - "${CHARGER_FARM_PORT:-34087}:8087"  # Simulator farm UI (host port 34087)
     environment:
-      OCPP16_URL: ws://ocpp-core:9100
-      OCPP201_URL: ws://ocpp-core:9201
+      OCPP16_URL: ws://mapletyne-core:9100
+      OCPP201_URL: ws://mapletyne-core:9201
       FARM_UI_PORT: 8087
     volumes:
       - ./opencpo-charger-farm:/app:rw
@@ -163,9 +175,9 @@ services:
       context: ./nginx
     restart: unless-stopped
     depends_on:
-      - cpo-admin
-      - ocpp-core
-      - charge-app
+      - mapletyne-admin
+      - mapletyne-core
+      - mapletyne-chargeapp
       - charger-farm
       - compliance-tester
       - keycloak
