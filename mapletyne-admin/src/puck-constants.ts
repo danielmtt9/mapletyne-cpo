@@ -9,7 +9,7 @@ export const WHITELIST_FONTS = [
 ]
 
 export const M3_COLOR_PRESETS = [
-  { name: 'Deep Teal (M3 Default)', hex: '#006874', bg: '#006874' },
+  { name: 'Forest Emerald (Brand SSOT)', hex: '#006948', bg: '#006948' },
   { name: 'Electric Indigo', hex: '#2563eb', bg: '#2563eb' },
   { name: 'Royal Violet', hex: '#7c3aed', bg: '#7c3aed' },
   { name: 'Warm Amber', hex: '#d97706', bg: '#d97706' },

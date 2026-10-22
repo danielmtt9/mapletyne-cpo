@@ -416,8 +416,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
           options: [
             { label: 'White Surface (#ffffff)', value: '#ffffff' },
             { label: 'Subtle Paper (#f8fafc)', value: '#f8fafc' },
-            { label: 'Electric Lime Tint (12%)', value: 'rgba(183, 255, 56, 0.12)' },
-            { label: 'Dark Carbon (#090c0b)', value: '#090c0b' },
+            { label: 'Accent Tint (12%)', value: 'rgba(16, 185, 129, 0.12)' },
+            { label: 'Dark Carbon (#0f172a)', value: '#0f172a' },
           ],
         },
         padding: {
@@ -554,8 +554,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                           style={{
                             width: '36px',
                             height: '36px',
-                            backgroundColor: 'var(--lime, #b7ff38)',
-                            color: 'var(--ink, #090c0b)',
+                            backgroundColor: 'var(--accent, #10B981)',
+                            color: 'var(--ink, #0f172a)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -565,7 +565,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                         </div>
                       )}
                     </div>
-                    <div style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--ink, #090c0b)', fontFamily: 'var(--font-barlow, sans-serif)', lineHeight: 1.1, marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--ink, #0f172a)', fontFamily: 'var(--font-barlow, sans-serif)', lineHeight: 1.1, marginBottom: '0.5rem' }}>
                       {item.value}
                     </div>
                     {item.change && (
@@ -666,8 +666,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     style={{
                       width: '44px',
                       height: '44px',
-                      backgroundColor: 'var(--lime, #b7ff38)',
-                      color: 'var(--ink, #090c0b)',
+                      backgroundColor: 'var(--accent, #10B981)',
+                      color: 'var(--ink, #0f172a)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -806,8 +806,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                         style={{
                           width: '40px',
                           height: '40px',
-                          backgroundColor: 'var(--lime, #b7ff38)',
-                          color: 'var(--ink, #090c0b)',
+                          backgroundColor: 'var(--accent, #10B981)',
+                          color: 'var(--ink, #0f172a)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -947,7 +947,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
           options: [
             { label: 'Default Ink (#090c0b)', value: 'default' },
             { label: 'Muted Slate (#6c766f)', value: 'muted' },
-            { label: 'Electric Lime (#b7ff38)', value: 'accent' },
+            { label: 'Accent Green (#10B981)', value: 'accent' },
           ],
         },
         fontFamily: {
@@ -964,7 +964,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
       },
       render: ({ text, variant = 'h2', align = 'left', color = 'default', fontFamily }) => {
         const textColor =
-          color === 'muted' ? 'var(--muted, #6c766f)' : color === 'accent' ? 'var(--lime, #b7ff38)' : 'var(--ink, #090c0b)'
+          color === 'muted' ? 'var(--muted, #6c766f)' : color === 'accent' ? 'var(--accent, #10B981)' : 'var(--ink, #0f172a)'
         const customFont = WHITELIST_FONTS.find((f: any) => f.name === fontFamily)?.family || 'var(--font-barlow, sans-serif)'
 
         const baseStyle: React.CSSProperties = {
@@ -1232,15 +1232,15 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <p style={{ fontStyle: 'italic', color: 'var(--ink, #090c0b)', lineHeight: 1.7, fontSize: '1.1rem', margin: '0 0 1.5rem 0' }}>
+                  <p style={{ fontStyle: 'italic', color: 'var(--ink, #0f172a)', lineHeight: 1.7, fontSize: '1.1rem', margin: '0 0 1.5rem 0' }}>
                     "{t.quote}"
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--lime, #b7ff38)', color: 'var(--ink, #090c0b)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1rem' }}>
+                    <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--accent, #10B981)', color: 'var(--ink, #0f172a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1rem' }}>
                       {t.authorName ? t.authorName.charAt(0) : 'U'}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 700, color: 'var(--ink, #090c0b)', fontSize: '0.95rem' }}>{t.authorName}</div>
+                      <div style={{ fontWeight: 700, color: 'var(--ink, #0f172a)', fontSize: '0.95rem' }}>{t.authorName}</div>
                       <div style={{ fontSize: '12px', color: 'var(--muted, #6c766f)' }}>
                         {[t.authorTitle, t.company].filter(Boolean).join(' • ')}
                       </div>
@@ -1346,7 +1346,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
     render: ({
       children,
       fontFamily = 'Barlow Condensed',
-      primaryColor = '#0284c7',
+      primaryColor = '#006948',
       showHeader = true,
       showFooter = true,
     }: any) => {
