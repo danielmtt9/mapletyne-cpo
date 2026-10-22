@@ -79,8 +79,9 @@ export const App: React.FC = () => {
                     <Route path="terms" element={<TermsPage />} />
                     <Route path="posts" element={<ReactPostsPage />} />
                     <Route path="posts/:slug" element={<ReactPostDetailPage />} />
-                    <Route path="pages/:slug" element={<ReactLivePage />} />
                   </Route>
+                  {/* Public CMS pages — must be outside AppShell so customer-facing pages render standalone */}
+                  <Route path="pages/:slug" element={<ReactLivePage />} />
                   {/* Catch-all 404 — must be outside AppShell so unauthenticated users can see it */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>

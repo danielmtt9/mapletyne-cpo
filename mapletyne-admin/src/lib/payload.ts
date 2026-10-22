@@ -31,7 +31,7 @@ export function createPayloadClient(config: PayloadClientConfig = {}) {
     'https://payloadcms.mapletyne.com'
   ).replace(/\/+$/, '')
 
-  const apiKey = config.apiKey || getSafeEnv('PAYLOAD_API_KEY') || getSafeEnv('NEXT_PUBLIC_PAYLOAD_API_KEY') || ''
+  const apiKey = config.apiKey || getSafeEnv('PAYLOAD_API_KEY') || getSafeEnv('NEXT_PUBLIC_PAYLOAD_API_KEY') || getSafeEnv('VITE_PAYLOAD_API_KEY') || ''
   const tenantId = config.tenantId || getSafeEnv('TENANT_ID') || getSafeEnv('NEXT_PUBLIC_TENANT_ID') || ''
 
   const getHeaders = (extra: Record<string, string> = {}) => {

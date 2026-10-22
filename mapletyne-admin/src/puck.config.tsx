@@ -23,6 +23,15 @@ function sanitizeCssColor(val: string, fallback = '#006948'): string {
   return fallback
 }
 
+/** Sanitize font family values: allow alphanumeric, spaces, hyphens, commas, and quoted names. */
+function sanitizeFontFamily(val: string, fallback = 'sans-serif'): string {
+  if (!val || typeof val !== 'string') return fallback
+  // Allow safe characters: letters, digits, spaces, hyphens, commas, single/double quotes, parentheses
+  const sanitized = val.replace(/[;{}<>]/g, '')
+  if (/^[\w\s\-',()"]+$/.test(sanitized)) return sanitized
+  return fallback
+}
+
 const Eyebrow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <span style={{ display: 'inline-block', fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--primary, #006948)', marginBottom: '8px' }}>
     {children}
@@ -1359,7 +1368,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                 --lime: ${sanitizeCssColor(primaryColor, '#006948')};
                 --font-barlow: 'Barlow Condensed', sans-serif;
                 --font-inter: 'Inter', sans-serif;
-                --active-font: ${sanitizeCssColor(activeFont, '#006948')};
+                --active-font: ${sanitizeFontFamily(activeFont, 'sans-serif')};
               }
             `
           }} />
@@ -1499,7 +1508,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                   }}
                 >
                   <span>© {new Date().getFullYear()} Maple Tyne Technologies Ltd. All rights reserved.</span>
-                  <span>OpenCPO v2.4 Enterprise Edition</span>
+                  <span>Maple Tyne MTT Charge CPO Platform</span>
                 </div>
               </footer>
             )}
