@@ -957,7 +957,9 @@ export const SettingsPage: React.FC = () => {
                     {logoDataUri || logoUrl ? (
                       <img src={logoDataUri || logoUrl} alt="Logo" className="w-full h-full object-contain p-0.5" />
                     ) : (
-                      companyName ? companyName.charAt(0).toUpperCase() : '⚡'
+                      companyName ? companyName.charAt(0).toUpperCase() : (
+                        <span className="material-symbols-outlined text-[20px]">bolt</span>
+                      )
                     )}
                   </div>
                   <div className="overflow-hidden">
@@ -1600,7 +1602,7 @@ export const SettingsPage: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center justify-between font-bold">
-                    <span>{smtpTestResult.ok ? '✓ HANDSHAKE SUCCESSFUL' : '✗ TEST FAILED'}</span>
+                    <span className="flex items-center gap-2">{smtpTestResult.ok ? (<><span className="material-symbols-outlined text-status-online">check_circle</span>HANDSHAKE SUCCESSFUL</>) : (<><span className="material-symbols-outlined text-status-offline">cancel</span>TEST FAILED</>)}</span>
                     <span>{smtpTestResult.elapsed_ms}ms</span>
                   </div>
                   <p className="text-xs break-words">
@@ -1679,7 +1681,7 @@ export const SettingsPage: React.FC = () => {
                   }`}
                 >
                   <div className="flex items-center justify-between font-bold">
-                    <span>{smsTestResult.ok ? '✓ DISPATCH SUCCESS' : '✗ DISPATCH FAILED'}</span>
+                    <span className="flex items-center gap-2">{smsTestResult.ok ? (<><span className="material-symbols-outlined text-status-online">check_circle</span>DISPATCH SUCCESS</>) : (<><span className="material-symbols-outlined text-status-offline">cancel</span>DISPATCH FAILED</>)}</span>
                     <span>{smsTestResult.elapsed_ms}ms</span>
                   </div>
                   <p className="text-xs break-words">

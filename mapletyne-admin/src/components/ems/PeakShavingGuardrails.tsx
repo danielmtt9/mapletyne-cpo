@@ -115,7 +115,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
               onChange={(e) => setSelectedSiteId(e.target.value)}
               className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
             >
-              <option value="default">🏢 Newcastle Primary Hub (Default)</option>
+              <option value="default">Newcastle Primary Hub (Default)</option>
               {sites.map((s) => (
                 <option key={s.id} value={s.id}>
                   {s.name || s.id} ({s.grid_connection_kw || 250} kW)

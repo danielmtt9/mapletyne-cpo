@@ -10,7 +10,7 @@ import { PuckDropZone } from './puck-dropzone'
 import { WHITELIST_FONTS } from './puck-constants'
 
 const Arrow = () => (
-  <span aria-hidden="true" style={{ display: 'inline-block', marginLeft: '4px' }}>→</span>
+  <span aria-hidden="true" style={{ display: 'inline-block', marginLeft: '4px' }}><span className="material-symbols-outlined">arrow_forward</span></span>
 )
 
 /** Sanitize CSS color values to prevent XSS via dangerouslySetInnerHTML. */
@@ -1425,7 +1425,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                       textDecoration: 'none',
                     }}
                   >
-                    Open Platform <span aria-hidden="true">↗</span>
+                    Open Platform <span aria-hidden="true"><span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span></span>
                   </a>
                 </nav>
               </header>

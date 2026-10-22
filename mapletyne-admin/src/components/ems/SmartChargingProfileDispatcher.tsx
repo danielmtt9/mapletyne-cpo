@@ -131,7 +131,7 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
               onChange={(e) => setSelectedChargerId(e.target.value)}
               className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
             >
-              <option value="all">⚡ All Site Hardware Chargers ({chargers.length})</option>
+              <option value="all">All Site Hardware Chargers ({chargers.length})</option>
               {chargers.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.id} ({c.vendor || 'Generic'} {c.model || ''} - {c.status || 'offline'})
