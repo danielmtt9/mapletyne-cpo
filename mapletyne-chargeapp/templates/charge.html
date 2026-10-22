@@ -391,7 +391,7 @@
     updateBtn(saving);
 
     var method = saving ? 'POST' : 'DELETE';
-    fetch('/api/favorites/' + encodeURIComponent(cpId), { method: method })
+    fetch('/app/api/favorites/' + encodeURIComponent(cpId), { method: method })
       .catch(function () { /* offline OK */ });
   };
 

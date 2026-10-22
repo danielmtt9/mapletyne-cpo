@@ -157,7 +157,7 @@ async function loadReceipt() {
         '<div class="receipt-row"><span class="label">' + (I18N.receipt_method || 'Payment method') + '</span><span class="value">' + (session.payment_method || 'Card') + '</span></div>' +
         '<div class="receipt-row"><span class="label">' + (I18N.receipt_ref || 'Reference') + '</span><span class="value" style="font-size:12px;">' + refStr + '</span></div>' +
       '</div>' +
-      '<a href="/app/api/sessions/' + SESSION_ID + '/pdf" target="_blank" class="btn btn-pdf" style="margin-top:16px;">' +
+      '<a href="/app/api/sessions/' + SESSION_ID + '/pdf?lang=' + encodeURIComponent('{{ lang | default("en") }}') + '" target="_blank" rel="noopener noreferrer" class="btn btn-pdf" style="margin-top:16px;">' +
         '📄 ' + (I18N.download_pdf || 'Download PDF') +
       '</a>';
   } catch(e) {

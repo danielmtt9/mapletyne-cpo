@@ -36,7 +36,7 @@ async def download_pdf(session_id: str):
     async with httpx.AsyncClient(base_url=config.CORE_API, timeout=30) as client:
         r = await client.get(f"/api/v1/public/sessions/{session_id}/pdf")
         if not r.is_success:
-            return RedirectResponse(f"/receipt/{session_id}", status_code=302)
+            return RedirectResponse(f"/app/receipt/{session_id}", status_code=302)
         return Response(
             content=r.content,
             media_type="application/pdf",

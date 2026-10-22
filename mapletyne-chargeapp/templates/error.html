@@ -8,12 +8,12 @@
     </div>
     <div style="font-size:48px;margin-bottom:16px;">⚠️</div>
     <h1 style="font-size:20px;font-weight:700;color:var(--text1);margin-bottom:8px;">
-      {{ message | default(t.error | default('Something went wrong')) }}
+      {{ t.error | default('Error') }}
     </h1>
     {% if detail %}
       <p style="font-size:13px;color:var(--text3);margin-bottom:20px;">{{ detail }}</p>
     {% endif %}
-    <a href="/" class="btn btn-primary" style="display:inline-block;text-decoration:none;">
+    <a href="/app/" class="btn btn-primary" style="display:inline-block;text-decoration:none;">
       {{ t.back_home | default('Back to map') }}
     </a>
   </div>

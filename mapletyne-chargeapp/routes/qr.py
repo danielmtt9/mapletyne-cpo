@@ -22,11 +22,12 @@ async def qr_landing(request: Request, code: str):
         connector_id = data["connector_id"]
         site_id = data.get("site_id", "")
         evse_id = data.get("evse_id", "")
-        redirect_url = f"/charge/{cp_id}/{connector_id}"
+        lang = getattr(request.state, "lang", "en")
+        redirect_url = f"/app/charge/{cp_id}/{connector_id}"
         if site_id or evse_id:
-            redirect_url += f"?site_id={quote(str(site_id))}&evse_id={quote(str(evse_id))}&qr_code={quote(code)}"
+            redirect_url += f"?site_id={quote(str(site_id))}&evse_id={quote(str(evse_id))}&qr_code={quote(code)}&lang={quote(lang)}"
         else:
-            redirect_url += f"?qr_code={quote(code)}"
+            redirect_url += f"?qr_code={quote(code)}&lang={quote(lang)}"
         return RedirectResponse(redirect_url, status_code=302)
     except HTTPException as e:
         return templates.TemplateResponse(request, "error.html", {

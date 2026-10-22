@@ -2,11 +2,11 @@
 (function () {
   var sid = localStorage.getItem('active_session_id');
   if (!sid) return;
-  fetch('/api/sessions/' + sid + '/poll')
+  fetch('/app/api/sessions/' + sid + '/poll')
     .then(function (r) { return r.json(); })
     .then(function (s) {
       if (s && (s.mollie_status === 'paid' || s.mollie_status === 'authorized') && !s.stopped_at) {
-        window.location.href = '/session/' + sid;
+        window.location.href = '/app/session/' + sid;
       } else {
         localStorage.removeItem('active_session_id');
       }
@@ -260,7 +260,7 @@ function openSheet(cp) {
       var label = c.status || (I18N.unknown_status || 'Available');
       var cid = c.connector_id || c.id || 1;
       var type = c.type || c.connector_type || (powerKw >= 50 ? 'CCS2 Fast' : 'Type 2 AC');
-      var startBtn = '<a href="/app/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
+      var startBtn = '<a href="/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
         'style="padding:6px 14px;background:var(--accent);color:#0C2340;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin-left:8px;display:inline-flex;align-items:center;gap:4px;">' +
         '⚡ Start →</a>';
       
@@ -400,7 +400,7 @@ function navigateToCode(code) {
   // If the code is a URL containing /c/, extract just the code part
   var urlMatch = code.match(/\/c\/([^/?#\s]+)/);
   var finalCode = urlMatch ? urlMatch[1] : code;
-  window.location.href = '/c/' + encodeURIComponent(finalCode);
+  window.location.href = '/app/c/' + encodeURIComponent(finalCode);
 }
 
 // ── Search & Autocomplete ───────────────────────────────────────
