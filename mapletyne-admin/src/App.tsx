@@ -80,8 +80,9 @@ export const App: React.FC = () => {
                     <Route path="posts" element={<ReactPostsPage />} />
                     <Route path="posts/:slug" element={<ReactPostDetailPage />} />
                     <Route path="pages/:slug" element={<ReactLivePage />} />
-                    <Route path="*" element={<NotFoundPage />} />
                   </Route>
+                  {/* Catch-all 404 — must be outside AppShell so unauthenticated users can see it */}
+                  <Route path="*" element={<NotFoundPage />} />
                 </Routes>
               </BrowserRouter>
             </SiteProvider>

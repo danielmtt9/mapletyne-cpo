@@ -80,6 +80,35 @@ templates = Jinja2Templates(directory=template_dirs)
 templates.env.globals["app_title"] = config.APP_TITLE
 app.state.templates = templates
 
+# ── Dynamic Sitemap for Driver PWA ────────────────────────────────────────
+@app.get("/sitemap.xml", response_class=HTMLResponse)
+async def chargeapp_sitemap():
+    """Public sitemap for driver PWA: map, privacy, terms."""
+    public_url = getattr(config, "PUBLIC_URL", "https://app.mapletyne.com")
+    sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{public_url}/</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>{public_url}/privacy</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>{public_url}/terms</loc>
+    <lastmod>2026-10-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+</urlset>"""
+    return HTMLResponse(sitemap, media_type="application/xml")
+
+
 # ── Routes ────────────────────────────────────────────────────────────────
 from routes import home, charge, auth, session, receipt, qr, push, cert_setup
 from api.auth import router as api_auth_router
@@ -90,6 +119,24 @@ for router in [home.router, charge.router, auth.router, session.router, receipt.
 # ── Plugins ───────────────────────────────────────────────────────────────
 for plugin_router in discover_plugins(config.PLUGINS):
     app.include_router(plugin_router)
+
+# ── 404 Exception Handler ────────────────────────────────────────────────
+from fastapi.exceptions import HTTPException as StarletteHTTPException
+
+@app.exception_handler(StarletteHTTPException)
+async def not_found_handler(request: Request, exc: StarletteHTTPException):
+    """Render a styled error page for unmatched driver requests."""
+    if exc.status_code == 404:
+        return templates.TemplateResponse(
+            request, "error.html", {
+                "request": request,
+                "t": getattr(request.state, "t", {}),
+                "detail": "Page not found",
+            },
+            status_code=404,
+        )
+    return HTMLResponse("Error", status_code=exc.status_code)
+
 
 # ── Middleware ────────────────────────────────────────────────────────────
 app.middleware("http")(inject_context)

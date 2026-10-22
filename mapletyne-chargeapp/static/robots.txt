@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /api/
+Disallow: /auth/
+Disallow: /chargers/
+Disallow: /sessions/
+Disallow: /app/chargers
+Disallow: /app/sessions
+Allow: /
+Allow: /privacy
+Allow: /terms
+
+Sitemap: https://app.mapletyne.com/sitemap.xml

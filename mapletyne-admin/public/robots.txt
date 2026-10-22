@@ -1,0 +1,21 @@
+User-agent: *
+Disallow: /chargers
+Disallow: /sessions
+Disallow: /ems
+Disallow: /tariffs
+Disallow: /fleet
+Disallow: /vehicles
+Disallow: /roaming
+Disallow: /settings
+Disallow: /profile
+Disallow: /onboarding
+Disallow: /pki
+Disallow: /pki-vault
+Disallow: /posts
+Disallow: /pages/
+Allow: /
+Allow: /login
+Allow: /terms
+Allow: /privacy
+
+Sitemap: https://admin.mapletyne.com/sitemap.xml
