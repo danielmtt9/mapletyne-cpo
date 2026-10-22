@@ -260,16 +260,16 @@ export const DashboardPage: React.FC = () => {
               />
               <div className="text-center">
                 <span className="text-4xl font-bold text-on-surface tnum">{batterySoc}%</span>
-                <span className="block text-micro font-mono text-on-surface-variant uppercase">Available</span>
+                <span className="block text-xs font-mono text-on-surface-variant uppercase">Available</span>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4 w-full mt-6 text-left">
               <div className="p-3 bg-surface-container-high/60 rounded-xl border border-outline/30">
-                <span className="text-micro font-mono text-on-surface-variant uppercase block">Pack Temp</span>
+                <span className="text-xs font-mono text-on-surface-variant uppercase block">Pack Temp</span>
                 <span className="text-sm font-bold text-on-surface tnum">24.5 °C</span>
               </div>
               <div className="p-3 bg-surface-container-high/60 rounded-xl border border-outline/30">
-                <span className="text-micro font-mono text-on-surface-variant uppercase block">Health</span>
+                <span className="text-xs font-mono text-on-surface-variant uppercase block">Health</span>
                 <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400 tnum">99.2%</span>
               </div>
             </div>
@@ -317,7 +317,7 @@ export const DashboardPage: React.FC = () => {
                     <td className="py-3 px-4 text-right font-mono text-on-surface tnum">{s.live?.energy_kwh ?? s.energy_kwh ?? 0} kWh</td>
                     <td className="py-3 px-4 text-center font-mono text-xs text-on-surface-variant">--</td>
                     <td className="py-3 px-4 text-right">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-micro font-semibold ${s.status === 'Charging' || s.status === 'charging' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20'}`}>
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${s.status === 'Charging' || s.status === 'charging' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20' : 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border border-sky-500/20'}`}>
                         {s.status || 'Charging'}
                       </span>
                     </td>

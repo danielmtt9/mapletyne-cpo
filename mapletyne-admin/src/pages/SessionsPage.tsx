@@ -271,7 +271,7 @@ export const SessionsPage: React.FC = () => {
                       <td className="px-4 text-right font-bold text-primary whitespace-nowrap">{formatCurrency(s.total_cost ?? s.amount_total ?? ((s.energy_kwh || 0) * 0.42))}</td>
                       <td className="px-4 whitespace-nowrap">
                         <span
-                          className={`px-2.5 py-0.5 text-micro uppercase font-bold rounded-full border shrink-0 ${
+                          className={`px-2.5 py-0.5 text-xs uppercase font-bold rounded-full border shrink-0 ${
                             isCompleted
                               ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                               : 'bg-emerald-500/15 text-emerald-400 border-blue-500/30'
