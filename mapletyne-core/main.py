@@ -173,8 +173,11 @@ async def startup():
                 ("daniel.a@mapletynetechnologies.com", "Daniel Aroko", "admin"),
                 ("daniel.a@otaskies.com", "Daniel Aroko", "admin"),
             ]
-            std_hash = bcrypt.hashpw("byoWkDX86ndK49$3".encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
-            otaski_hash = bcrypt.hashpw("otaskies".encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+            # No default passwords: identity is owned by Keycloak. A local fallback hash is
+            # seeded only when INITIAL_ADMIN_PASSWORD is explicitly provided via environment.
+            _init_pw = os.getenv("INITIAL_ADMIN_PASSWORD", "")
+            std_hash = bcrypt.hashpw(_init_pw.encode("utf-8"), bcrypt.gensalt()).decode("utf-8") if _init_pw else ""
+            otaski_hash = std_hash
 
             # 1. Ensure ocpp.users (Admin Dashboard)
             for email, name, role in admin_users:

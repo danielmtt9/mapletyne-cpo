@@ -14,7 +14,11 @@ import uuid
 from datetime import datetime, timezone
 from typing import AsyncGenerator
 
-from fastapi import APIRouter, Query, Request, HTTPException
+import jwt
+from datetime import timedelta
+from fastapi import APIRouter, Depends, Query, Request, HTTPException
+from api.api_key_auth import management_auth
+from api.admin_auth import JWT_SECRET, JWT_ALGO
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 
@@ -41,8 +45,30 @@ def get_event_bus() -> EventBus:
 
 # ── SSE Live Stream ──────────────────────────────────────────────────────
 
-# NOTE: In production, this endpoint should require management_auth or a read-only API key.
-# For the demo, it's intentionally public to allow the admin dashboard to connect.
+SSE_TICKET_TTL_SECONDS = 60
+
+
+@router.post("/ticket", dependencies=[Depends(management_auth)])
+async def issue_stream_ticket():
+    """Issue a short-lived, stream-scoped ticket (EventSource cannot send auth headers)."""
+    now = datetime.now(timezone.utc)
+    ticket = jwt.encode(
+        {"scope": "events:stream", "iat": now, "exp": now + timedelta(seconds=SSE_TICKET_TTL_SECONDS)},
+        JWT_SECRET,
+        algorithm=JWT_ALGO,
+    )
+    return {"ticket": ticket, "expires_in": SSE_TICKET_TTL_SECONDS}
+
+
+def _require_stream_ticket(ticket: str | None) -> None:
+    try:
+        claims = jwt.decode(ticket or "", JWT_SECRET, algorithms=[JWT_ALGO])
+        if claims.get("scope") != "events:stream":
+            raise ValueError("wrong scope")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Valid stream ticket required")
+
+
 @router.get("/stream")
 async def event_stream(
     request: Request,
@@ -50,6 +76,7 @@ async def event_stream(
     chargers: str = Query(None, description="Comma-separated charge point IDs"),
     sites: str = Query(None, description="Comma-separated site IDs"),
     since: str = Query(None, description="Replay from timestamp (ISO or Redis stream ID)"),
+    ticket: str = Query(None, description="Short-lived ticket from POST /events/ticket"),
 ):
     """
     Server-Sent Events stream — filtered live events.
@@ -60,6 +87,8 @@ async def event_stream(
     - Admin:       (no filters = full firehose)
     - EMS:         ?types=session.meter,charger.status,charger.online,charger.offline
     """
+    _require_stream_ticket(ticket)
+
     # Parse filters
     type_filter = None
     if types:

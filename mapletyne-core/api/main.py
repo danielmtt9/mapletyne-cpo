@@ -133,8 +133,8 @@ app.include_router(auth_router, prefix="/api/v1/auth", tags=["Authorization"], d
 # Admin panel auth + setup + update (no management key)
 app.include_router(admin_auth_router)
 app.include_router(admin_setup_router)
-app.include_router(admin_update_router)
-app.include_router(admin_backup_router)
+app.include_router(admin_update_router, dependencies=_mgmt)
+app.include_router(admin_backup_router, dependencies=_mgmt)
 
 # ── Public endpoints (no auth — charge app, webhooks) ─────────────────────
 app.include_router(accounts_router)

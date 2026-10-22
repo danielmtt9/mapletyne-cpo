@@ -178,6 +178,21 @@ def verify_keycloak_token(token: str) -> Dict[str, Any]:
             algorithms=["RS256"],
             options={"verify_aud": False, "verify_iss": False},
         )
+
+        # Issuer must belong to our realm (host part varies between internal/external URLs)
+        if not str(claims.get("iss", "")).endswith(f"/realms/{KEYCLOAK_REALM}"):
+            raise ValueError("Token issuer does not match the configured Keycloak realm")
+        # Token must have been issued to one of our clients (azp) or list one as audience
+        allowed_clients = set(
+            c.strip() for c in os.getenv(
+                "KEYCLOAK_ALLOWED_CLIENTS",
+                "opencpo-admin-ui,opencpo-charge-app,opencpo-backend",
+            ).split(",") if c.strip()
+        )
+        aud = claims.get("aud", [])
+        aud_list = [aud] if isinstance(aud, str) else list(aud or [])
+        if claims.get("azp") not in allowed_clients and not allowed_clients.intersection(aud_list):
+            raise ValueError("Token was not issued to an authorized client")
         
         # Extract normalized roles
         realm_roles: List[str] = claims.get("realm_access", {}).get("roles", [])

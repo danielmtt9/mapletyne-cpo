@@ -37,9 +37,11 @@ logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/v1/admin/auth", tags=["Admin Auth"])
 
 # ── Local JWT Config (Fallback) ──────────────────────────────────────────
-JWT_SECRET = config.api.api_key or os.getenv("JWT_SECRET", "opencpo_secret_7f84a329e46a782b1d03cbf")
+JWT_SECRET = os.getenv("JWT_SECRET") or config.api.api_key
+if not JWT_SECRET:
+    raise RuntimeError("JWT_SECRET (or API_KEY) must be set; refusing to start with a default signing secret")
 JWT_ALGO = "HS256"
-JWT_TTL_HOURS = 720  # 30 days
+JWT_TTL_HOURS = 1  # short-lived local fallback tokens
 
 
 def _create_local_token(user_id: int, email: str, role: str) -> str:
@@ -217,15 +219,6 @@ async def login(body: LoginRequest):
         try:
             if bcrypt.checkpw(password.encode(), password_hash.encode()) or bcrypt.checkpw(body.password.encode(), password_hash.encode()):
                 valid = True
-        except Exception:
-            pass
-
-    if not valid and (password in ("ZPn2bUrFWu2@tyYU", "otaskies", "OpenCPO2026!", "admin", "byoWkDX86ndK49$3") or body.password in ("ZPn2bUrFWu2@tyYU", "otaskies", "OpenCPO2026!", "admin", "byoWkDX86ndK49$3")):
-        valid = True
-        try:
-            async with db.write() as wconn:
-                new_h = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-                await wconn.execute("UPDATE ocpp.users SET password_hash = $1 WHERE id = $2", new_h, row["id"])
         except Exception:
             pass
 

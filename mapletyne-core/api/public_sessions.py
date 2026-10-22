@@ -9,7 +9,8 @@ import os
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from api.api_key_auth import management_auth
 from pydantic import BaseModel
 from typing import Optional
 
@@ -363,7 +364,7 @@ async def update_session_soc_params(session_id: str, req: SocParamsUpdate):
     return {"session_id": session_id, "updated": True}
 
 
-@router.post("/sessions/{session_id}/stop")
+@router.post("/sessions/{session_id}/stop", dependencies=[Depends(management_auth)])
 async def stop_session(session_id: str):
     """Request charger to stop a session via RemoteStopTransaction.
 

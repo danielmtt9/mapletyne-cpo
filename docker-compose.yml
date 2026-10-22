@@ -45,6 +45,8 @@ services:
       SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
       MANAGEMENT_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
+      JWT_SECRET: ${JWT_SECRET:-${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-}
       PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
       CORE_API_PUBLIC_URL: ${CORE_API_PUBLIC_URL:-https://api.mapletyne.com}
       KEYCLOAK_URL: ${KEYCLOAK_URL:-http://keycloak:8080/auth}

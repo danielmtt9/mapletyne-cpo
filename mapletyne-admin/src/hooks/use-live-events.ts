@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { api } from '@/lib/api-client';
 
 export function useLiveEvents() {
   const queryClient = useQueryClient();
@@ -9,9 +10,10 @@ export function useLiveEvents() {
     let sse: EventSource | null = null;
     let retryTimeout: NodeJS.Timeout;
 
-    const connect = () => {
+    const connect = async () => {
       try {
-        sse = new EventSource('/api/v1/events/stream');
+        const { ticket } = await api.post<{ ticket: string }>('/events/ticket', {});
+        sse = new EventSource(`/api/v1/events/stream?ticket=${encodeURIComponent(ticket)}`);
 
         sse.onopen = () => {
           setIsConnected(true);

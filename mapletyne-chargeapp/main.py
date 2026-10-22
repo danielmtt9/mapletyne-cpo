@@ -1,9 +1,11 @@
 """OCPP Charge App — PWA for EV drivers."""
 import os
 import logging
+from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, Request
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
