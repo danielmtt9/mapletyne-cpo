@@ -92,6 +92,16 @@ class OCPP201Server:
             if ssl_object:
                 client_cert = ssl_object.getpeercert()
 
+        # Support proxied mTLS (e.g., nginx/stunnel strips client cert to headers)
+        if client_cert is None and hasattr(websocket, 'request') and websocket.request:
+            x_ssl_dn = websocket.request.headers.get("x-ssl-client-s-dn")
+            x_ssl_cert = websocket.request.headers.get("x-ssl-client-cert")
+            if x_ssl_dn or x_ssl_cert:
+                client_cert = {
+                    "subject": x_ssl_dn or "proxied-mtls",
+                    "verified": websocket.request.headers.get("x-ssl-client-verify", "SUCCESS"),
+                }
+
         logger.info(
             f"Charger connected: {cp_id} (OCPP 2.0.1)"
             + (f" [client cert: {client_cert.get('subject', 'unknown')}]" if client_cert else "")

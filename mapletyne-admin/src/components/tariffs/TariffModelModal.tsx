@@ -4,69 +4,82 @@ import type { TariffItem } from './TariffBreakdownChart';
 interface TariffModelModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (data: {
-    id: string;
-    name: string;
-    currency: string;
-    energy_rate: number;
-    time_rate: number;
-    idle_rate: number;
-    flat_fee: number;
-  }) => void;
+  onSave: (tariff: Partial<TariffItem>) => void;
+  initialTariff?: TariffItem | null;
   initialData?: TariffItem | null;
+  existingIds?: string[];
   isLoading?: boolean;
 }
 
-const CURRENCIES = [
-  { code: 'GBP', label: 'GBP (£) - British Pound' },
-  { code: 'EUR', label: 'EUR (€) - Euro' },
-  { code: 'USD', label: 'USD ($) - US Dollar' },
-  { code: 'CHF', label: 'CHF (Fr) - Swiss Franc' },
-  { code: 'CAD', label: 'CAD ($) - Canadian Dollar' },
-  { code: 'AUD', label: 'AUD ($) - Australian Dollar' },
+const SUPPORTED_CURRENCIES = [
+  { code: 'GBP', symbol: '£', name: 'British Pound (£)' },
+  { code: 'EUR', symbol: '€', name: 'Euro (€)' },
+  { code: 'USD', symbol: '$', name: 'US Dollar ($)' },
 ];
 
 export const TariffModelModal: React.FC<TariffModelModalProps> = ({
   isOpen,
   onClose,
   onSave,
+  initialTariff,
   initialData,
+  existingIds = [],
   isLoading = false,
 }) => {
-  const isEdit = Boolean(initialData);
+  const activeTariff = initialData || initialTariff;
+  const isEdit = Boolean(activeTariff);
 
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [currency, setCurrency] = useState('GBP');
-  const [energyRate, setEnergyRate] = useState('0.44');
-  const [timeRate, setTimeRate] = useState('0.00');
-  const [idleRate, setIdleRate] = useState('0.05');
-  const [flatFee, setFlatFee] = useState('0.00');
+  const [energyRate, setEnergyRate] = useState('');
+  const [timeRate, setTimeRate] = useState('');
+  const [idleRate, setIdleRate] = useState('');
+  const [flatFee, setFlatFee] = useState('');
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (initialData) {
-      setId(initialData.id || '');
-      setName(initialData.name || '');
-      setCurrency(initialData.currency || 'GBP');
-      setEnergyRate(String(initialData.energy_rate ?? 0.44));
-      setTimeRate(String(initialData.time_rate ?? 0.00));
-      setIdleRate(String(initialData.idle_rate ?? 0.05));
-      setFlatFee(String(initialData.flat_fee ?? 0.00));
+    if (activeTariff) {
+      setId(activeTariff.id);
+      setName(activeTariff.name || activeTariff.id);
+      setCurrency(activeTariff.currency || 'GBP');
+      setEnergyRate(activeTariff.energy_rate !== undefined ? String(activeTariff.energy_rate) : '');
+      setTimeRate(activeTariff.time_rate !== undefined ? String(activeTariff.time_rate) : '');
+      setIdleRate(activeTariff.idle_rate !== undefined ? String(activeTariff.idle_rate) : '');
+      setFlatFee(activeTariff.flat_fee !== undefined ? String(activeTariff.flat_fee) : '');
     } else {
-      setId(`tariff_${Date.now().toString(36)}`);
+      setId('');
       setName('');
       setCurrency('GBP');
-      setEnergyRate('0.44');
+      setEnergyRate('0.42');
       setTimeRate('0.00');
       setIdleRate('0.05');
       setFlatFee('0.00');
     }
-  }, [initialData, isOpen]);
+    setErrors({});
+  }, [activeTariff, isOpen]);
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const newErrors: Record<string, string> = {};
+
+    if (!id.trim()) {
+      newErrors.id = 'Tariff ID is required';
+    } else if (!isEdit && existingIds.includes(id.trim())) {
+      newErrors.id = 'A tariff with this ID already exists';
+    }
+
+    if (!name.trim()) {
+      newErrors.name = 'Model name is required';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     onSave({
       id: id.trim(),
       name: name.trim(),
@@ -79,11 +92,11 @@ export const TariffModelModal: React.FC<TariffModelModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="w-full max-w-lg material-card bg-surface-container-low/95 backdrop-blur-2xl border border-white/10 p-6 rounded-3xl space-y-5 shadow-2xl animate-in zoom-in-95 duration-200">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 animate-in fade-in duration-150">
+      <div className="w-full max-w-lg tabler-card bg-surface-container border border-outline p-6 rounded-xl space-y-5 shadow-2xl animate-in zoom-in-95 font-body">
+        <div className="flex items-center justify-between border-b border-outline pb-3">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-[22px]">payments</span>
+            <span className="material-symbols-outlined text-primary text-[24px]">payments</span>
             <h2 className="font-headline text-lg font-bold text-on-surface">
               {isEdit ? 'Edit Tariff Billing Model' : 'Create New Tariff Model'}
             </h2>
@@ -91,42 +104,44 @@ export const TariffModelModal: React.FC<TariffModelModalProps> = ({
           <button
             onClick={onClose}
             type="button"
-            className="text-on-surface-variant hover:text-on-surface transition-colors"
+            className="text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
+            aria-label="Close"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 font-body text-xs">
+        <form onSubmit={handleSubmit} className="space-y-4 font-body text-sm">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-200 mb-1.5 uppercase tracking-wide font-mono">
-                Tariff Identifier (ID)
+              <label className="block text-sm font-semibold text-on-surface mb-1.5 font-sans">
+                Tariff Unique ID *
               </label>
               <input
                 type="text"
-                required
-                disabled={isEdit}
                 value={id}
                 onChange={(e) => setId(e.target.value)}
-                placeholder="e.g. tariff_fast_fleet"
-                className={`w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 placeholder:text-slate-400 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all ${
+                disabled={isEdit}
+                placeholder="e.g. TRF-RAPID-01"
+                className={`w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3.5 text-on-surface placeholder:text-on-surface-variant font-mono text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all ${
                   isEdit ? 'opacity-60 cursor-not-allowed' : ''
-                }`}
+                } ${errors.id ? 'border-rose-500' : ''}`}
               />
+              {errors.id && <span className="text-xs text-rose-500 mt-1 block">{errors.id}</span>}
             </div>
+
             <div>
-              <label className="block text-xs font-semibold text-slate-200 mb-1.5 uppercase tracking-wide font-mono">
+              <label className="block text-sm font-semibold text-on-surface mb-1.5 font-sans">
                 Billing Currency
               </label>
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3 text-on-surface font-sans text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all cursor-pointer"
               >
-                {CURRENCIES.map((c) => (
-                  <option key={c.code} value={c.code} className="bg-slate-900 text-slate-200">
-                    {c.label}
+                {SUPPORTED_CURRENCIES.map((c) => (
+                  <option key={c.code} value={c.code} className="bg-surface-container text-on-surface">
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -134,105 +149,100 @@ export const TariffModelModal: React.FC<TariffModelModalProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-200 mb-1.5 uppercase tracking-wide font-mono">
-              Tariff Plan Display Name
+            <label className="block text-sm font-semibold text-on-surface mb-1.5 font-sans">
+              Display Name *
             </label>
             <input
               type="text"
-              required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Standard Public AC Charging"
-              className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 placeholder:text-slate-400 text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+              placeholder="e.g. Standard Peak Commercial"
+              className={`w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3.5 text-on-surface placeholder:text-on-surface-variant text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all ${
+                errors.name ? 'border-rose-500' : ''
+              }`}
             />
+            {errors.name && <span className="text-xs text-rose-500 mt-1 block">{errors.name}</span>}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3 pt-1">
             <div>
-              <label className="block font-mono text-slate-300 uppercase text-[11px] mb-1 font-semibold">
-                Energy Rate ({currency}/kWh)
+              <label className="block text-sm text-on-surface-variant font-semibold mb-1 font-sans">
+                Energy Rate (/kWh)
               </label>
               <input
                 type="number"
                 step="0.001"
                 min="0"
-                required
                 value={energyRate}
                 onChange={(e) => setEnergyRate(e.target.value)}
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                placeholder="0.420"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3 text-on-surface font-mono text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block font-mono text-slate-300 uppercase text-[11px] mb-1 font-semibold">
-                Time Rate ({currency}/min)
+              <label className="block text-sm text-on-surface-variant font-semibold mb-1 font-sans">
+                Time Rate (/min)
               </label>
               <input
                 type="number"
                 step="0.001"
                 min="0"
-                required
                 value={timeRate}
                 onChange={(e) => setTimeRate(e.target.value)}
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                placeholder="0.000"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3 text-on-surface font-mono text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block font-mono text-slate-300 uppercase text-[11px] mb-1 font-semibold">
-                Idle Penalty ({currency}/min)
+              <label className="block text-sm text-on-surface-variant font-semibold mb-1 font-sans">
+                Idle Penalty Rate (/min)
               </label>
               <input
                 type="number"
                 step="0.001"
                 min="0"
-                required
                 value={idleRate}
                 onChange={(e) => setIdleRate(e.target.value)}
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                placeholder="0.050"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3 text-on-surface font-mono text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
               />
             </div>
             <div>
-              <label className="block font-mono text-slate-300 uppercase text-[11px] mb-1 font-semibold">
-                Session Flat Start Fee ({currency})
+              <label className="block text-sm text-on-surface-variant font-semibold mb-1 font-sans">
+                Session Unlock Fee
               </label>
               <input
                 type="number"
                 step="0.01"
                 min="0"
-                required
                 value={flatFee}
                 onChange={(e) => setFlatFee(e.target.value)}
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-10 px-3 text-slate-100 font-mono text-xs focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                placeholder="0.00"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-3 text-on-surface font-mono text-base focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
               />
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-outline">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-300 hover:text-white font-mono transition-colors"
+              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline rounded-xl text-on-surface font-semibold text-sm transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-5 py-2 bg-primary text-slate-950 font-bold font-mono rounded-xl hover:bg-primary/90 transition-colors flex items-center gap-2 shadow-apple-sm"
+              className="px-5 py-2 bg-primary text-on-primary font-headline font-bold text-base rounded-xl hover:brightness-110 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-2 shadow-xs cursor-pointer"
             >
-              {isLoading ? (
-                <>
-                  <span className="w-3 h-3 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
-                  <span>Saving...</span>
-                </>
-              ) : (
-                <>
-                  <span className="material-symbols-outlined text-[16px]">save</span>
-                  <span>{isEdit ? 'Update Tariff' : 'Register Tariff Model'}</span>
-                </>
-              )}
+              <span className="material-symbols-outlined text-[18px]">
+                {isLoading ? 'progress_activity' : 'check'}
+              </span>
+              {isLoading ? 'Saving...' : isEdit ? 'Save Changes' : 'Create Model'}
             </button>
           </div>
         </form>

@@ -22,7 +22,7 @@ export const TokenAuditDrawer: React.FC<TokenAuditDrawerProps> = ({ isOpen, onCl
   if (!isOpen || !token) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 animate-in fade-in duration-150">
       <div className="w-full max-w-md bg-surface-container-low border-l border-outline-variant/30 h-full p-6 space-y-5 shadow-2xl flex flex-col justify-between">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
@@ -71,13 +71,13 @@ export const TokenAuditDrawer: React.FC<TokenAuditDrawerProps> = ({ isOpen, onCl
                     className="p-3 bg-surface-container border border-outline-variant/20 space-y-1 text-xs font-mono"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-primary uppercase text-[11px]">{ev.event}</span>
-                      <span className="text-[10px] text-on-surface-variant">
+                      <span className="font-bold text-primary uppercase text-xs">{ev.event}</span>
+                      <span className="text-xs text-on-surface-variant">
                         {ev.created_at ? new Date(ev.created_at).toLocaleString() : '—'}
                       </span>
                     </div>
-                    {ev.details && <div className="text-on-surface text-[11px]">{ev.details}</div>}
-                    <div className="text-[10px] text-on-surface-variant flex justify-between pt-1">
+                    {ev.details && <div className="text-on-surface text-xs">{ev.details}</div>}
+                    <div className="text-xs text-on-surface-variant flex justify-between pt-1">
                       <span>Actor:</span>
                       <span className="text-on-surface">{ev.actor || 'system'}</span>
                     </div>

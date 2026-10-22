@@ -42,7 +42,7 @@ export const VehicleTelematicsDrawer: React.FC<VehicleTelematicsDrawerProps> = (
   const soh = vehicle.battery_health_soh_pct ?? 98;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-xs">
+    <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 animate-in fade-in duration-150">
       <div className="w-full max-w-md bg-surface-container-low border-l border-outline-variant/30 h-full flex flex-col shadow-2xl overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-outline-variant/20 bg-surface-container">
@@ -70,7 +70,7 @@ export const VehicleTelematicsDrawer: React.FC<VehicleTelematicsDrawerProps> = (
           <div className="grid grid-cols-2 gap-4">
             {/* SOC */}
             <div className="p-4 bg-surface-container border border-outline-variant/30 text-center space-y-1">
-              <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider block">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 State of Charge (SOC)
               </span>
               <div className="text-3xl font-mono font-bold text-primary">{soc}%</div>
@@ -84,7 +84,7 @@ export const VehicleTelematicsDrawer: React.FC<VehicleTelematicsDrawerProps> = (
 
             {/* SOH */}
             <div className="p-4 bg-surface-container border border-outline-variant/30 text-center space-y-1">
-              <span className="text-[11px] font-semibold text-on-surface-variant uppercase tracking-wider block">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 Battery Health (SOH)
               </span>
               <div className="text-3xl font-mono font-bold text-emerald-400">{soh}%</div>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapletyne EMS Settings & Hardware Configuration</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Material Symbols Outlined -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#006948',
+              800: '#065f46',
+              900: '#022c22',
+            },
+            slate: {
+              850: '#151f32',
+              900: '#0f172a',
+              950: '#080d1a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-1 {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Tabular figures for telemetry & numbers */
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 font-sans antialiased min-h-screen flex">
+
+  <!-- ======================================================== -->
+  <!-- 260px DARK SLATE VERTICAL SIDEBAR (#0F172A)              -->
+  <!-- ======================================================== -->
+  <aside class="w-[260px] bg-[#0F172A] text-slate-300 flex-shrink-0 flex flex-col justify-between fixed top-0 bottom-0 left-0 z-40 border-r border-slate-800">
+    <div>
+      <!-- Brand Logo / Header -->
+      <div class="h-16 px-5 flex items-center justify-between border-b border-slate-800/80">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-[#006948] flex items-center justify-center text-white shadow-sm shadow-emerald-950">
+            <span class="material-symbols-outlined text-[22px]">bolt</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-base tracking-tight leading-none">Mapletyne</span>
+              <span class="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-emerald-900/70 text-emerald-300 border border-emerald-700/50">v2.4</span>
+            </div>
+            <p class="text-[12px] text-slate-400 font-medium tracking-wider uppercase mt-1 leading-none">EMS Platform</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Section -->
+      <div class="px-3 py-4">
+        <div class="px-3 pb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-400">
+          Operational Core
+        </div>
+        <nav class="space-y-1">
+          <!-- Dashboard Link -->
+          <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors text-base font-medium">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-slate-400">dashboard</span>
+              <span>Dashboard</span>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </a>
+
+          <!-- Chargers Link -->
+          <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors text-base font-medium">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-slate-400">ev_station</span>
+              <span>Chargers</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">12 Live</span>
+          </a>
+
+          <!-- Sessions Link -->
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors text-base font-medium">
+            <span class="material-symbols-outlined text-[20px] text-slate-400">receipt_long</span>
+            <span>Sessions</span>
+          </a>
+
+          <!-- Energy EMS Link -->
+          <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors text-base font-medium">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-[20px] text-slate-400">bolt</span>
+              <span>Energy EMS</span>
+            </div>
+            <span class="px-1.5 py-0.5 rounded text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">Peak</span>
+          </a>
+
+          <!-- PKI Vault Link -->
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/60 transition-colors text-base font-medium">
+            <span class="material-symbols-outlined text-[20px] text-slate-400">vpn_key</span>
+            <span>PKI Vault</span>
+          </a>
+        </nav>
+
+        <div class="mt-6 px-3 pb-2 text-[12px] font-semibold uppercase tracking-wider text-slate-400">
+          System Config
+        </div>
+        <nav class="space-y-1">
+          <!-- Settings (ACTIVE) -->
+          <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-emerald-50 text-[#006948] font-semibold text-base border-l-4 border-[#006948] shadow-sm">
+            <span class="material-symbols-outlined text-[20px] text-[#006948]">settings</span>
+            <span>Settings</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Bottom Operator Profile Card -->
+    <div class="p-3 border-t border-slate-800/90 bg-slate-900/80">
+      <div class="flex items-center justify-between p-2 rounded-lg bg-slate-800/40 border border-slate-800">
+        <div class="flex items-center gap-3 overflow-hidden">
+          <div class="w-10 h-10 rounded-full bg-emerald-700/80 text-emerald-100 flex items-center justify-center font-bold text-sm border-2 border-emerald-500 flex-shrink-0">
+            EV
+          </div>
+          <div class="truncate">
+            <div class="text-sm font-semibold text-white leading-tight truncate">Elena Vance</div>
+            <div class="text-xs text-slate-400 truncate">Dir. Grid Operations</div>
+          </div>
+        </div>
+        <button class="text-slate-400 hover:text-white p-1.5 rounded-md hover:bg-slate-700/60 transition-colors" title="Logout">
+          <span class="material-symbols-outlined text-[20px]">logout</span>
+        </button>
+      </div>
+      <!-- Node telemetry small footnote -->
+      <div class="mt-2.5 px-2 flex items-center justify-between text-[11px] text-slate-400">
+        <span class="flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Site #04 Maple Ridge</span>
+        </span>
+        <span class="font-mono text-emerald-400">60.02 Hz</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================== -->
+  <!-- MAIN WORKSPACE CONTENT AREA                              -->
+  <!-- ======================================================== -->
+  <div class="ml-[260px] flex-1 flex flex-col min-w-0">
+
+    <!-- TOP HEADER BAR -->
+    <header class="h-16 bg-white border-b border-slate-200 sticky top-0 z-30 px-8 flex items-center justify-between">
+      <!-- Left: Breadcrumb & Title -->
+      <div class="flex items-center gap-3">
+        <nav class="flex items-center gap-2 text-base text-slate-500">
+          <span class="hover:text-slate-700 transition-colors">Settings</span>
+          <span class="text-slate-400">/</span>
+          <span class="text-slate-900 font-semibold">Hardware & Energy Configuration</span>
+        </nav>
+      </div>
+
+      <!-- Right: Status Pill & Action Buttons -->
+      <div class="flex items-center gap-4">
+        <!-- Live System Status Pill -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-[#006948] text-sm font-semibold">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse"></span>
+          <span>EMS Engine: Synchronized</span>
+        </div>
+
+        <div class="h-5 w-px bg-slate-200"></div>
+
+        <!-- Discard Changes Button -->
+        <button class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 bg-white hover:bg-slate-50 text-base font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300">
+          Discard Changes
+        </button>
+
+        <!-- Save Configuration Button -->
+        <button class="px-4 py-2 rounded-lg bg-[#006948] hover:bg-emerald-800 text-white text-base font-semibold flex items-center gap-2 transition-colors shadow-sm shadow-emerald-900/20 focus:outline-none focus:ring-2 focus:ring-emerald-600">
+          <span class="material-symbols-outlined text-[20px]">save</span>
+          <span>Save Configuration</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- SUBHEADER / HORIZONTAL NAVIGATION TABS -->
+    <div class="bg-white border-b border-slate-200 px-8 pt-6">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900 tracking-tight">System Settings & Infrastructure</h1>
+          <p class="text-base text-slate-600 mt-1">Configure microgrid interconnection limits, BESS operational parameters, and OCPP 2.0.1 gateways.</p>
+        </div>
+        <!-- Interconnection Substation Badge -->
+        <div class="flex items-center gap-3 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-lg text-sm">
+          <span class="material-symbols-outlined text-slate-500 text-[20px]">electrical_services</span>
+          <div>
+            <span class="text-xs text-slate-500 uppercase tracking-wider block font-medium">Interconnect Bus</span>
+            <span class="text-slate-900 font-semibold tabular-nums">480V / 3Φ • 500 kW Capacity</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Horizontal Navigation Tabs (16px font) -->
+      <nav class="flex items-center gap-8 -mb-px">
+        <!-- Tab 1: Grid & Site Power (Active) -->
+        <a href="#" class="flex items-center gap-2.5 pb-3.5 text-base font-semibold text-[#006948] border-b-2 border-[#006948] transition-colors">
+          <span class="material-symbols-outlined text-[20px]">bolt</span>
+          <span>Grid & Site Power</span>
+        </a>
+
+        <!-- Tab 2: OCPP & Hardware -->
+        <a href="#" class="flex items-center gap-2.5 pb-3.5 text-base font-medium text-slate-500 hover:text-slate-800 border-b-2 border-transparent transition-colors">
+          <span class="material-symbols-outlined text-[20px]">ev_station</span>
+          <span>OCPP & Hardware</span>
+        </a>
+
+        <!-- Tab 3: Tariff & Billing -->
+        <a href="#" class="flex items-center gap-2.5 pb-3.5 text-base font-medium text-slate-500 hover:text-slate-800 border-b-2 border-transparent transition-colors">
+          <span class="material-symbols-outlined text-[20px]">payments</span>
+          <span>Tariff & Billing</span>
+        </a>
+
+        <!-- Tab 4: Webhooks & Telemetry Alerts -->
+        <a href="#" class="flex items-center gap-2.5 pb-3.5 text-base font-medium text-slate-500 hover:text-slate-800 border-b-2 border-transparent transition-colors">
+          <span class="material-symbols-outlined text-[20px]">notifications</span>
+          <span>Webhooks & Telemetry Alerts</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- MAIN PAGE CONTENT (Tabler Two-Column Settings Layout) -->
+    <main class="flex-1 p-8 overflow-y-auto">
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+        <!-- ======================================================== -->
+        <!-- LEFT COLUMN: Grid Limits & BESS Profile (7 cols)         -->
+        <!-- ======================================================== -->
+        <div class="lg:col-span-7 space-y-8">
+
+          <!-- CARD 1: Site Grid Interconnection Limits -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">power</span>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-900 leading-snug">Site Grid Interconnection Limits</h2>
+                  <p class="text-sm text-slate-500">Substation physical capacity & automatic peak power capping</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                Active Enforcement
+              </span>
+            </div>
+
+            <!-- Card Body / Form Fields -->
+            <div class="p-6 space-y-6">
+
+              <!-- Grid Connection Capacity Limit -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start pb-6 border-b border-slate-100">
+                <div class="sm:col-span-6">
+                  <label for="grid-capacity" class="block text-base font-semibold text-slate-900">
+                    Grid Connection Capacity Limit
+                  </label>
+                  <p class="text-sm text-slate-500 mt-1">Utility service feed ceiling under Rule 21 / interconnect SLA agreement.</p>
+                </div>
+                <div class="sm:col-span-6">
+                  <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="grid-capacity" value="500" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                      kW
+                    </div>
+                  </div>
+                  <span class="text-xs text-slate-500 mt-1.5 block">Substation Transformer rated max: 600 kVA</span>
+                </div>
+              </div>
+
+              <!-- Peak Shaving Threshold -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start pb-6 border-b border-slate-100">
+                <div class="sm:col-span-6">
+                  <label for="peak-threshold" class="block text-base font-semibold text-slate-900">
+                    Peak Shaving Threshold
+                  </label>
+                  <p class="text-sm text-slate-500 mt-1">Automatically throttles non-critical EV dispensers when total load exceeds this threshold.</p>
+                </div>
+                <div class="sm:col-span-6">
+                  <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="peak-threshold" value="420" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                      kW
+                    </div>
+                  </div>
+                  <!-- Threshold indicator bar -->
+                  <div class="mt-2.5">
+                    <div class="flex justify-between text-xs font-medium text-slate-500 mb-1">
+                      <span>Threshold margin</span>
+                      <span class="text-emerald-700 font-semibold">84% of capacity</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                      <div class="bg-amber-500 h-2 rounded-full" style="width: 84%"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Reverse Power Flow (Solar Export) -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start pb-6 border-b border-slate-100">
+                <div class="sm:col-span-6">
+                  <div class="flex items-center gap-2">
+                    <label for="solar-export" class="text-base font-semibold text-slate-900">
+                      Reverse Power Flow (Solar Export)
+                    </label>
+                  </div>
+                  <p class="text-sm text-slate-500 mt-1">Permit backfeeding surplus rooftop PV generation into regional distribution feeder.</p>
+                </div>
+                <div class="sm:col-span-6 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="text-base font-medium text-slate-700">Export Authorization</span>
+                    <!-- Switch / Toggle Enabled -->
+                    <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-[#006948] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#006948]" role="switch" aria-checked="true">
+                      <span aria-hidden="true" class="translate-x-5 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                    </button>
+                  </div>
+                  <!-- Max export limit input -->
+                  <div class="relative rounded-lg shadow-sm">
+                    <div class="text-xs font-medium text-slate-600 mb-1">Max Solar Export Limit</div>
+                    <div class="relative">
+                      <input type="number" id="solar-export" value="150" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                      <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                        kW
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Failsafe Default Power Cap -->
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-6">
+                  <label for="failsafe-cap" class="block text-base font-semibold text-slate-900">
+                    Failsafe Default Power Cap
+                  </label>
+                  <p class="text-sm text-slate-500 mt-1">Autonomous hardware limit applied if central network communication to CSMS drops.</p>
+                </div>
+                <div class="sm:col-span-6">
+                  <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="failsafe-cap" value="100" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                      kW
+                    </div>
+                  </div>
+                  <span class="text-xs text-amber-600 font-medium mt-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[14px]">warning</span>
+                    Triggers 10s after heartbeat timeout
+                  </span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CARD 2: BESS Battery Storage Operational Profile -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">battery_charging_full</span>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-900 leading-snug">BESS Battery Storage Operational Profile</h2>
+                  <p class="text-sm text-slate-500">Lithium Iron Phosphate (LFP) 420 kWh pack dispatch thresholds</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+                420 kWh LFP
+              </span>
+            </div>
+
+            <!-- Card Body / Form Fields -->
+            <div class="p-6 space-y-6">
+
+              <!-- Minimum Reserve SoC Slider -->
+              <div class="pb-6 border-b border-slate-100">
+                <div class="flex items-center justify-between mb-2">
+                  <label for="soc-slider" class="text-base font-semibold text-slate-900">
+                    Minimum Reserve State of Charge (SoC)
+                  </label>
+                  <span class="text-base font-bold text-[#006948] bg-emerald-50 px-2.5 py-0.5 rounded border border-emerald-200 tabular-nums">
+                    20%
+                  </span>
+                </div>
+                <p class="text-sm text-slate-500 mb-3">Guaranteed reserve buffer protected from peak-shaving dispatch to preserve cell lifecycle health.</p>
+                <div class="space-y-2">
+                  <input type="range" id="soc-slider" min="10" max="50" value="20" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#006948]" />
+                  <div class="flex justify-between text-xs text-slate-600 font-medium tabular-nums">
+                    <span>10% (Deep Cycle)</span>
+                    <span class="text-[#006948] font-bold">20% (Recommended)</span>
+                    <span>50% (High Reserve)</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Charge & Discharge Limits (Two column inner grid) -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pb-6 border-b border-slate-100">
+                <!-- Maximum Charge Rate -->
+                <div>
+                  <label for="max-charge" class="block text-base font-semibold text-slate-900">
+                    Maximum Charge Rate
+                  </label>
+                  <p class="text-sm text-slate-500 mt-0.5 mb-2">Absorption power from solar/grid</p>
+                  <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="max-charge" value="100" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                      kW
+                    </div>
+                  </div>
+                  <span class="text-xs text-slate-600 mt-1.5 block">Max inverter continuous: 125 kW</span>
+                </div>
+
+                <!-- Maximum Discharge Rate -->
+                <div>
+                  <label for="max-discharge" class="block text-base font-semibold text-slate-900">
+                    Maximum Discharge Rate
+                  </label>
+                  <p class="text-sm text-slate-500 mt-0.5 mb-2">Peak injection power during high tariff</p>
+                  <div class="relative rounded-lg shadow-sm">
+                    <input type="number" id="max-discharge" value="150" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-14 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                    <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                      kW
+                    </div>
+                  </div>
+                  <span class="text-xs text-slate-600 mt-1.5 block">C-rate: ~0.35C safe discharge envelope</span>
+                </div>
+              </div>
+
+              <!-- Microgrid Islanding Mode -->
+              <div class="flex items-center justify-between pt-1">
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-base font-semibold text-slate-900">Microgrid Islanding Mode</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                      Standby
+                    </span>
+                  </div>
+                  <p class="text-sm text-slate-500 mt-1 max-w-md">Automatically decouple from utility grid and run in self-sustaining islanded microgrid during regional blackout.</p>
+                </div>
+                <!-- Toggle Switch -->
+                <button type="button" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-slate-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#006948]" role="switch" aria-checked="false">
+                  <span aria-hidden="true" class="translate-x-0 pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"></span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- RIGHT COLUMN: OCPP 2.0.1 Central Gateway (5 cols)        -->
+        <!-- ======================================================== -->
+        <div class="lg:col-span-5 space-y-8">
+
+          <!-- CARD 3: OCPP 2.0.1 Central System Gateway -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-[20px]">router</span>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-slate-900 leading-snug">OCPP 2.0.1 Gateway</h2>
+                  <p class="text-sm text-slate-500">CSMS WebSocket communication & security</p>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                TLS 1.3
+              </span>
+            </div>
+
+            <!-- Card Body / Form Fields -->
+            <div class="p-6 space-y-5">
+
+              <!-- CSMS WebSocket URL -->
+              <div>
+                <label for="ws-url" class="block text-base font-semibold text-slate-900 mb-1">
+                  CSMS WebSocket URL
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                  <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                    <span class="material-symbols-outlined text-[18px]">lock</span>
+                  </div>
+                  <input type="text" id="ws-url" value="wss://csms.mapletyne.com:8443/ocpp201" class="w-full text-base font-mono text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-9 pr-3.5 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] truncate" />
+                </div>
+                <p class="text-xs text-slate-500 mt-1">Requires mutual TLS (mTLS) with x509 hardware token.</p>
+              </div>
+
+              <!-- Heartbeat Interval -->
+              <div>
+                <label for="heartbeat" class="block text-base font-semibold text-slate-900 mb-1">
+                  Heartbeat Interval
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                  <input type="number" id="heartbeat" value="60" class="w-full text-base font-semibold text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-20 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] tabular-nums" />
+                  <div class="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none text-base font-semibold text-slate-500">
+                    seconds
+                  </div>
+                </div>
+                <p class="text-xs text-slate-500 mt-1">OCPP Heartbeat request frequency across all active dispensers.</p>
+              </div>
+
+              <!-- TLS Cipher Suite -->
+              <div>
+                <label for="tls-cipher" class="block text-base font-semibold text-slate-900 mb-1">
+                  TLS Cipher Suite
+                </label>
+                <div class="relative rounded-lg shadow-sm">
+                  <select id="tls-cipher" class="w-full text-base font-medium text-slate-900 rounded-lg border border-slate-300 py-2.5 pl-3.5 pr-10 focus:outline-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] bg-white appearance-none cursor-pointer">
+                    <option selected>ECDHE-ECDSA-AES128-GCM-SHA256 (mTLS Required)</option>
+                    <option>ECDHE-RSA-AES256-GCM-SHA384</option>
+                    <option>TLS_AES_256_GCM_SHA384 (TLS 1.3 Strict)</option>
+                  </select>
+                  <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-slate-400">
+                    <span class="material-symbols-outlined text-[20px]">expand_more</span>
+                  </div>
+                </div>
+                <p class="text-xs text-emerald-700 font-medium mt-1">Complies with California Rule 21 CSMS cybersecurity profile.</p>
+              </div>
+
+              <!-- Hardware Model Profiles Registered -->
+              <div class="pt-3 border-t border-slate-100">
+                <div class="flex items-center justify-between mb-3">
+                  <label class="block text-base font-semibold text-slate-900">
+                    Hardware Model Profiles
+                  </label>
+                  <span class="text-xs font-semibold text-slate-500">2 Connected Models</span>
+                </div>
+
+                <!-- List of Profiles -->
+                <div class="space-y-2.5">
+                  <!-- Profile 1: ABB Terra 184 -->
+                  <div class="p-3.5 rounded-lg border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition-colors flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-600">
+                        <span class="material-symbols-outlined text-[20px]">ev_station</span>
+                      </div>
+                      <div>
+                        <div class="text-base font-semibold text-slate-900 leading-tight">ABB Terra 184</div>
+                        <div class="text-xs text-slate-500 font-mono mt-0.5">Firmware v3.2.1 • 180 kW DC</div>
+                      </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      8 Units
+                    </span>
+                  </div>
+
+                  <!-- Profile 2: Alpitronic HYC300 -->
+                  <div class="p-3.5 rounded-lg border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition-colors flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-600">
+                        <span class="material-symbols-outlined text-[20px]">bolt</span>
+                      </div>
+                      <div>
+                        <div class="text-base font-semibold text-slate-900 leading-tight">Alpitronic Hypercharger HYC300</div>
+                        <div class="text-xs text-slate-500 font-mono mt-0.5">Firmware v4.0 • 300 kW DC</div>
+                      </div>
+                    </div>
+                    <span class="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                      4 Units
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Add Hardware Profile Action Button -->
+                <button type="button" class="mt-4 w-full py-2.5 px-4 rounded-lg border border-dashed border-slate-300 text-slate-700 hover:text-[#006948] hover:border-[#006948] hover:bg-emerald-50/40 text-base font-semibold flex items-center justify-center gap-2 transition-colors">
+                  <span class="material-symbols-outlined text-[20px]">add</span>
+                  <span>Add Hardware Profile</span>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Quick Info / Help Callout Box -->
+          <div class="p-5 rounded-xl bg-slate-900 text-white shadow-sm flex items-start gap-4">
+            <span class="material-symbols-outlined text-emerald-400 text-[24px] mt-0.5">info</span>
+            <div>
+              <div class="text-base font-semibold text-white">Dynamic Load Balancing Active</div>
+              <p class="text-sm text-slate-300 mt-1 leading-relaxed">
+                Changes to grid capacity or peak shaving thresholds are broadcasted instantaneously to local charger controllers via 100ms synchrophasor UDP multicast.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- FOOTER BAR -->
+    <footer class="h-12 bg-white border-t border-slate-200 px-8 flex items-center justify-between text-xs text-slate-500">
+      <div class="flex items-center gap-4">
+        <span>© 2026 Mapletyne Energy Technologies Inc.</span>
+        <span>•</span>
+        <span>Substation ID: <span class="font-mono text-slate-700">CA-MR-SUB-04</span></span>
+        <span>•</span>
+        <span>Firmware Hash: <span class="font-mono text-slate-700">8f49a290</span></span>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="flex items-center gap-1.5 text-emerald-700 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+          All 12 Charger Endpoints Healthy
+        </span>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

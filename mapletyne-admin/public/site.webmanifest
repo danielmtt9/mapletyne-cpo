@@ -1,0 +1,32 @@
+{
+  "name": "Mapletyne CPO — Executive SaaS EV Charging & Microgrid Management",
+  "short_name": "Mapletyne CPO",
+  "description": "Enterprise Charge Point Operator (CPO) and Energy Management System (EMS) dashboard.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#006948",
+  "orientation": "any",
+  "categories": ["business", "utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

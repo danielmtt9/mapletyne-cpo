@@ -61,7 +61,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
         },
         itemWidth: 10,
         itemHeight: 10,
@@ -75,7 +75,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
         textStyle: {
           color: '#f8fafc',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         extraCssText: 'backdrop-filter: blur(16px); box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5); border-radius: 12px;',
       },
@@ -88,7 +88,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 9,
+          fontSize: 12,
         },
       },
       yAxis: [
@@ -97,7 +97,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
           name: 'kW',
           min: 0,
           max: maxKw,
-          nameTextStyle: { color: '#10B981', fontFamily: 'monospace', fontSize: 9 },
+          nameTextStyle: { color: '#10B981', fontFamily: 'monospace', fontSize: 12 },
           axisLine: { show: false },
           axisTick: { show: false },
           splitLine: {
@@ -109,7 +109,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
           axisLabel: {
             color: '#64748b',
             fontFamily: 'monospace',
-            fontSize: 9,
+            fontSize: 12,
           },
         },
         {
@@ -117,14 +117,14 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
           name: 'SoC %',
           min: 0,
           max: 100,
-          nameTextStyle: { color: '#007AFF', fontFamily: 'monospace', fontSize: 9 },
+          nameTextStyle: { color: '#007AFF', fontFamily: 'monospace', fontSize: 12 },
           axisLine: { show: false },
           axisTick: { show: false },
           splitLine: { show: false },
           axisLabel: {
             color: '#64748b',
             fontFamily: 'monospace',
-            fontSize: 9,
+            fontSize: 12,
             formatter: '{value}%',
           },
         },

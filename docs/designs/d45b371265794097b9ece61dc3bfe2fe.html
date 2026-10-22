@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapletyne EMS - User Profile & Security Management</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Google Font: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              primary: '#006948',
+              'primary-hover': '#005439',
+              light: '#e6f4ee',
+              dark: '#0f172a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'opsz' 24;
+      vertical-align: middle;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tnum {
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body class="bg-[#f8fafc] text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- ==================== SIDEBAR (260px Fixed Dark Slate #0F172A) ==================== -->
+  <aside class="fixed top-0 left-0 h-full w-[260px] bg-[#0F172A] text-slate-300 flex flex-col justify-between z-40 border-r border-slate-800 shadow-xl">
+    <!-- Top Brand & Nav -->
+    <div class="flex flex-col flex-1 overflow-y-auto">
+      <!-- Brand Header -->
+      <div class="h-16 flex items-center justify-between px-6 border-b border-slate-800/80 bg-[#0c1322]">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-lg bg-[#006948] flex items-center justify-center text-white shadow-md">
+            <span class="material-symbols-outlined text-2xl text-emerald-300">bolt</span>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-base font-bold text-white tracking-tight flex items-center gap-2">
+              Mapletyne
+              <span class="text-[12px] font-semibold bg-emerald-950 text-emerald-400 border border-emerald-800/80 px-1.5 py-0.5 rounded">v2.4</span>
+            </span>
+            <span class="text-[13px] font-medium text-slate-400 tracking-wider uppercase">EMS PLATFORM</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav Section -->
+      <div class="px-4 py-6 space-y-6">
+        <div>
+          <div class="px-3 mb-2 text-[13px] font-semibold uppercase tracking-wider text-slate-400">Operational Core</div>
+          <nav class="space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">dashboard</span>
+              <span class="text-base font-medium">Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">ev_station</span>
+                <span class="text-base font-medium">Chargers</span>
+              </div>
+              <span class="text-[13px] font-semibold px-2 py-0.5 rounded-full bg-emerald-900/60 text-emerald-400 border border-emerald-700/50">12 Live</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">receipt_long</span>
+              <span class="text-base font-medium">Sessions</span>
+            </a>
+            <a href="#" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">bolt</span>
+                <span class="text-base font-medium">Energy EMS</span>
+              </div>
+              <span class="text-[13px] font-semibold px-2 py-0.5 rounded-full bg-amber-900/50 text-amber-300 border border-amber-700/50">Peak</span>
+            </a>
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">vpn_key</span>
+              <span class="text-base font-medium">PKI Vault</span>
+            </a>
+          </nav>
+        </div>
+
+        <div>
+          <div class="px-3 mb-2 text-[13px] font-semibold uppercase tracking-wider text-slate-400">System Config</div>
+          <nav class="space-y-1">
+            <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800/80 hover:text-white transition-colors group">
+              <span class="material-symbols-outlined text-slate-400 group-hover:text-emerald-400 text-xl">settings</span>
+              <span class="text-base font-medium">Settings</span>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Operator Profile Card -->
+    <div class="p-4 border-t border-slate-800 bg-[#0c1322]">
+      <div class="flex items-center justify-between p-2 rounded-xl bg-slate-800/70 border border-slate-700/60">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="relative w-10 h-10 rounded-full overflow-hidden border border-emerald-500/50 flex-shrink-0">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkTvYf_spsDNqVl_sZaBmaWp_RLPudcDmjzKNkvPSVSmQ51QavKRNZ_OsaDASSQgv3gdQKxEYSc40licrMvDZBNKak-q2OFogYySB2eF0mfMUWCjYwLveGUreD7S-1l2fawyIMFIjSpmDm5Yrnw8Njlm6n6M5oD3vEZ-ZJXVBMU1jZrAgt0ukZd8JQ2jEd6KdaVZOLK0Vhr6rSPqQZ7JF2BbJR1jIKRfPZZ_j7j9qqQyUg_OB8ZuNgZtLiA6l8TYdKhAmd6TvtS8s" alt="Elena Vance Avatar" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></div>
+          </div>
+          <div class="min-w-0">
+            <p class="text-base font-semibold text-white truncate">Elena Vance</p>
+            <p class="text-[13px] text-slate-400 truncate">Dir. Grid Operations</p>
+          </div>
+        </div>
+        <button title="Sign Out" class="text-slate-400 hover:text-rose-400 hover:bg-slate-700/50 p-2 rounded-lg transition-colors">
+          <span class="material-symbols-outlined text-xl">logout</span>
+        </button>
+      </div>
+      <div class="mt-2.5 flex items-center justify-between px-2 text-[13px] text-slate-400">
+        <span class="flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          Site #04 Maple Ridge
+        </span>
+        <span class="tnum font-medium text-slate-300">60.02 Hz</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ==================== MAIN CONTENT AREA (Left Margin 260px) ==================== -->
+  <div class="ml-[260px] flex-1 flex flex-col min-w-0">
+
+    <!-- Top Header Bar (h-16) -->
+    <header class="h-16 bg-white border-b border-slate-200 sticky top-0 z-30 px-8 flex items-center justify-between shadow-sm">
+      <!-- Left: Breadcrumbs -->
+      <div class="flex items-center gap-2 text-base">
+        <a href="#" class="text-slate-500 hover:text-slate-800 font-medium transition-colors">Operator Profile</a>
+        <span class="text-slate-400">/</span>
+        <span class="font-semibold text-slate-900">Elena Vance</span>
+      </div>
+
+      <!-- Right: Status Pill & Action Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Live Status Pill -->
+        <div class="flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-800 text-[14px] font-semibold">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span class="material-symbols-outlined text-emerald-700 text-lg">lock</span>
+          <span>Session Active: Encrypted via mTLS</span>
+        </div>
+
+        <div class="h-6 w-px bg-slate-200 mx-1"></div>
+
+        <!-- Secondary Action: Export -->
+        <button class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 text-base font-semibold hover:bg-slate-50 hover:border-slate-400 transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-slate-600 text-xl">download</span>
+          <span>Audit Log Export</span>
+        </button>
+
+        <!-- Primary Action: Edit Profile -->
+        <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#006948] text-white text-base font-semibold hover:bg-[#005439] transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-white text-xl">edit</span>
+          <span>Edit Profile</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body Container -->
+    <main class="flex-1 p-8 max-w-7xl w-full mx-auto space-y-6">
+      
+      <!-- Page Title & Microgrid Meta Banner -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
+        <div>
+          <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Operator Identity & Security Credentials</h1>
+          <p class="text-base text-slate-500 mt-1">Manage cryptographic certificates, physical RFID authentication keys, and real-time dispatch privileges.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white border border-slate-200 shadow-sm text-base">
+            <span class="material-symbols-outlined text-emerald-600 text-xl">verified_user</span>
+            <span class="font-medium text-slate-700">Security Clearance:</span>
+            <span class="font-bold text-slate-900">Level 4 Autonomous Grid Control</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Two-Column Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- ==================== LEFT COLUMN (5 Cols): Profile Overview & Preferences ==================== -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- CARD 1: Operator Avatar & Overview -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 relative overflow-hidden">
+            <!-- Decorative Accent Bar -->
+            <div class="absolute top-0 left-0 right-0 h-2 bg-[#006948]"></div>
+            
+            <div class="flex flex-col items-center text-center mt-2">
+              <div class="relative w-28 h-28 rounded-full overflow-hidden border-4 border-slate-100 shadow-md mb-4 ring-2 ring-emerald-500/30">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkTvYf_spsDNqVl_sZaBmaWp_RLPudcDmjzKNkvPSVSmQ51QavKRNZ_OsaDASSQgv3gdQKxEYSc40licrMvDZBNKak-q2OFogYySB2eF0mfMUWCjYwLveGUreD7S-1l2fawyIMFIjSpmDm5Yrnw8Njlm6n6M5oD3vEZ-ZJXVBMU1jZrAgt0ukZd8JQ2jEd6KdaVZOLK0Vhr6rSPqQZ7JF2BbJR1jIKRfPZZ_j7j9qqQyUg_OB8ZuNgZtLiA6l8TYdKhAmd6TvtS8s" alt="Elena Vance Portrait" class="w-full h-full object-cover">
+                <span class="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-2 border-white rounded-full flex items-center justify-center text-white" title="Active On-Duty">
+                  <span class="material-symbols-outlined text-[12px] font-bold">check</span>
+                </span>
+              </div>
+              
+              <h2 class="text-2xl font-bold text-slate-900">Elena Vance</h2>
+              <p class="text-base font-semibold text-emerald-800 mt-1">Director of Grid Operations &amp; Microgrid Architecture</p>
+              <p class="text-base text-slate-500 flex items-center justify-center gap-1.5 mt-1">
+                <span class="material-symbols-outlined text-slate-400 text-lg">corporate_fare</span>
+                Mapletyne Fleet Power LLC
+              </p>
+
+              <!-- Badges -->
+              <div class="flex flex-wrap items-center justify-center gap-2 mt-4">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[14px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+                  <span class="material-symbols-outlined text-emerald-700 text-base">shield</span>
+                  Super Admin
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[14px] font-semibold bg-sky-50 text-sky-800 border border-sky-200">
+                  <span class="material-symbols-outlined text-sky-700 text-base">electric_bolt</span>
+                  OCPP 2.0.1 Certified
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[14px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                  <span class="material-symbols-outlined text-slate-600 text-base">pin_drop</span>
+                  Substation #04
+                </span>
+              </div>
+            </div>
+
+            <!-- Operational Stats Strip -->
+            <div class="grid grid-cols-2 gap-3 mt-6 pt-6 border-t border-slate-100 text-center">
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div class="text-[14px] font-medium text-slate-500 uppercase tracking-wider">Substations Under Dispatch</div>
+                <div class="text-xl font-bold text-slate-900 mt-1 tnum">8 Direct Sites</div>
+              </div>
+              <div class="p-3 bg-slate-50 rounded-lg border border-slate-100">
+                <div class="text-[14px] font-medium text-slate-500 uppercase tracking-wider">Peak Capacity Control</div>
+                <div class="text-xl font-bold text-[#006948] mt-1 tnum">14.8 MW</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 2: Contact & Notification Preferences Form -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+              <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-[#006948] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-xl">contact_mail</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Contact & Notification Protocols</h3>
+              </div>
+              <span class="text-[14px] font-semibold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">24/7 Dispatch</span>
+            </div>
+
+            <form class="space-y-4" onsubmit="return false;">
+              <!-- Field 1: Email -->
+              <div>
+                <label class="block text-base font-semibold text-slate-800 mb-1.5">Official Operator Email</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <span class="material-symbols-outlined text-lg">mail</span>
+                  </div>
+                  <input type="email" value="elena.vance@mapletyne.com" readonly class="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-base text-slate-900 font-normal focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#006948]">
+                </div>
+                <p class="text-[14px] text-slate-500 mt-1">Bound to Active Directory Single Sign-On (SAML 2.0).</p>
+              </div>
+
+              <!-- Field 2: Emergency Phone -->
+              <div>
+                <label class="block text-base font-semibold text-slate-800 mb-1.5">Emergency Grid Operations Phone</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <span class="material-symbols-outlined text-lg">call</span>
+                  </div>
+                  <input type="text" value="+1 (555) 392-8810" class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-base text-slate-900 font-normal focus:outline-none focus:ring-2 focus:ring-[#006948]">
+                </div>
+                <p class="text-[14px] text-slate-500 mt-1">Automatic voice broadcast during regional grid frequency dips (&lt;59.8 Hz).</p>
+              </div>
+
+              <!-- Field 3: Timezone -->
+              <div>
+                <label class="block text-base font-semibold text-slate-800 mb-1.5">Operational Timezone</label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <span class="material-symbols-outlined text-lg">schedule</span>
+                  </div>
+                  <select class="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-lg text-base text-slate-900 font-normal focus:outline-none focus:ring-2 focus:ring-[#006948]">
+                    <option selected>America/New_York (UTC-5 / Eastern)</option>
+                    <option>America/Chicago (UTC-6 / Central)</option>
+                    <option>America/Denver (UTC-7 / Mountain)</option>
+                    <option>America/Los_Angeles (UTC-8 / Pacific)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Field 4: Alert Escalation Level -->
+              <div>
+                <label class="block text-base font-semibold text-slate-800 mb-1.5">Alert Escalation Level</label>
+                <div class="p-3.5 rounded-lg border border-amber-200 bg-amber-50/70 flex items-start gap-3">
+                  <span class="material-symbols-outlined text-amber-600 text-2xl flex-shrink-0 mt-0.5">warning</span>
+                  <div>
+                    <div class="text-base font-bold text-amber-950">Priority 1 (Grid Overload &amp; Islanding Faults)</div>
+                    <p class="text-base text-amber-900/90 mt-0.5">Immediate push notification, SMS, and bypass of silent mode when BESS emergency cutoff triggers.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-2">
+                <button type="button" class="w-full py-2.5 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-base font-semibold transition-colors flex items-center justify-center gap-2 shadow-sm">
+                  <span class="material-symbols-outlined text-xl">save</span>
+                  Save Notification Preferences
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+        <!-- ==================== RIGHT COLUMN (7 Cols): Security, RFID & PKI ==================== -->
+        <div class="lg:col-span-7 space-y-6">
+
+          <!-- CARD 3: PKI Certificate & Mutual TLS Identity (Tabler Card Shell) -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-emerald-50 text-[#006948] flex items-center justify-center">
+                  <span class="material-symbols-outlined text-2xl">verified</span>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900">PKI Certificate &amp; Mutual TLS Identity</h3>
+                  <p class="text-base text-slate-500">Hardware token x509 cryptographic authentication for OCPP 2.0.1 and SCADA API.</p>
+                </div>
+              </div>
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[14px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+                Valid
+              </span>
+            </div>
+
+            <!-- Certificate Details Grid -->
+            <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span class="text-[14px] font-medium text-slate-500 uppercase tracking-wider block">Common Name (CN)</span>
+                <span class="text-base font-semibold text-slate-900 mt-1 block font-mono">elena.vance.mapletyne.internal</span>
+              </div>
+              <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span class="text-[14px] font-medium text-slate-500 uppercase tracking-wider block">Certificate Serial Number</span>
+                <span class="text-base font-semibold text-slate-900 mt-1 block font-mono tnum">7A:19:C4:00:8F:22</span>
+              </div>
+              <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span class="text-[14px] font-medium text-slate-500 uppercase tracking-wider block">Issuer Authority</span>
+                <span class="text-base font-semibold text-slate-900 mt-1 block">Mapletyne Root CA-01 (FIPS 140-2 Level 3)</span>
+              </div>
+              <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-200">
+                <span class="text-[14px] font-medium text-slate-500 uppercase tracking-wider block">Validity &amp; Expiration</span>
+                <div class="flex items-center justify-between mt-1">
+                  <span class="text-base font-semibold text-emerald-800">Expires in 428 days</span>
+                  <span class="text-[14px] font-medium text-slate-500 tnum">Oct 14, 2027</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PKI Action Buttons -->
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-slate-100">
+              <div class="flex items-center gap-2 text-[14px] text-slate-600">
+                <span class="material-symbols-outlined text-slate-400 text-lg">vpn_key</span>
+                <span>Algorithm: ECDSA (secp384r1) + SHA-384</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-300 bg-white text-slate-700 text-base font-medium hover:bg-slate-50 transition-colors">
+                  <span class="material-symbols-outlined text-slate-500 text-lg">download</span>
+                  Export .CRT
+                </button>
+                <button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#006948] text-white text-base font-semibold hover:bg-[#005439] transition-colors shadow-sm">
+                  <span class="material-symbols-outlined text-white text-xl">autorenew</span>
+                  <span>Renew Certificate</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 4: Assigned Master RFID Tokens -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-sky-50 text-sky-700 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-2xl">badge</span>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900">Assigned Master RFID Tokens</h3>
+                  <p class="text-base text-slate-500">Contactless physical authorization credentials for onsite DCFC dispensers.</p>
+                </div>
+              </div>
+              <button class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white text-slate-800 text-base font-semibold hover:bg-slate-50 transition-colors shadow-sm">
+                <span class="material-symbols-outlined text-slate-700 text-xl">add_card</span>
+                <span>Register New RFID UID</span>
+              </button>
+            </div>
+
+            <!-- RFID Token List -->
+            <div class="mt-5 space-y-3">
+              <!-- Token 1 -->
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-11 h-11 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">credit_card</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="font-mono text-base font-bold text-slate-900 tnum">04:A2:8B:91</span>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-[13px] font-semibold bg-emerald-100 text-emerald-800">
+                        Active
+                      </span>
+                    </div>
+                    <div class="text-base text-slate-600 font-medium mt-0.5">Master Fleet Card (All Substation Dispensers)</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-center">
+                  <button class="px-3 py-1.5 text-base font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
+                    Audit Tap Logs
+                  </button>
+                  <button class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors" title="Revoke Token">
+                    <span class="material-symbols-outlined text-xl">block</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Token 2 -->
+              <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 hover:bg-white hover:border-emerald-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-11 h-11 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center flex-shrink-0">
+                    <span class="material-symbols-outlined text-2xl">emergency_home</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2.5">
+                      <span class="font-mono text-base font-bold text-slate-900 tnum">8B:22:FE:19</span>
+                      <span class="inline-flex items-center px-2 py-0.5 rounded text-[13px] font-semibold bg-emerald-100 text-emerald-800">
+                        Active
+                      </span>
+                    </div>
+                    <div class="text-base text-slate-600 font-medium mt-0.5">Emergency Maintenance Override (Bypass Lockout)</div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 self-end sm:self-center">
+                  <button class="px-3 py-1.5 text-base font-medium text-slate-600 hover:text-slate-900 bg-white border border-slate-200 rounded-lg hover:border-slate-300 transition-colors">
+                    Audit Tap Logs
+                  </button>
+                  <button class="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg transition-colors" title="Revoke Token">
+                    <span class="material-symbols-outlined text-xl">block</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CARD 5: Recent Security Audit Trail (Tabler Data Table) -->
+          <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div class="p-6 pb-4 border-b border-slate-100 flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-2xl">history</span>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold text-slate-900">Recent Security Audit Trail</h3>
+                  <p class="text-base text-slate-500">Immutable immutable ledger of operator actions and dispatch commands.</p>
+                </div>
+              </div>
+              <span class="text-[14px] text-slate-500 font-medium flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-emerald-600 text-base">sync</span>
+                Live Telemetry Synced
+              </span>
+            </div>
+
+            <!-- Table Container -->
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 border-b border-slate-200 text-[14px] font-semibold text-slate-600 uppercase tracking-wider">
+                    <th scope="col" class="py-3.5 px-6">Timestamp</th>
+                    <th scope="col" class="py-3.5 px-6">Operator Action</th>
+                    <th scope="col" class="py-3.5 px-6">Source IP</th>
+                    <th scope="col" class="py-3.5 px-6 text-right">Result</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-base">
+                  <!-- Row 1 -->
+                  <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="py-4 px-6 font-medium text-slate-600 tnum text-[14px]">
+                      <div class="font-semibold text-slate-900">11:42 AM</div>
+                      <div class="text-[13px] text-slate-400">Today</div>
+                    </td>
+                    <td class="py-4 px-6 text-slate-900 font-medium">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-amber-600 text-lg">tune</span>
+                        Adjusted Peak Shaving Threshold to 420 kW
+                      </div>
+                    </td>
+                    <td class="py-4 px-6 font-mono text-slate-600 text-[14px] tnum">
+                      192.168.1.104
+                    </td>
+                    <td class="py-4 px-6 text-right">
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[13px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Success
+                      </span>
+                    </td>
+                  </tr>
+
+                  <!-- Row 2 -->
+                  <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="py-4 px-6 font-medium text-slate-600 tnum text-[14px]">
+                      <div class="font-semibold text-slate-900">09:15 AM</div>
+                      <div class="text-[13px] text-slate-400">Today</div>
+                    </td>
+                    <td class="py-4 px-6 text-slate-900 font-medium">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emerald-600 text-lg">battery_charging_full</span>
+                        Dispatched 50 kW BESS Discharge Command
+                      </div>
+                    </td>
+                    <td class="py-4 px-6 font-mono text-slate-600 text-[14px] tnum">
+                      192.168.1.104
+                    </td>
+                    <td class="py-4 px-6 text-right">
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[13px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Success
+                      </span>
+                    </td>
+                  </tr>
+
+                  <!-- Row 3 -->
+                  <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="py-4 px-6 font-medium text-slate-600 tnum text-[14px]">
+                      <div class="font-semibold text-slate-900">16:48 PM</div>
+                      <div class="text-[13px] text-slate-400">Yesterday</div>
+                    </td>
+                    <td class="py-4 px-6 text-slate-900 font-medium">
+                      <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sky-600 text-lg">lock_reset</span>
+                        Rotated OCPP 2.0.1 Station TLS Private Key
+                      </div>
+                    </td>
+                    <td class="py-4 px-6 font-mono text-slate-600 text-[14px] tnum">
+                      10.0.4.12
+                    </td>
+                    <td class="py-4 px-6 text-right">
+                      <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[13px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                        Success
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Footer Pagination / Full Ledger Link -->
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-base">
+              <span class="text-[14px] text-slate-500">Showing 3 most recent privileged security events</span>
+              <a href="#" class="inline-flex items-center gap-1.5 text-base font-semibold text-[#006948] hover:text-[#005439] transition-colors">
+                <span>View Full Substation Audit Ledger</span>
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="mt-auto py-4 px-8 border-t border-slate-200 bg-white text-slate-500 text-[14px] flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div>&copy; 2026 Mapletyne Energy Technologies Inc. &bull; Enterprise Fleet EMS &bull; FIPS 140-2 Level 3 Hardware Security</div>
+      <div class="flex items-center gap-4">
+        <span class="flex items-center gap-1.5 text-emerald-700 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          Substation CA-MR-SUB-04 Synchronized
+        </span>
+        <span class="text-slate-300">|</span>
+        <span class="font-mono text-slate-400">mTLS Handshake #9042-A</span>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>

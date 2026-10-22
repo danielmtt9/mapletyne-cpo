@@ -2,23 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, ApiError } from '@/lib/api-client';
 import { useTheme } from '@/lib/theme-provider';
-import {
-  ShieldCheck,
-  Mail,
-  Lock,
-  User,
-  Building,
-  Phone,
-  ArrowRight,
-  RefreshCw,
-  Zap,
-  CheckCircle2,
-  AlertCircle,
-  Car,
-  Cpu,
-  Truck,
-  ArrowLeft,
-} from 'lucide-react';
+
 
 interface AuthResponse {
   token?: string;
@@ -284,7 +268,7 @@ export const LoginPage: React.FC = () => {
             aria-hidden="true"
             className="w-[60vw] max-w-[700px] max-h-[700px] object-contain filter blur-[40px] saturate-150 transform scale-110"
           />
-          <div className="absolute inset-0 backdrop-blur-[24px] bg-slate-950/60" />
+          <div className="absolute inset-0  bg-slate-950/60" />
         </div>
       )}
 
@@ -293,7 +277,7 @@ export const LoginPage: React.FC = () => {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
 
       {/* Main Glassmorphism Card */}
-      <div className="w-full max-w-lg bg-[#0e172a]/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-8 shadow-2xl space-y-6 relative z-10 transition-all duration-300">
+      <div className="w-full max-w-lg bg-surface-container border border-white/10 rounded-2xl p-8 shadow-2xl space-y-6 relative z-10 transition-all duration-300">
         
         {/* Header Branding */}
         <div className="text-center space-y-3">
@@ -302,16 +286,16 @@ export const LoginPage: React.FC = () => {
               <img src={activeLogo} alt="Logo" className="w-full h-full object-contain" />
             </div>
           ) : (
-            <div className="w-14 h-14 bg-gradient-to-tr from-primary to-blue-500 text-surface-dark flex items-center justify-center font-extrabold font-headline text-2xl rounded-2xl mx-auto shadow-lg shadow-primary/20 ring-1 ring-white/20">
-              <Zap className="w-7 h-7 text-[#070d19] fill-current" />
+            <div className="w-14 h-14 bg-gradient-to-tr from-primary to-emerald-500 text-surface-dark flex items-center justify-center font-extrabold font-headline text-2xl rounded-2xl mx-auto shadow-lg shadow-primary/20 ring-1 ring-white/20">
+              <span className="material-symbols-outlined text-3xl text-[#070d19]" aria-hidden="true">bolt</span>
             </div>
           )}
           <div>
-            <h1 className="font-headline text-2xl font-bold tracking-tight text-white">
-              {branding.app_title || branding.company_name || 'Charge Station Management System'}
+            <h1 className="font-headline text-4xl font-bold tracking-tight text-white">
+              {branding.app_title || branding.company_name || 'Mapletyne EMS'}
             </h1>
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
-              {branding.portal_tagline || 'Enterprise EV Charging Management (CSMS)'}
+              {branding.portal_tagline || 'Executive SaaS EV Charging Management'}
             </p>
           </div>
         </div>
@@ -353,7 +337,7 @@ export const LoginPage: React.FC = () => {
           <div className="space-y-4">
             {loginError && (
               <div id="error-banner" className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-mono flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span className="material-symbols-outlined text-base flex-shrink-0 mt-0.5" aria-hidden="true">error</span>
                 <span>{loginError}</span>
               </div>
             )}
@@ -361,7 +345,7 @@ export const LoginPage: React.FC = () => {
             <form id="login-form" onSubmit={handleLoginSubmit} className="space-y-4 font-body">
               <div>
                 <label className="block text-sm font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-primary" />
+                  <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">mail</span>
                   Email / Operator ID
                 </label>
                 <div className="relative">
@@ -381,7 +365,7 @@ export const LoginPage: React.FC = () => {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="block text-sm font-semibold text-slate-200 flex items-center gap-1.5">
-                    <Lock className="w-4 h-4 text-primary" />
+                    <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">lock</span>
                     Password
                   </label>
                 </div>
@@ -405,12 +389,12 @@ export const LoginPage: React.FC = () => {
               >
                 {isLoggingIn ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span className="material-symbols-outlined text-base animate-spin" aria-hidden="true">refresh</span>
                     Authenticating...
                   </>
                 ) : (
                   <>
-                    <ShieldCheck className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-base" aria-hidden="true">verified_user</span>
                     Sign In to System
                   </>
                 )}
@@ -424,7 +408,7 @@ export const LoginPage: React.FC = () => {
           <div className="space-y-4">
             {regError && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-mono flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span className="material-symbols-outlined text-base flex-shrink-0 mt-0.5" aria-hidden="true">error</span>
                 <span>{regError}</span>
               </div>
             )}
@@ -432,7 +416,7 @@ export const LoginPage: React.FC = () => {
             <form onSubmit={handleRegisterSubmit} className="space-y-3.5 font-body">
               <div>
                 <label className="block text-sm font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-                  <User className="w-4 h-4 text-primary" />
+                  <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">person</span>
                   Full Name
                 </label>
                 <input
@@ -448,7 +432,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-                  <Mail className="w-4 h-4 text-primary" />
+                  <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">mail</span>
                   Work Email Address
                 </label>
                 <input
@@ -464,7 +448,7 @@ export const LoginPage: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-slate-200 mb-1.5 flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-primary" />
+                  <span className="material-symbols-outlined text-base text-primary" aria-hidden="true">lock</span>
                   Password (min 6 characters)
                 </label>
                 <input
@@ -493,7 +477,7 @@ export const LoginPage: React.FC = () => {
                         : 'bg-[#070d19]/60 border-white/10 text-slate-400 hover:border-white/20'
                     }`}
                   >
-                    <Cpu className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-base" aria-hidden="true">memory</span>
                     <span className="text-xs font-semibold leading-tight">Site Operator</span>
                   </button>
                   <button
@@ -505,7 +489,7 @@ export const LoginPage: React.FC = () => {
                         : 'bg-[#070d19]/60 border-white/10 text-slate-400 hover:border-white/20'
                     }`}
                   >
-                    <Truck className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-base" aria-hidden="true">local_shipping</span>
                     <span className="text-xs font-semibold leading-tight">Fleet Manager</span>
                   </button>
                   <button
@@ -517,7 +501,7 @@ export const LoginPage: React.FC = () => {
                         : 'bg-[#070d19]/60 border-white/10 text-slate-400 hover:border-white/20'
                     }`}
                   >
-                    <Car className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-base" aria-hidden="true">directions_car</span>
                     <span className="text-xs font-semibold leading-tight">EV Driver</span>
                   </button>
                 </div>
@@ -527,7 +511,7 @@ export const LoginPage: React.FC = () => {
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1">
-                    <Building className="w-3.5 h-3.5 text-primary" />
+                    <span className="material-symbols-outlined text-sm text-primary" aria-hidden="true">business</span>
                     Company (Optional)
                   </label>
                   <input
@@ -540,7 +524,7 @@ export const LoginPage: React.FC = () => {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-300 mb-1 flex items-center gap-1">
-                    <Phone className="w-3.5 h-3.5 text-primary" />
+                    <span className="material-symbols-outlined text-sm text-primary" aria-hidden="true">phone</span>
                     Phone (Optional)
                   </label>
                   <input
@@ -560,13 +544,13 @@ export const LoginPage: React.FC = () => {
               >
                 {isRegistering ? (
                   <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span className="material-symbols-outlined text-base animate-spin" aria-hidden="true">refresh</span>
                     Sending Code...
                   </>
                 ) : (
                   <>
                     Continue to Email Verification
-                    <ArrowRight className="w-4 h-4" />
+                    <span className="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
                   </>
                 )}
               </button>
@@ -588,13 +572,13 @@ export const LoginPage: React.FC = () => {
 
       {/* ── STEP 2: 6-DIGIT EMAIL OTP VERIFICATION MODAL ─────────────────── */}
       {showOtpModal && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 bg-slate-950/70 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="w-full max-w-md bg-[#0e172a] border border-primary/30 rounded-2xl p-7 shadow-2xl space-y-6 relative ring-1 ring-primary/20">
             
             {/* Modal Header */}
             <div className="text-center space-y-2">
               <div className="w-12 h-12 bg-primary/10 border border-primary/30 text-primary rounded-xl flex items-center justify-center mx-auto mb-2">
-                <Mail className="w-6 h-6 text-primary" />
+                <span className="material-symbols-outlined text-2xl text-primary" aria-hidden="true">mail</span>
               </div>
               <h2 className="font-headline text-xl font-bold text-white">
                 Verify Your Email
@@ -610,13 +594,13 @@ export const LoginPage: React.FC = () => {
             {/* Error or Success alerts */}
             {otpError && (
               <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-xs font-mono flex items-start space-x-2">
-                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span className="material-symbols-outlined text-base flex-shrink-0 mt-0.5" aria-hidden="true">error</span>
                 <span>{otpError}</span>
               </div>
             )}
             {resendSuccess && (
               <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-mono flex items-start space-x-2">
-                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" />
+                <span className="material-symbols-outlined text-base flex-shrink-0 mt-0.5" aria-hidden="true">check_circle</span>
                 <span>{resendSuccess}</span>
               </div>
             )}
@@ -658,12 +642,12 @@ export const LoginPage: React.FC = () => {
                 >
                   {isVerifyingOtp ? (
                     <>
-                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span className="material-symbols-outlined text-base animate-spin" aria-hidden="true">refresh</span>
                       Verifying & Provisioning...
                     </>
                   ) : (
                     <>
-                      <CheckCircle2 className="w-4 h-4" />
+                      <span className="material-symbols-outlined text-base" aria-hidden="true">check_circle</span>
                       Complete Registration
                     </>
                   )}
@@ -675,7 +659,7 @@ export const LoginPage: React.FC = () => {
                     onClick={() => setShowOtpModal(false)}
                     className="text-xs font-mono text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
                   >
-                    <ArrowLeft className="w-3.5 h-3.5" />
+                    <span className="material-symbols-outlined text-sm" aria-hidden="true">arrow_back</span>
                     Back / Edit Email
                   </button>
 

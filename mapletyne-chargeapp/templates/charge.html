@@ -108,11 +108,11 @@
         <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
           <div>
             <div id="est-cost" style="font-size:20px; font-weight:700; color:var(--text1,#fff);">—</div>
-            <div style="font-size:11px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.incl_btw | default('incl. VAT') }}</div>
+            <div style="font-size:12px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.incl_btw | default('incl. VAT') }}</div>
           </div>
           <div style="text-align:right;">
             <div id="est-time" style="font-size:14px; font-weight:600; color:var(--text2,#c0d0e0);">—</div>
-            <div style="font-size:11px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.estimated_time | default('estimated charge time') }}</div>
+            <div style="font-size:12px; color:var(--text3,#6a8aa0); margin-top:2px;">{{ t.estimated_time | default('estimated charge time') }}</div>
           </div>
         </div>
       </div>
@@ -160,22 +160,22 @@
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
           <div style="display:flex;justify-content:space-between;gap:8px;">
             <div style="flex:1;">
-              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Start Battery %</label>
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px;">Start Battery %</label>
               <input type="number" id="driver-start-soc" min="0" max="100" placeholder="20"
                      style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
             </div>
             <div style="flex:1;">
-              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Target Battery %</label>
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px;">Target Battery %</label>
               <input type="number" id="driver-target-soc" min="10" max="100" placeholder="80"
                      style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
             </div>
             <div style="flex:1;">
-              <label style="font-size:11px;color:var(--text2);display:block;margin-bottom:4px;">Capacity (kWh)</label>
+              <label style="font-size:12px;color:var(--text2);display:block;margin-bottom:4px;">Capacity (kWh)</label>
               <input type="number" id="driver-battery-kwh" min="10" max="200" step="0.5" placeholder="60"
                      style="width:100%;padding:8px 10px;border-radius:10px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:14px;" />
             </div>
           </div>
-          <div style="font-size:11px;color:var(--text3);">
+          <div style="font-size:12px;color:var(--text3);">
             Used to calculate battery percentage on AC chargers (Type 2) where vehicle does not report native telemetry over Control Pilot.
           </div>
         </div>

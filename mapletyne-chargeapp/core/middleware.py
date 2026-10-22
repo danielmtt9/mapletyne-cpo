@@ -11,6 +11,11 @@ from core.branding import get_branding
 
 import httpx
 import jwt
+from jwt import PyJWKClient
+import hmac
+import secrets
+from typing import Optional
+from fastapi.responses import JSONResponse
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +24,18 @@ JWT_ALGO = "HS256"
 COOKIE_NAME = "auth_token"
 DEVICE_COOKIE = "device_auth"
 DEVICE_COOKIE_MAX_AGE = 60 * 60 * 24 * 30  # 30 days
+
+_kc_jwks_client: Optional[PyJWKClient] = None
+
+def get_kc_jwks_client() -> PyJWKClient:
+    global _kc_jwks_client
+    if _kc_jwks_client is None:
+        kc_url = os.getenv("KEYCLOAK_URL", "http://keycloak:8080/auth").rstrip("/")
+        kc_realm = os.getenv("KEYCLOAK_REALM", "opencpo")
+        certs_url = f"{kc_url}/realms/{kc_realm}/protocol/openid-connect/certs"
+        _kc_jwks_client = PyJWKClient(certs_url, cache_keys=True, max_cached_keys=16, lifespan=3600)
+    return _kc_jwks_client
+
 
 SUPPORTED_LANGS = {"en"}
 DEFAULT_LANG = "en"
@@ -123,25 +140,30 @@ async def inject_context(request, call_next):
                 request.state.auth_method = "jwt"
             except Exception:
                 try:
-                    # 3b. Fallback: Parse Keycloak RS256 token payload with expiry check
-                    payload = jwt.decode(token, options={"verify_signature": False})
-                    exp = payload.get("exp")
-                    if exp and exp > datetime.now(timezone.utc).timestamp():
-                        roles = []
-                        realm_access = payload.get("realm_access", {})
-                        if isinstance(realm_access, dict):
-                            roles = realm_access.get("roles", [])
-                        request.state.account = {
-                            "id": str(payload.get("sub", "")),
-                            "sub": str(payload.get("sub", "")),
-                            "email": payload.get("email", ""),
-                            "name": payload.get("name") or payload.get("preferred_username") or (payload.get("email", "").split("@")[0].capitalize() if payload.get("email") else "Driver"),
-                            "role": "driver" if "driver" in roles or "cpo-driver" in roles else (roles[0] if roles else "driver"),
-                            "roles": roles or ["driver"],
-                        }
-                        request.state.auth_method = "keycloak_jwt"
+                    # 3b. Keycloak RS256 token verification via JWKS (GAP-SEC-08)
+                    jwk_client = get_kc_jwks_client()
+                    signing_key = jwk_client.get_signing_key_from_jwt(token)
+                    payload = jwt.decode(
+                        token,
+                        signing_key.key,
+                        algorithms=["RS256"],
+                        options={"verify_signature": True, "verify_exp": True},
+                    )
+                    roles = []
+                    realm_access = payload.get("realm_access", {})
+                    if isinstance(realm_access, dict):
+                        roles = realm_access.get("roles", [])
+                    request.state.account = {
+                        "id": str(payload.get("sub", "")),
+                        "sub": str(payload.get("sub", "")),
+                        "email": payload.get("email", ""),
+                        "name": payload.get("name") or payload.get("preferred_username") or (payload.get("email", "").split("@")[0].capitalize() if payload.get("email") else "Driver"),
+                        "role": "driver" if "driver" in roles or "cpo-driver" in roles else (roles[0] if roles else "driver"),
+                        "roles": roles or ["driver"],
+                    }
+                    request.state.auth_method = "keycloak_jwt"
                 except Exception as e:
-                    logger.debug(f"JWT cookie decode failed: {e}")
+                    logger.debug(f"JWT cookie decode/verification failed: {e}")
 
     # ── 4. Cert renewal check ────────────────────────────────────────────
     request.state.cert_renewal_needed = False
@@ -163,7 +185,43 @@ async def inject_context(request, call_next):
     request.state.lang = lang
     request.state.t = _TRANSLATIONS.get(lang, _TRANSLATIONS.get(DEFAULT_LANG, {}))
 
-    # ── 5. Inject account and branding into Jinja2 template context ─────
+    # ── CSRF Protection (GAP-SEC-20) ──────────────────────────────────────
+    csrf_token = request.cookies.get("csrf_token")
+    set_csrf_cookie = False
+    if not csrf_token:
+        csrf_token = secrets.token_hex(32)
+        set_csrf_cookie = True
+    request.state.csrf_token = csrf_token
+
+    # Validate CSRF on state-mutating requests
+    if request.method in ("POST", "PUT", "DELETE", "PATCH"):
+        path = request.url.path
+        is_exempt = (
+            path in ("/health", "/manifest.json", "/sw.js")
+            or path.startswith("/static/")
+            or path.startswith("/skin/")
+        )
+        if not is_exempt:
+            submitted_token = (
+                request.headers.get("X-CSRF-Token")
+                or request.headers.get("x-csrf-token")
+                or request.query_params.get("csrf_token")
+            )
+            client_cookie_token = request.cookies.get("csrf_token")
+            if client_cookie_token:
+                if not submitted_token or not hmac.compare_digest(submitted_token, client_cookie_token):
+                    logger.warning(
+                        f"CSRF validation failed for {request.method} {path} "
+                        f"from {request.client.host if request.client else 'unknown'}"
+                    )
+                    return JSONResponse(status_code=403, content={"detail": "CSRF token validation failed"})
+            else:
+                auth_header = request.headers.get("Authorization", "")
+                has_session_cookie = bool(request.cookies.get(COOKIE_NAME) or request.cookies.get(DEVICE_COOKIE))
+                if has_session_cookie or not auth_header.startswith("Bearer "):
+                    return JSONResponse(status_code=403, content={"detail": "CSRF token missing"})
+
+    # ── 5. Inject account, branding, and csrf into Jinja2 template context ─────
     # So base.html nav can always check `account` and `branding` without each route passing it
     templates = getattr(request.app.state, "templates", None)
     if templates:
@@ -173,8 +231,23 @@ async def inject_context(request, call_next):
         templates.env.globals["auth_method"] = request.state.auth_method
         templates.env.globals["cert_renewal_needed"] = request.state.cert_renewal_needed
         templates.env.globals["cert_days_left"] = request.state.cert_days_left
+        templates.env.globals["csrf_token"] = csrf_token
 
     response = await call_next(request)
+
+    # Set csrf_token cookie and header (GAP-SEC-20)
+    is_secure = os.getenv("COOKIE_SECURE", "false").lower() == "true" or request.url.scheme == "https"
+    if set_csrf_cookie:
+        response.set_cookie(
+            "csrf_token",
+            csrf_token,
+            max_age=60 * 60 * 24 * 30,
+            httponly=False,
+            secure=is_secure,
+            samesite="lax",
+            path="/",
+        )
+    response.headers["X-CSRF-Token"] = csrf_token
 
     # Set device_auth cookie when cert identifies successfully
     if _set_device_cookie and request.state.account:

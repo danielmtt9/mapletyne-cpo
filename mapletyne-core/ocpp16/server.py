@@ -5,6 +5,8 @@ Accepts charger connections, routes messages to handler.
 """
 import asyncio
 import logging
+import ssl
+from pathlib import Path
 from typing import Callable
 
 import websockets
@@ -24,21 +26,50 @@ class OCPP16Server:
         self._connections: dict[str, ServerConnection] = {}
         self._server = None
 
+    def _build_ssl_context(self) -> ssl.SSLContext | None:
+        """Build TLS context for OCPP security profile 2/3."""
+        pki_dir = Path(config.pki.data_dir)
+        server_cert = pki_dir / "server.crt"
+        server_key = pki_dir / "server.key"
+        ca_cert = pki_dir / "root-ca.crt"
+
+        if not server_cert.exists():
+            logger.info("No TLS certs found — running without TLS (security profile 1)")
+            return None
+
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ctx.load_cert_chain(str(server_cert), str(server_key))
+
+        if ca_cert.exists():
+            # Security profile 3: mutual TLS (verify client cert)
+            ctx.load_verify_locations(str(ca_cert))
+            ctx.verify_mode = ssl.CERT_OPTIONAL  # Optional — not all chargers have certs yet
+            logger.info("TLS enabled with client cert verification (security profile 3)")
+        else:
+            logger.info("TLS enabled without client cert verification (security profile 2)")
+
+        return ctx
+
     async def serve(self) -> None:
         """Start the WebSocket server."""
+        ssl_context = self._build_ssl_context()
+
         self._server = await websockets.serve(
             self._handler,
             config.ocpp.ocpp16_host,
             config.ocpp.ocpp16_port,
             subprotocols=["ocpp1.6"],
+            ssl=ssl_context,
             ping_interval=None,  # Disable WS pings — use OCPP heartbeats instead (Maxpower doesn't respond to WS pings)
             ping_timeout=None,
             max_size=65536,
             logger=logger,
         )
+
+        scheme = "wss" if ssl_context else "ws"
         logger.info(
             f"OCPP 1.6j server listening on "
-            f"ws://{config.ocpp.ocpp16_host}:{config.ocpp.ocpp16_port}"
+            f"{scheme}://{config.ocpp.ocpp16_host}:{config.ocpp.ocpp16_port}"
         )
         await self._server.wait_closed()
 

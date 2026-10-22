@@ -85,14 +85,11 @@ class SecurityMixin:
 
         logger.info(f"[{self.cp_id}] Get15118EVCertificate: action={action} schema={iso15118_schema}")
 
-        # This will be handled by the iso15118/ module
-        # For now: log and return pending
-        # In production: decode EXI, validate, provision contract cert
+        # Delegate to the ISO 15118 PNC handler.
+        from iso15118.pnc import handle_get_15118_ev_certificate
+        result = handle_get_15118_ev_certificate(payload)
 
-        return {
-            "status": "Accepted",
-            "exiResponse": "",  # Will contain the signed contract cert in EXI
-        }
+        return result
 
     async def _validate_contract_cert(self, emaid: str, cert_hash_data: list) -> str:
         """Validate a contract certificate for P&C authorization."""

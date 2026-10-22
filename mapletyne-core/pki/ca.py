@@ -13,6 +13,7 @@ Split into three modules:
   ca_ops.py   — CertificateOpsMixin: revoke_certificate, generate_crl, validate_cert_chain
 """
 import logging
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -225,20 +226,42 @@ class CertificateAuthority(CertificateIssuanceMixin, CertificateOpsMixin):
         logger.info("PKI loaded: Root CA + CPO Sub-CA + MO Sub-CA")
 
     def _save_key_cert(self, name: str, key, cert, password: str = "") -> None:
-        """Save key + cert to disk."""
-        encryption = BestAvailableEncryption(password.encode()) if password else NoEncryption()
+        """Save key + cert to disk. Private keys are ALWAYS encrypted."""
+        # Always fall back to environment-based password so private keys on disk
+        # are NEVER written with NoEncryption().
+        effective_password = (
+            password
+            or os.getenv("PKI_ROOT_CA_PASSWORD")
+            or os.getenv("JWT_SECRET")
+            or "mapletyne-ca-key-protection"
+        )
+        encryption = BestAvailableEncryption(effective_password.encode())
         (self.data_dir / f"{name}.key").write_bytes(
             key.private_bytes(Encoding.PEM, PrivateFormat.PKCS8, encryption)
         )
         (self.data_dir / f"{name}.crt").write_bytes(cert.public_bytes(Encoding.PEM))
 
     def _load_key_cert(self, name: str, password: str = "") -> tuple:
-        """Load key + cert from disk."""
+        """Load key + cert from disk. Uses fallback password for encrypted keys."""
         key_data = (self.data_dir / f"{name}.key").read_bytes()
         cert_data = (self.data_dir / f"{name}.crt").read_bytes()
-        pwd = password.encode() if password else None
-        key = serialization.load_pem_private_key(key_data, password=pwd)
+        # Use the same fallback logic as _save_key_cert so we can decrypt
+        # keys that were saved with the environment-based password.
+        effective_password = (
+            password
+            or os.getenv("PKI_ROOT_CA_PASSWORD")
+            or os.getenv("JWT_SECRET")
+            or "mapletyne-ca-key-protection"
+        )
+        pwd = effective_password.encode() if effective_password else None
         cert = x509.load_pem_x509_certificate(cert_data)
+        try:
+            key = serialization.load_pem_private_key(key_data, password=pwd)
+        except TypeError:
+            # Legacy unencrypted key on disk — load and immediately re-encrypt in place
+            key = serialization.load_pem_private_key(key_data, password=None)
+            self._save_key_cert(name, key, cert, password=password)
+            logger.info(f"Migrated unencrypted PKI key '{name}.key' to encrypted PKCS8")
         return key, cert
 
 

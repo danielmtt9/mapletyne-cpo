@@ -83,7 +83,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 animate-in fade-in duration-150">
       <div className="w-full max-w-lg bg-surface-container-low border border-outline-variant/30 p-6 space-y-5 shadow-2xl">
         <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
           <div className="flex items-center gap-2">

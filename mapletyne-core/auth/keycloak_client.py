@@ -179,19 +179,54 @@ def verify_keycloak_token(token: str) -> Dict[str, Any]:
             options={"verify_aud": False, "verify_iss": False},
         )
 
-        # Issuer must belong to our realm (host part varies between internal/external URLs)
-        if not str(claims.get("iss", "")).endswith(f"/realms/{KEYCLOAK_REALM}"):
-            raise ValueError("Token issuer does not match the configured Keycloak realm")
+        # Issuer validation
+        iss = str(claims.get("iss", "")).rstrip("/")
+        expected_suffix = f"/realms/{KEYCLOAK_REALM}"
+        if not iss.endswith(expected_suffix):
+            raise ValueError(f"Token issuer realm does not match configured realm '{KEYCLOAK_REALM}'")
+
+        # Validate issuer host against trusted domains, reverse proxies, and tunnels
+        import urllib.parse
+        iss_parsed = urllib.parse.urlparse(iss)
+        iss_host = iss_parsed.hostname or ""
+        trusted_hosts = {
+            "localhost",
+            "127.0.0.1",
+            "keycloak",
+            "cpo-admin",
+            "mapletyne-core",
+            "mapletyne-admin",
+            "mapletyne-chargeapp",
+        }
+        for env_k in ("PUBLIC_BASE_URL", "PUBLIC_URL", "KEYCLOAK_URL", "CORE_API_PUBLIC_URL", "CPO_ADMIN_URL"):
+            v = os.getenv(env_k)
+            if v:
+                h = urllib.parse.urlparse(v).hostname
+                if h:
+                    trusted_hosts.add(h)
+
+        is_trusted_host = (
+            iss_host in trusted_hosts
+            or iss_host.endswith(".mapletyne.com")
+            or iss_host.endswith(".trycloudflare.com")
+            or iss_host.startswith("172.")
+            or iss_host.startswith("10.")
+            or iss_host.startswith("192.168.")
+        )
+        if not is_trusted_host:
+            raise ValueError(f"Token issuer host '{iss_host}' is not from a trusted origin or tunnel")
+
         # Token must have been issued to one of our clients (azp) or list one as audience
         allowed_clients = set(
             c.strip() for c in os.getenv(
                 "KEYCLOAK_ALLOWED_CLIENTS",
-                "opencpo-admin-ui,opencpo-charge-app,opencpo-backend",
+                "opencpo-admin-ui,opencpo-charge-app,opencpo-backend,mapletyne-admin,mapletyne-chargeapp,account",
             ).split(",") if c.strip()
         )
         aud = claims.get("aud", [])
         aud_list = [aud] if isinstance(aud, str) else list(aud or [])
-        if claims.get("azp") not in allowed_clients and not allowed_clients.intersection(aud_list):
+        azp = claims.get("azp")
+        if azp not in allowed_clients and not allowed_clients.intersection(aud_list):
             raise ValueError("Token was not issued to an authorized client")
         
         # Extract normalized roles
@@ -207,7 +242,7 @@ def verify_keycloak_token(token: str) -> Dict[str, Any]:
             claims["role"] = "billing"
         elif "fleet-manager" in realm_roles:
             claims["role"] = "fleet"
-        elif "driver" in realm_roles:
+        elif "driver" in realm_roles or "cpo-driver" in realm_roles:
             claims["role"] = "driver"
         else:
             claims["role"] = "user"

@@ -24,7 +24,7 @@ flowchart LR
 
 ### Key Workflow Features
 - **Multi-Architecture Support**: Built for both standard x86 servers (`linux/amd64`) and ARM-based servers / AWS Graviton (`linux/arm64`).
-- **Zero Secrets Required for Publishing**: Uses GitHub's internal `${{ secrets.GITHUB_TOKEN }}` with `packages: write` permission.
+- **Zero Secrets Required for Publishing**: Uses GitHub's internal `secrets.GITHUB_TOKEN` with `packages: write` permission.
 - **Layer Caching**: Utilizes `type=gha` GitHub Actions cache to make subsequent builds under 60 seconds.
 
 ---

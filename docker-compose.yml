@@ -6,7 +6,10 @@ services:
 
   redis:
     image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
     restart: unless-stopped
+    volumes:
+      - redis-data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -25,9 +28,9 @@ services:
       redis:
         condition: service_healthy
     ports:
-      - "${OCPP_16_WS_PORT:-34100}:9100"   # OCPP 1.6 WebSocket (host port 34100)
-      - "${OCPP_201_WS_PORT:-34201}:9201"  # OCPP 2.0.1 WebSocket (host port 34201)
-      - "${OCPP_API_PORT:-34800}:8000"     # REST API (host port 34800)
+      - "127.0.0.1:${OCPP_16_WS_PORT:-34100}:9100"   # OCPP 1.6 WebSocket (host port 34100)
+      - "127.0.0.1:${OCPP_201_WS_PORT:-34201}:9201"  # OCPP 2.0.1 WebSocket (host port 34201)
+      - "127.0.0.1:${OCPP_API_PORT:-34800}:8000"     # REST API (host port 34800)
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -51,7 +54,7 @@ services:
       CORE_API_PUBLIC_URL: ${CORE_API_PUBLIC_URL:-https://api.mapletyne.com}
       KEYCLOAK_URL: ${KEYCLOAK_URL:-http://keycloak:8080/auth}
       KEYCLOAK_REALM: ${KEYCLOAK_REALM:-mapletyne}
-      CORS_ORIGINS: ${CORS_ORIGINS:-https://admin.mapletyne.com,https://app.mapletyne.com,*}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://admin.mapletyne.com,https://app.mapletyne.com,https://opencpo.mapletyne.com,http://localhost:34000,http://localhost:34003,http://localhost:34080}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 15s
@@ -175,7 +178,7 @@ services:
     volumes:
       - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
     ports:
-      - "${KEYCLOAK_PORT:-34085}:8080"
+      - "127.0.0.1:${KEYCLOAK_PORT:-34085}:8080"
 
   # ── Unified Reverse Proxy ─────────────────────────────────────────────────
 
@@ -195,4 +198,6 @@ services:
 
 volumes:
   backup-data:
+    driver: local
+  redis-data:
     driver: local

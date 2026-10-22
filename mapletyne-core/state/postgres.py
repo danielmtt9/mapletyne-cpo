@@ -5,6 +5,7 @@ Primary for writes, replica for reads. asyncpg for performance.
 """
 import logging
 from contextlib import asynccontextmanager
+from contextvars import ContextVar
 from typing import AsyncIterator
 
 import asyncpg
@@ -12,6 +13,12 @@ import asyncpg
 from config import config
 
 logger = logging.getLogger(__name__)
+
+# Multi-tenant and RBAC Session Context (GAP-SEC-10)
+DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000001"
+current_tenant_id: ContextVar[str] = ContextVar("current_tenant_id", default=DEFAULT_TENANT_ID)
+current_user_role: ContextVar[str] = ContextVar("current_user_role", default="cpo-admin")
+current_user_id: ContextVar[str] = ContextVar("current_user_id", default="")
 
 
 class Database:
@@ -75,21 +82,54 @@ class Database:
 
     @asynccontextmanager
     async def write(self) -> AsyncIterator[asyncpg.Connection]:
-        """Get a connection from the primary pool (for writes)."""
+        """Get a connection from the primary pool (for writes) with session context."""
         async with self.primary.acquire() as conn:
+            try:
+                await conn.execute(
+                    "SELECT set_config('app.current_tenant_id', $1, false), "
+                    "set_config('app.current_user_role', $2, false), "
+                    "set_config('app.current_user_id', $3, false)",
+                    str(current_tenant_id.get()),
+                    str(current_user_role.get()),
+                    str(current_user_id.get()),
+                )
+            except Exception as e:
+                logger.debug(f"Could not inject session context: {e}")
             yield conn
 
     @asynccontextmanager
     async def read(self) -> AsyncIterator[asyncpg.Connection]:
-        """Get a connection from the replica pool (for reads)."""
+        """Get a connection from the replica pool (for reads) with session context."""
         async with self.replica.acquire() as conn:
+            try:
+                await conn.execute(
+                    "SELECT set_config('app.current_tenant_id', $1, false), "
+                    "set_config('app.current_user_role', $2, false), "
+                    "set_config('app.current_user_id', $3, false)",
+                    str(current_tenant_id.get()),
+                    str(current_user_role.get()),
+                    str(current_user_id.get()),
+                )
+            except Exception as e:
+                logger.debug(f"Could not inject session context: {e}")
             yield conn
 
     @asynccontextmanager
     async def transaction(self) -> AsyncIterator[asyncpg.Connection]:
-        """Get a connection with an active transaction."""
+        """Get a connection with an active transaction with local session context."""
         async with self.primary.acquire() as conn:
             async with conn.transaction():
+                try:
+                    await conn.execute(
+                        "SELECT set_config('app.current_tenant_id', $1, true), "
+                        "set_config('app.current_user_role', $2, true), "
+                        "set_config('app.current_user_id', $3, true)",
+                        str(current_tenant_id.get()),
+                        str(current_user_role.get()),
+                        str(current_user_id.get()),
+                    )
+                except Exception as e:
+                    logger.debug(f"Could not inject local transaction context: {e}")
                 yield conn
 
     async def health(self) -> dict:

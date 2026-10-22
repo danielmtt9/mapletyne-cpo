@@ -94,7 +94,7 @@ export const EmsMultiSourceBalanceChart: React.FC<EmsMultiSourceBalanceChartProp
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         icon: 'rect',
         itemWidth: 10,
@@ -113,7 +113,7 @@ export const EmsMultiSourceBalanceChart: React.FC<EmsMultiSourceBalanceChartProp
         textStyle: {
           color: '#e2e8f0',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         formatter: (params: any) => {
           if (!Array.isArray(params) || params.length === 0) return '';
@@ -142,7 +142,7 @@ export const EmsMultiSourceBalanceChart: React.FC<EmsMultiSourceBalanceChartProp
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           interval: Math.floor(points.length / 5),
         },
       },
@@ -161,7 +161,7 @@ export const EmsMultiSourceBalanceChart: React.FC<EmsMultiSourceBalanceChartProp
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           formatter: '{value} kW',
         },
       },

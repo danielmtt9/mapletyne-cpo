@@ -71,7 +71,7 @@ export const CostBasisCard: React.FC<CostBasisCardProps> = ({
   };
 
   return (
-    <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-5 rounded-2xl space-y-4">
+    <div className="tabler-card bg-surface-container border border-outline p-5 rounded-2xl space-y-4">
       <div className="flex items-center justify-between border-b border-white/5 pb-3">
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-primary text-[20px]">account_balance</span>

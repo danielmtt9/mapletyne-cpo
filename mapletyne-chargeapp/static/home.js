@@ -477,7 +477,7 @@ function performSearch(query) {
   }
 
   if (matchedStations.length > 0) {
-    html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:var(--accent,#48e260);text-transform:uppercase;letter-spacing:0.05em;">⚡ Charging Stations</div>';
+    html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--accent,#48e260);text-transform:uppercase;letter-spacing:0.05em;">⚡ Charging Stations</div>';
     matchedStations.slice(0, 5).forEach(function (cp) {
       var name = cp.name || cp.display_name || cp.id;
       var loc = cp.address || cp.city ? ((cp.address || '') + (cp.city ? ', ' + cp.city : '')) : 'Network Station';
@@ -490,7 +490,7 @@ function performSearch(query) {
         '<div style="font-size:14px;font-weight:600;color:var(--text,#f1f5f9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
         '<div style="font-size:12px;color:var(--text2,#94a3b8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">📍 ' + loc + '</div>' +
         '</div>' +
-        '<div style="flex-shrink:0;font-size:11px;font-weight:700;color:var(--accent,#48e260);background:rgba(72,226,96,0.15);padding:3px 8px;border-radius:12px;">' + kw + ' kW</div>' +
+        '<div style="flex-shrink:0;font-size:12px;font-weight:700;color:var(--accent,#48e260);background:rgba(72,226,96,0.15);padding:3px 8px;border-radius:12px;">' + kw + ' kW</div>' +
         '</div>';
     });
   }
@@ -500,7 +500,7 @@ function performSearch(query) {
     .then(function (r) { return r.json(); })
     .then(function (places) {
       if (places && places.length > 0) {
-        html += '<div style="padding:8px 14px 4px;font-size:11px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.05em;border-top:1px solid var(--border,#1e3a5f);">📍 Cities & Places</div>';
+        html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.05em;border-top:1px solid var(--border,#1e3a5f);">📍 Cities & Places</div>';
         places.forEach(function (p) {
           var label = p.display_name;
           var lat = parseFloat(p.lat);

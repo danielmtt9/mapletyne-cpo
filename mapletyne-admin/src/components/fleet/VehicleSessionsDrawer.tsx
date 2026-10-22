@@ -22,7 +22,7 @@ export const VehicleSessionsDrawer: React.FC<VehicleSessionsDrawerProps> = ({ is
   if (!isOpen || !vehicle) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 animate-in fade-in duration-150">
       <div className="w-full max-w-lg bg-surface-container-low border-l border-outline-variant/30 h-full p-6 space-y-5 shadow-2xl flex flex-col justify-between">
         <div className="space-y-4">
           <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
@@ -74,11 +74,11 @@ export const VehicleSessionsDrawer: React.FC<VehicleSessionsDrawerProps> = ({ is
                       <span className="font-bold text-on-surface">{s.charge_point || 'Charger'}</span>
                       <span className="text-primary font-bold">{Number(s.energy_kwh || 0).toFixed(2)} kWh</span>
                     </div>
-                    <div className="text-[11px] text-on-surface-variant flex justify-between">
+                    <div className="text-xs text-on-surface-variant flex justify-between">
                       <span>Connector: #{s.connector_id ?? 1}</span>
                       <span>Status: {s.status || 'completed'}</span>
                     </div>
-                    <div className="text-[10px] text-on-surface-variant pt-1 border-t border-outline-variant/20 flex justify-between">
+                    <div className="text-xs text-on-surface-variant pt-1 border-t border-outline-variant/20 flex justify-between">
                       <span>Start:</span>
                       <span>{s.start_time ? new Date(s.start_time).toLocaleString() : '—'}</span>
                     </div>

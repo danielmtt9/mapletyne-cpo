@@ -138,7 +138,7 @@ export const LiveNetworkLoadChart: React.FC<LiveNetworkLoadChartProps> = ({
         axisLabel: {
           color: '#64748B',
           fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", sans-serif',
-          fontSize: 10,
+          fontSize: 12,
           interval: Math.floor(points.length / 5),
         },
         splitLine: { show: false },
@@ -153,7 +153,7 @@ export const LiveNetworkLoadChart: React.FC<LiveNetworkLoadChartProps> = ({
         axisLabel: {
           color: '#64748B',
           fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", sans-serif',
-          fontSize: 10,
+          fontSize: 12,
           formatter: '{value} kW',
         },
         splitLine: {
@@ -192,7 +192,7 @@ export const LiveNetworkLoadChart: React.FC<LiveNetworkLoadChartProps> = ({
                   position: 'insideEndTop',
                   color: '#f87171',
                   fontFamily: 'monospace',
-                  fontSize: 10,
+                  fontSize: 12,
                 },
               },
             ],

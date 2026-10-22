@@ -24,16 +24,16 @@ export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
   const isFaulted = charger.status === 'Faulted';
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full max-w-xl material-sheet bg-slate-900/95 backdrop-blur-2xl border-l border-slate-700/80 h-full p-6 overflow-y-auto space-y-5 shadow-2xl animate-in slide-in-from-right duration-300 font-body">
+    <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/70 animate-in fade-in duration-150">
+      <div className="w-full max-w-xl tabler-sheet bg-surface-container border-l border-outline h-full p-6 overflow-y-auto space-y-5 shadow-2xl animate-in slide-in-from-right duration-300 font-body">
         {/* Header */}
         <div className="flex items-start justify-between border-b border-white/10 pb-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5">
               <span className="material-symbols-outlined text-primary text-[24px]">ev_station</span>
-              <h2 className="font-headline text-2xl font-bold text-slate-100">{charger.id}</h2>
+              <h2 className="font-headline text-xl font-bold text-slate-100">{charger.id}</h2>
               <span
-                className={`px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase rounded-full border ${
+                className={`px-2.5 py-0.5 text-micro font-mono font-bold uppercase rounded-full border ${
                   isCharging
                     ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
                     : isOnline
@@ -52,14 +52,14 @@ export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-100 p-1.5 rounded-xl hover:bg-slate-800 transition-colors"
+            className="text-slate-400 hover:text-slate-100 p-1.5 rounded-xl hover:bg-slate-800 transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 p-1 bg-slate-950 border border-slate-700/80 rounded-xl font-mono text-xs">
+        <div className="flex items-center gap-2 p-1 bg-slate-950 border border-slate-700/80 rounded-xl font-sans text-sm">
           <button
             onClick={() => setActiveTab('telemetry')}
             className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
@@ -110,31 +110,31 @@ export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
           <div className="space-y-4 font-mono text-xs">
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-700/60 shadow-inner space-y-1">
-                <span className="text-slate-400 text-[10px] uppercase block">Firmware Version</span>
+                <span className="text-slate-400 text-xs uppercase block">Firmware Version</span>
                 <span className="text-sm font-bold text-slate-100">{charger.firmware_version || 'v2.4.12-rc3'}</span>
               </div>
               <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-700/60 shadow-inner space-y-1">
-                <span className="text-slate-400 text-[10px] uppercase block">Heartbeat Latency</span>
+                <span className="text-slate-400 text-xs uppercase block">Heartbeat Latency</span>
                 <span className="text-sm font-bold text-emerald-400">142 ms (Healthy)</span>
               </div>
               <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-700/60 shadow-inner space-y-1">
-                <span className="text-slate-400 text-[10px] uppercase block">Connector Lock State</span>
+                <span className="text-slate-400 text-xs uppercase block">Connector Lock State</span>
                 <span className="text-sm font-bold text-cyan-300">Locked / Ready</span>
               </div>
               <div className="bg-slate-950/80 p-3.5 rounded-2xl border border-slate-700/60 shadow-inner space-y-1">
-                <span className="text-slate-400 text-[10px] uppercase block">OCPP Protocol Dialect</span>
+                <span className="text-slate-400 text-xs uppercase block">OCPP Protocol Dialect</span>
                 <span className="text-sm font-bold text-primary">OCPP 2.0.1 (JSON/WSS)</span>
               </div>
             </div>
 
             {/* Self-Healing Watchdog Status */}
-            <div className="material-card bg-slate-950/90 p-4 rounded-2xl border border-slate-700/80 space-y-2">
+            <div className="tabler-card bg-slate-950/90 p-4 rounded-2xl border border-slate-700/80 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Self-Healing Watchdog Engine
                 </span>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 font-bold">
+                <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20 font-bold">
                   AUTONOMOUS ACTIVE
                 </span>
               </div>
@@ -145,8 +145,8 @@ export const ChargerDetailDrawer: React.FC<ChargerDetailDrawerProps> = ({
 
             {/* Device Model Variables Snapshot */}
             <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-700/60 space-y-2">
-              <span className="text-[10px] uppercase text-slate-400 font-bold block">OCPP 2.0.1 Component Variables</span>
-              <div className="space-y-1.5 divide-y divide-white/5 text-[11px]">
+              <span className="text-xs uppercase text-slate-400 font-bold block">OCPP 2.0.1 Component Variables</span>
+              <div className="space-y-1.5 divide-y divide-white/5 text-xs">
                 <div className="flex justify-between py-1">
                   <span className="text-slate-400">ChargingStation.AvailabilityState:</span>
                   <span className="text-emerald-400 font-bold">{isOnline ? 'Available' : 'Unavailable'}</span>

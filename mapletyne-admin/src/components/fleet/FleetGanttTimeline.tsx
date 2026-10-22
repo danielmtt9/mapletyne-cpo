@@ -66,7 +66,7 @@ export const FleetGanttTimeline: React.FC<FleetGanttTimelineProps> = ({ schedule
     legend: {
       data: ['Current Battery SOC', 'Remaining Charge Needed to Departure'],
       top: 0,
-      textStyle: { color: '#94A3B8', fontSize: 11 },
+      textStyle: { color: '#94A3B8', fontSize: 12 },
     },
     grid: {
       top: 36,
@@ -80,14 +80,14 @@ export const FleetGanttTimeline: React.FC<FleetGanttTimelineProps> = ({ schedule
       name: 'State of Charge (%)',
       max: 100,
       splitLine: { lineStyle: { color: '#1E293B', type: 'dashed' } },
-      axisLabel: { color: '#94A3B8', fontSize: 10, formatter: '{value}%' },
-      nameTextStyle: { color: '#64748B', fontSize: 10 },
+      axisLabel: { color: '#94A3B8', fontSize: 12, formatter: '{value}%' },
+      nameTextStyle: { color: '#64748B', fontSize: 12 },
     },
     yAxis: {
       type: 'category',
       data: vehicleLabels,
       axisLine: { lineStyle: { color: '#334155' } },
-      axisLabel: { color: '#F8FAFC', fontSize: 11, fontWeight: 500 },
+      axisLabel: { color: '#F8FAFC', fontSize: 12, fontWeight: 500 },
     },
     series: [
       {
@@ -109,7 +109,7 @@ export const FleetGanttTimeline: React.FC<FleetGanttTimelineProps> = ({ schedule
           position: 'insideLeft',
           formatter: '{c}%',
           color: '#FFFFFF',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 'bold',
         },
       },
@@ -134,7 +134,7 @@ export const FleetGanttTimeline: React.FC<FleetGanttTimelineProps> = ({ schedule
             return item ? `Target ${item.target_soc_pct}%` : '';
           },
           color: '#10B981',
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 600,
         },
       },
@@ -147,7 +147,7 @@ export const FleetGanttTimeline: React.FC<FleetGanttTimelineProps> = ({ schedule
         <span className="text-xs font-semibold text-on-surface uppercase tracking-wider flex items-center gap-1.5">
           <span className="material-symbols-outlined text-primary text-[16px]">timelapse</span> Dispatcher Departure Timeline & SOC Gap
         </span>
-        <span className="text-[11px] text-on-surface-variant font-mono">
+        <span className="text-xs text-on-surface-variant font-mono">
           {schedules.length} active scheduled shifts
         </span>
       </div>

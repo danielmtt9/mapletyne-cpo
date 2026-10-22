@@ -106,7 +106,7 @@ export const PkiVaultPage: React.FC = () => {
     <div className="space-y-6 font-body">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 material-card bg-surface-container-highest/90 backdrop-blur-xl border border-primary/40 text-on-surface px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-6 right-6 z-50 tabler-card bg-surface-container border border-primary/40 text-on-surface px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span>{toastMessage}</span>
         </div>
@@ -115,17 +115,17 @@ export const PkiVaultPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-headline text-3xl font-bold tracking-tight text-on-surface">
+          <h1 className="font-headline text-4xl font-bold tracking-tight text-on-surface">
             ISO 15118 PKI & Security Vault
           </h1>
-          <p className="text-sm text-on-surface-variant font-body mt-1">
+          <p className="text-xs text-on-surface-variant font-body mt-1">
             V2G Root CA hierarchy, SECC CSR certificate signing, contract certificates, and CRL verification.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleDownloadCrl}
-            className="px-4 py-2.5 material-card bg-surface-container/80 border border-white/10 text-on-surface font-semibold text-xs rounded-xl shadow-sm hover:bg-surface-container-high active:scale-[0.98] transition-all flex items-center gap-2"
+            className="px-4 py-2.5 tabler-card bg-surface-container/80 border border-outline text-on-surface font-semibold text-xs rounded-xl shadow-sm hover:bg-surface-container-high active:scale-[0.98] transition-all flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-[16px] text-primary">download</span>
             Download CRL
@@ -145,8 +145,8 @@ export const PkiVaultPage: React.FC = () => {
       </div>
 
       {/* Trust Hierarchy Visual Tree */}
-      <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-4">
-        <h2 className="font-headline text-base font-bold text-on-surface">
+      <div className="tabler-card bg-surface-container border border-outline p-6 rounded-2xl space-y-4">
+        <h2 className="font-headline text-xl font-bold text-on-surface">
           Certificate Authority Trust Chain
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
@@ -154,13 +154,13 @@ export const PkiVaultPage: React.FC = () => {
           <div className="bg-surface-container-lowest/80 p-4 rounded-xl border border-primary/40 space-y-2">
             <div className="flex justify-between items-start">
               <span className="text-primary font-bold">V2G Root CA (Self-Signed)</span>
-              <span className="px-2 py-0.5 text-[9px] bg-primary/10 text-primary uppercase font-bold rounded-full border border-primary/30">
+              <span className="px-2 py-0.5 text-xs bg-primary/10 text-primary uppercase font-bold rounded-full border border-primary/30">
                 Root Trust
               </span>
             </div>
-            <p className="text-[11px] text-on-surface-variant">CN: OpenCPO V2G Root CA G2</p>
-            <p className="text-[10px] text-on-surface-variant font-mono">ECDSA P-256 • SHA-256</p>
-            <div className="text-[10px] text-emerald-400 pt-2 border-t border-white/5 flex items-center gap-1.5">
+            <p className="text-xs text-on-surface-variant">CN: OpenCPO V2G Root CA G2</p>
+            <p className="text-xs text-on-surface-variant font-mono">ECDSA P-256 • SHA-256</p>
+            <div className="text-xs text-emerald-400 pt-2 border-t border-outline flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               CRL Distribution Active
             </div>
@@ -170,29 +170,29 @@ export const PkiVaultPage: React.FC = () => {
           <div className="bg-surface-container-lowest/80 p-4 rounded-xl border border-secondary/40 space-y-2">
             <div className="flex justify-between items-start">
               <span className="text-secondary font-bold">SECC Sub-CA 1</span>
-              <span className="px-2 py-0.5 text-[9px] bg-secondary/10 text-secondary uppercase font-bold rounded-full border border-secondary/30">
+              <span className="px-2 py-0.5 text-xs bg-secondary/10 text-secondary uppercase font-bold rounded-full border border-secondary/30">
                 Intermediate
               </span>
             </div>
-            <p className="text-[11px] text-on-surface-variant">CN: OpenCPO SECC Sub-CA</p>
-            <p className="text-[10px] text-on-surface-variant font-mono">Signs Station TLS 1.3 Leaf Certs</p>
-            <div className="text-[10px] text-emerald-400 pt-2 border-t border-white/5 flex items-center gap-1.5">
+            <p className="text-xs text-on-surface-variant">CN: OpenCPO SECC Sub-CA</p>
+            <p className="text-xs text-on-surface-variant font-mono">Signs Station TLS 1.3 Leaf Certs</p>
+            <div className="text-xs text-emerald-400 pt-2 border-t border-outline flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               {pkiStats?.secc ?? pkiStats?.secc_certs_active ?? pkiStats?.active ?? certList.filter((c: any) => c.type === 'secc').length} Leaf Certs Active
             </div>
           </div>
 
           {/* Level 3: MO Sub-CA */}
-          <div className="bg-surface-container-lowest/80 p-4 rounded-xl border border-white/10 space-y-2">
+          <div className="bg-surface-container-lowest/80 p-4 rounded-xl border border-outline space-y-2">
             <div className="flex justify-between items-start">
               <span className="text-on-surface font-bold">MO Sub-CA (OEM Contracts)</span>
-              <span className="px-2 py-0.5 text-[9px] bg-surface-container-high text-on-surface-variant uppercase font-bold rounded-full">
+              <span className="px-2 py-0.5 text-xs bg-surface-container-high text-on-surface-variant uppercase font-bold rounded-full">
                 Contract CA
               </span>
             </div>
-            <p className="text-[11px] text-on-surface-variant">CN: OpenCPO Mobility Operator CA</p>
-            <p className="text-[10px] text-on-surface-variant font-mono">Issues vehicle eMAID certificates</p>
-            <div className="text-[10px] text-emerald-400 pt-2 border-t border-white/5 flex items-center gap-1.5">
+            <p className="text-xs text-on-surface-variant">CN: OpenCPO Mobility Operator CA</p>
+            <p className="text-xs text-on-surface-variant font-mono">Issues vehicle eMAID certificates</p>
+            <div className="text-xs text-emerald-400 pt-2 border-t border-outline flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               Plug & Charge Enabled
             </div>
@@ -201,10 +201,10 @@ export const PkiVaultPage: React.FC = () => {
       </div>
 
       {/* Certificate Inventory Search & Filter Bar */}
-      <div className="material-card bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div className="tabler-card bg-surface-container border border-outline p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div className="flex flex-wrap items-center gap-3">
           <div className="relative w-72">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">
               search
             </span>
             <input
@@ -212,30 +212,30 @@ export const PkiVaultPage: React.FC = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search serial, common name, station..."
-              className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-9 pl-9 pr-3 text-xs text-slate-100 placeholder:text-slate-400 font-mono font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 shadow-xs"
+              className="w-full bg-surface-container-high border border-outline rounded-xl h-9 pl-9 pr-3 text-xs text-on-surface placeholder:text-on-surface-variant font-mono font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 shadow-xs"
             />
           </div>
 
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="bg-slate-950/90 border border-slate-700 rounded-xl h-9 px-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-primary cursor-pointer"
+            className="bg-surface-container-high border border-outline rounded-xl h-9 px-3 text-xs text-on-surface font-mono focus:outline-none focus:border-primary cursor-pointer"
           >
-            <option value="" className="bg-slate-900 text-slate-200">All Types (SECC / Contract / User)</option>
-            <option value="secc" className="bg-slate-900 text-slate-200">SECC (Station Leaf)</option>
-            <option value="contract" className="bg-slate-900 text-slate-200">Contract (Plug & Charge)</option>
-            <option value="user" className="bg-slate-900 text-slate-200">User / Operator</option>
+            <option value="" className="bg-surface-container text-on-surface">All Types (SECC / Contract / User)</option>
+            <option value="secc" className="bg-surface-container text-on-surface">SECC (Station Leaf)</option>
+            <option value="contract" className="bg-surface-container text-on-surface">Contract (Plug & Charge)</option>
+            <option value="user" className="bg-surface-container text-on-surface">User / Operator</option>
           </select>
 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="bg-slate-950/90 border border-slate-700 rounded-xl h-9 px-3 text-xs text-slate-200 font-mono focus:outline-none focus:border-primary cursor-pointer"
+            className="bg-surface-container-high border border-outline rounded-xl h-9 px-3 text-xs text-on-surface font-mono focus:outline-none focus:border-primary cursor-pointer"
           >
-            <option value="" className="bg-slate-900 text-slate-200">All Statuses</option>
-            <option value="active" className="bg-slate-900 text-slate-200">Active</option>
-            <option value="revoked" className="bg-slate-900 text-slate-200">Revoked</option>
-            <option value="expired" className="bg-slate-900 text-slate-200">Expired</option>
+            <option value="" className="bg-surface-container text-on-surface">All Statuses</option>
+            <option value="active" className="bg-surface-container text-on-surface">Active</option>
+            <option value="revoked" className="bg-surface-container text-on-surface">Revoked</option>
+            <option value="expired" className="bg-surface-container text-on-surface">Expired</option>
           </select>
         </div>
 
@@ -245,11 +245,11 @@ export const PkiVaultPage: React.FC = () => {
       </div>
 
       {/* Certificate Inventory Table */}
-      <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 rounded-2xl overflow-hidden shadow-sm">
+      <div className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto w-full">
           <table className="w-full text-left border-collapse text-xs font-mono">
             <thead>
-              <tr className="border-b border-white/5 bg-surface-container-high/40 text-on-surface-variant uppercase text-xs tracking-wider h-11">
+              <tr className="border-b border-outline bg-surface-container-high/40 text-on-surface-variant uppercase text-xs tracking-wider h-11">
                 <th className="px-4 py-3 min-w-[140px]">Serial / ID</th>
                 <th className="px-4 py-3 min-w-[90px]">Type</th>
                 <th className="px-4 py-3 min-w-[180px]">Subject / CN</th>
@@ -284,7 +284,7 @@ export const PkiVaultPage: React.FC = () => {
                         {c.serial}
                       </td>
                       <td className="px-4 py-3 uppercase">
-                        <span className="px-2.5 py-0.5 rounded-full text-xs bg-white/5 border border-white/10 font-bold shrink-0">
+                        <span className="px-2.5 py-0.5 rounded-full text-xs bg-white/5 border border-outline font-bold shrink-0">
                           {c.type || 'SECC'}
                         </span>
                       </td>
@@ -343,9 +343,9 @@ export const PkiVaultPage: React.FC = () => {
 
       {/* Sign CSR / Issue Certificate Modal */}
       {isSignModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
-          <div className="material-card bg-surface-container-high/95 backdrop-blur-2xl border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-150">
+          <div className="tabler-card bg-surface-container border border-outline rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-outline">
               <h3 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">verified_user</span>
                 Sign CSR / Issue Certificate
@@ -367,7 +367,7 @@ export const PkiVaultPage: React.FC = () => {
               className="space-y-4 text-xs font-mono"
             >
               <div>
-                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-[10px]">
+                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-xs">
                   Certificate Purpose
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -377,7 +377,7 @@ export const PkiVaultPage: React.FC = () => {
                     className={`py-2 px-3 rounded-xl border text-center font-bold transition-all ${
                       certType === 'secc'
                         ? 'bg-primary/20 border-primary text-primary'
-                        : 'bg-surface-container-lowest/80 border-white/10 text-on-surface-variant'
+                        : 'bg-surface-container-lowest/80 border-outline text-on-surface-variant'
                     }`}
                   >
                     SECC (Station Leaf)
@@ -388,7 +388,7 @@ export const PkiVaultPage: React.FC = () => {
                     className={`py-2 px-3 rounded-xl border text-center font-bold transition-all ${
                       certType === 'contract'
                         ? 'bg-secondary/20 border-secondary text-secondary'
-                        : 'bg-surface-container-lowest/80 border-white/10 text-on-surface-variant'
+                        : 'bg-surface-container-lowest/80 border-outline text-on-surface-variant'
                     }`}
                   >
                     Contract (Plug & Charge)
@@ -397,7 +397,7 @@ export const PkiVaultPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-[10px]">
+                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-xs">
                   {certType === 'secc' ? 'Charge Point ID' : 'Vehicle eMAID (EMAID)'} *
                 </label>
                 {certType === 'secc' && chargers.length > 0 ? (
@@ -405,7 +405,7 @@ export const PkiVaultPage: React.FC = () => {
                     <select
                       value={targetId}
                       onChange={(e) => setTargetId(e.target.value)}
-                      className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
+                      className="w-full bg-surface-container-lowest border border-outline rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
                     >
                       <option value="">-- Select Registered Station or enter below --</option>
                       {chargers.map((c: any) => (
@@ -419,7 +419,7 @@ export const PkiVaultPage: React.FC = () => {
                       placeholder="Or type custom Station ID..."
                       value={targetId}
                       onChange={(e) => setTargetId(e.target.value)}
-                      className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
+                      className="w-full bg-surface-container-lowest border border-outline rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
                     />
                   </div>
                 ) : (
@@ -429,13 +429,13 @@ export const PkiVaultPage: React.FC = () => {
                     placeholder={certType === 'secc' ? 'e.g. CP-HQ-01' : 'e.g. DE8A9B1C2D3E4F'}
                     value={targetId}
                     onChange={(e) => setTargetId(e.target.value)}
-                    className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
+                    className="w-full bg-surface-container-lowest border border-outline rounded-xl px-3 py-2 text-on-surface focus:border-primary/50 outline-none"
                   />
                 )}
               </div>
 
               <div>
-                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-[10px]">
+                <label className="block text-on-surface-variant mb-1 font-bold uppercase text-xs">
                   CSR PEM (Optional - Leave blank to auto-generate SECP256R1 keypair)
                 </label>
                 <textarea
@@ -443,7 +443,7 @@ export const PkiVaultPage: React.FC = () => {
                   value={csrPem}
                   onChange={(e) => setCsrPem(e.target.value)}
                   placeholder="-----BEGIN CERTIFICATE REQUEST-----&#10;...&#10;-----END CERTIFICATE REQUEST-----"
-                  className="w-full bg-surface-container-lowest border border-white/10 rounded-xl p-3 text-on-surface font-mono text-[11px] focus:border-primary/50 outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline rounded-xl p-3 text-on-surface font-mono text-xs focus:border-primary/50 outline-none"
                 />
               </div>
 
@@ -451,7 +451,7 @@ export const PkiVaultPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setIsSignModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-white/10 text-on-surface-variant hover:text-on-surface"
+                  className="px-4 py-2 rounded-xl border border-outline text-on-surface-variant hover:text-on-surface"
                 >
                   Cancel
                 </button>
@@ -471,8 +471,8 @@ export const PkiVaultPage: React.FC = () => {
 
       {/* Revoke Modal */}
       {revokingSerial && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in">
-          <div className="material-card bg-surface-container-high/95 backdrop-blur-2xl border border-rose-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-150">
+          <div className="tabler-card bg-surface-container border border-rose-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <h3 className="font-headline text-lg font-bold text-rose-400 flex items-center gap-2">
               <span className="material-symbols-outlined">warning</span>
               Revoke Certificate
@@ -482,11 +482,11 @@ export const PkiVaultPage: React.FC = () => {
             </p>
 
             <div className="space-y-1 font-mono text-xs">
-              <label className="text-on-surface-variant font-bold uppercase text-[10px]">Revocation Reason</label>
+              <label className="text-on-surface-variant font-bold uppercase text-xs">Revocation Reason</label>
               <select
                 value={revokeReason}
                 onChange={(e) => setRevokeReason(e.target.value)}
-                className="w-full bg-surface-container-lowest border border-white/10 rounded-xl px-3 py-2 text-on-surface outline-none"
+                className="w-full bg-surface-container-lowest border border-outline rounded-xl px-3 py-2 text-on-surface outline-none"
               >
                 <option value="keyCompromise">Key Compromise</option>
                 <option value="cessationOfOperation">Station Decommissioned / Ceased</option>
@@ -499,7 +499,7 @@ export const PkiVaultPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setRevokingSerial(null)}
-                className="px-4 py-2 rounded-xl border border-white/10 text-on-surface-variant"
+                className="px-4 py-2 rounded-xl border border-outline text-on-surface-variant"
               >
                 Cancel
               </button>

@@ -42,8 +42,9 @@ async def handle_start_transaction(
         """, cp_id, connector_id, id_tag, timestamp, simulated, float(meter_start), billing_type, billing_group_id)
 
         # Generate a transaction ID (OCPP 1.6 requires integer)
+        await conn.execute("CREATE SEQUENCE IF NOT EXISTS ocpp.transaction_id_seq START WITH 1")
         transaction_id = await conn.fetchval(
-            "UPDATE ocpp.sessions SET transaction_id = (SELECT COALESCE(MAX(transaction_id), 0) + 1 FROM ocpp.sessions) WHERE id = $1 RETURNING transaction_id",
+            "UPDATE ocpp.sessions SET transaction_id = nextval('ocpp.transaction_id_seq') WHERE id = $1 RETURNING transaction_id",
             session["id"],
         )
 
@@ -208,11 +209,11 @@ async def _notify_session_complete(
 
         public_id = row["public_id"]
         rate_kwh = float(row["rate_kwh"] or 0)
-        cost = energy_kwh * rate_kwh * 1.21  # incl BTW
+        cost = energy_kwh * rate_kwh * 1.20  # incl 20% UK VAT per AD-10
 
         # Push notification
-        title = "⚡ Laden voltooid"
-        body = f"{energy_kwh:.2f} kWh geladen — €{cost:.2f}".replace(".", ",")
+        title = "⚡ Charging complete"
+        body = f"{energy_kwh:.2f} kWh delivered — £{cost:.2f}"
         url = f"/receipt/{public_id}"
 
         # Push notification via standalone push service
@@ -271,8 +272,8 @@ async def _send_receipt_email(
 
         pdf_bytes = generate_receipt_pdf(dict(session_data))
 
-        cost_str = f"€{cost:.2f}".replace(".", ",")
-        kwh_str  = f"{energy_kwh:.2f}".replace(".", ",")
+        cost_str = f"£{cost:.2f}"
+        kwh_str  = f"{energy_kwh:.2f}"
         subject  = f"Charging receipt — {kwh_str} kWh — {cost_str}"
         body     = (
             f"Dear customer,\n\n"
@@ -295,24 +296,34 @@ async def _send_receipt_email(
         logger.warning(f"Receipt email failed for {session_id[:8]} to {email}: {e}")
 
 
-def _calculate_cdr_cost(energy_kwh: float, tariff_rate: Decimal = Decimal("0.35")) -> dict:
+def _calculate_cdr_cost(
+    energy_kwh: float,
+    tariff_rate: Decimal = Decimal("0.35"),
+    duration_min: float = 0.0,
+    time_rate: Decimal = Decimal("0.00"),
+    flat_fee: Decimal = Decimal("0.00"),
+    vat_pct: Decimal = Decimal("20.0"),
+    currency: str = "GBP",
+) -> dict:
     """Calculate CDR cost using Decimal arithmetic. Returns cost JSONB dict."""
     energy = Decimal(str(energy_kwh))
     energy_cost = (energy * tariff_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    vat_rate = Decimal("0.21")
-    vat_amount = (energy_cost * vat_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
-    total = energy_cost + vat_amount
+    time_cost = (Decimal(str(duration_min)) / Decimal("60") * time_rate).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    flat_cost = flat_fee.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    subtotal = energy_cost + time_cost + flat_cost
+    vat_amount = (subtotal * (vat_pct / Decimal("100"))).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+    total = subtotal + vat_amount
     return {
         "energy_kwh": float(energy),
         "rate_kwh": float(tariff_rate),
         "energy_cost": float(energy_cost),
-        "time_cost": 0.0,
-        "flat_fee": 0.0,
-        "subtotal": float(energy_cost),
-        "vat_rate": 21.0,
+        "time_cost": float(time_cost),
+        "flat_fee": float(flat_cost),
+        "subtotal": float(subtotal),
+        "vat_rate": float(vat_pct),
         "vat_amount": float(vat_amount),
         "total": float(total),
-        "currency": "EUR",
+        "currency": currency,
     }
 
 
@@ -339,9 +350,44 @@ async def generate_cdr(
             delta = session["stop_time"] - session["start_time"]
             duration_min = delta.total_seconds() / 60
 
+        # Look up active tariff from ocpp.tariffs
+        tariff_rate = Decimal("0.35")
+        time_rate = Decimal("0.00")
+        flat_fee_val = Decimal("0.00")
+        currency = "GBP"
+        try:
+            async with db.read() as tconn:
+                row = await tconn.fetchrow(
+                    "SELECT rate_kwh, time_rate, flat_fee, currency FROM ocpp.tariffs WHERE active = true ORDER BY updated_at DESC NULLS LAST LIMIT 1"
+                )
+            if row:
+                tariff_rate = Decimal(str(row["rate_kwh"])) if row["rate_kwh"] is not None else Decimal("0.35")
+                time_rate = Decimal(str(row["time_rate"])) if row["time_rate"] is not None else Decimal("0.00")
+                flat_fee_val = Decimal(str(row["flat_fee"])) if row["flat_fee"] is not None else Decimal("0.00")
+                currency = str(row.get("currency", "GBP")) or "GBP"
+        except Exception:
+            # Fallback: SELECT * FROM ocpp.tariffs LIMIT 1
+            try:
+                async with db.read() as tconn2:
+                    row2 = await tconn2.fetchrow("SELECT * FROM ocpp.tariffs LIMIT 1")
+                if row2:
+                    tariff_rate = Decimal(str(row2.get("rate_kwh", "0.35")))
+                    time_rate = Decimal(str(row2.get("time_rate", "0.00")))
+                    flat_fee_val = Decimal(str(row2.get("flat_fee", "0.00")))
+                    currency = str(row2.get("currency", "GBP")) or "GBP"
+            except Exception:
+                pass
+
         # Calculate cost with Decimal arithmetic
         try:
-            cost_json = _calculate_cdr_cost(float(session["energy_kwh"]))
+            cost_json = _calculate_cdr_cost(
+                float(session["energy_kwh"]),
+                tariff_rate=tariff_rate,
+                duration_min=duration_min,
+                time_rate=time_rate,
+                flat_fee=flat_fee_val,
+                currency=currency,
+            )
         except Exception as exc:
             logger.warning(f"[{cp_id}] Failed to calculate CDR cost for session {session_id}: {exc}")
             cost_json = None

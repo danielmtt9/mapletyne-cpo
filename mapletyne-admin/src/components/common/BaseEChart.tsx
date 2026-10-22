@@ -2,8 +2,9 @@ import React, { useEffect, useRef } from 'react';
 import * as echarts from 'echarts';
 import type { EChartsOption, ECharts } from 'echarts';
 import { registerOpenCpoTheme } from '@/lib/echarts-theme';
+import { useTheme } from '@/lib/theme-provider';
 
-// Ensure custom luxury dark theme is registered in ECharts
+// Ensure custom themes are registered in ECharts
 registerOpenCpoTheme();
 
 export interface BaseEChartProps {
@@ -25,21 +26,32 @@ export const BaseEChart: React.FC<BaseEChartProps> = ({
   onEvents,
   onChartReady,
   renderer = 'canvas',
-  theme = 'opencpo-dark',
+  theme,
 }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const chartInstance = useRef<ECharts | null>(null);
+  const { resolvedTheme } = useTheme();
 
-  // Initialize ECharts instance with dark palette & dirty-rect optimization
+  // Pick reactive theme unless explicitly overridden
+  const effectiveTheme = theme || (resolvedTheme === 'dark' ? 'opencpo-dark' : 'opencpo-light');
+
+  // Initialize ECharts instance with matching palette & dirty-rect optimization
   useEffect(() => {
     if (!chartRef.current) return;
 
     registerOpenCpoTheme();
-    const chart = echarts.init(chartRef.current, theme, {
+    const chart = echarts.init(chartRef.current, effectiveTheme, {
       renderer,
       useDirtyRect: true,
     });
     chartInstance.current = chart;
+
+    // Apply initial option immediately after init
+    chart.setOption(option, {
+      notMerge: true,
+      lazyUpdate: false,
+      silent: false,
+    });
 
     if (onChartReady) {
       onChartReady(chart);
@@ -62,7 +74,7 @@ export const BaseEChart: React.FC<BaseEChartProps> = ({
       chart.dispose();
       chartInstance.current = null;
     };
-  }, [renderer]);
+  }, [renderer, effectiveTheme]);
 
   // Update options incrementally with smooth transition
   useEffect(() => {
@@ -82,15 +94,15 @@ export const BaseEChart: React.FC<BaseEChartProps> = ({
     if (loading) {
       chartInstance.current.showLoading({
         text: 'Streaming Telemetry...',
-        color: '#007AFF',
-        textColor: '#F8FAFC',
-        maskColor: 'rgba(11, 15, 25, 0.7)',
+        color: effectiveTheme === 'opencpo-dark' ? '#10B981' : '#006948',
+        textColor: effectiveTheme === 'opencpo-dark' ? '#F8FAFC' : '#0F172A',
+        maskColor: effectiveTheme === 'opencpo-dark' ? 'rgba(15, 23, 42, 0.85)' : 'rgba(255, 255, 255, 0.85)',
         zlevel: 10,
       });
     } else {
       chartInstance.current.hideLoading();
     }
-  }, [loading]);
+  }, [loading, effectiveTheme]);
 
   // Bind custom chart events
   useEffect(() => {

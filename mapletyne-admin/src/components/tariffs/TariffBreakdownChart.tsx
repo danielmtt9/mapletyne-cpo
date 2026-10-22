@@ -46,7 +46,7 @@ export const TariffBreakdownChart: React.FC<TariffBreakdownChartProps> = ({ tari
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
         },
         itemWidth: 10,
         itemHeight: 10,
@@ -80,7 +80,7 @@ export const TariffBreakdownChart: React.FC<TariffBreakdownChartProps> = ({ tari
           textStyle: {
             color: '#94a3b8',
             fontFamily: 'monospace',
-            fontSize: 9,
+            fontSize: 12,
           },
           start: 0,
           end: Math.min(100, (6 / tariffs.length) * 100),
@@ -94,7 +94,7 @@ export const TariffBreakdownChart: React.FC<TariffBreakdownChartProps> = ({ tari
         axisLabel: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           interval: 0,
           rotate: tariffs.length > 3 ? 20 : 0,
           formatter: (value: string) => (value.length > 14 ? `${value.substring(0, 12)}…` : value),
@@ -108,7 +108,7 @@ export const TariffBreakdownChart: React.FC<TariffBreakdownChartProps> = ({ tari
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           formatter: '£{value}',
         },
       },

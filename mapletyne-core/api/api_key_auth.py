@@ -75,15 +75,25 @@ async def management_auth(
     try:
         from api.admin_auth import verify_token
         payload = verify_token(provided)
+    except Exception:
+        payload = None
+
+    if not payload:
+        try:
+            from auth.keycloak_client import verify_keycloak_token
+            payload = verify_keycloak_token(provided)
+        except Exception:
+            payload = None
+
+    if payload:
         roles = payload.get("roles", [])
         role = payload.get("role", "")
+        # Non-admin "user" and "driver" roles are strictly forbidden from blanket management bypass
         if (
-            role in ("admin", "operator", "superadmin", "billing", "fleet", "user")
-            or any(r in roles for r in ("cpo-admin", "site-operator", "billing-manager", "fleet-manager", "admin"))
+            role in ("admin", "operator", "superadmin", "billing", "fleet")
+            or any(r in roles for r in ("cpo-admin", "site-operator", "billing-manager", "fleet-manager", "admin", "superadmin"))
         ):
             return
-    except Exception:
-        pass
 
     logger.warning(f"Management API: unauthorized request (bad key/token) path={request.url.path} from={request.client.host if request.client else '?'}")
     raise HTTPException(
@@ -91,3 +101,15 @@ async def management_auth(
         detail="Invalid or missing API key or session token.",
         headers={"WWW-Authenticate": "Bearer"},
     )
+
+
+# Re-export granular RBAC guards for router-level dependencies (GAP-SEC-09)
+from auth.rbac import (
+    require_roles,
+    require_admin,
+    require_superadmin,
+    require_site_operator,
+    require_billing_manager,
+    require_fleet_manager,
+)
+

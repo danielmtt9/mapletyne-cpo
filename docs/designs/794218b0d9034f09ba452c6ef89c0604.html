@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mapletyne EMS Onboarding Wizard - Deploy Charging Hub</title>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Material Symbols Outlined -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#006948',
+              900: '#004c33',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-1 {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'opsz' 24;
+    }
+    input, select, button, textarea {
+      font-size: 16px !important;
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- Minimal Utility Navigation Bar -->
+  <header class="w-full border-b border-slate-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <!-- Left: Logo & System Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-[#006948] flex items-center justify-center text-white shadow-sm">
+          <span class="material-symbols-outlined text-[22px]">bolt</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-lg tracking-tight text-slate-900">Mapletyne</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-[#006948] border border-emerald-200">v2.4</span>
+        </div>
+        <span class="hidden md:inline-block h-4 w-px bg-slate-200 mx-1"></span>
+        <span class="hidden md:inline-block text-xs font-medium tracking-wide text-slate-500 uppercase">EMS Platform Node Setup</span>
+      </div>
+
+      <!-- Right: Global Status & Help -->
+      <div class="flex items-center gap-4">
+        <div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-medium text-emerald-800">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Central CSMS Cluster: Online</span>
+        </div>
+        <a href="#support" class="text-slate-500 hover:text-slate-800 flex items-center gap-1.5 text-sm font-medium transition-colors">
+          <span class="material-symbols-outlined text-[18px]">help</span>
+          <span>NOC Helpdesk</span>
+        </a>
+        <button type="button" class="text-slate-500 hover:text-rose-600 flex items-center gap-1 text-sm font-medium transition-colors ml-2">
+          <span class="material-symbols-outlined text-[18px]">logout</span>
+          <span class="hidden sm:inline">Exit</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Wizard Content Shell -->
+  <main class="flex-grow py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto">
+
+      <!-- Header Section: Centered Branding & Title -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center gap-2 mb-3">
+          <div class="w-8 h-8 rounded-lg bg-[#006948] flex items-center justify-center text-white shadow">
+            <span class="material-symbols-outlined text-[20px]">bolt</span>
+          </div>
+          <span class="text-xl font-bold tracking-tight text-slate-900">Mapletyne EMS</span>
+          <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-[#006948] border border-emerald-200">v2.4</span>
+        </div>
+        <h1 class="text-[30px] font-bold text-slate-900 tracking-tight leading-snug">
+          Deploy New Charging Hub &amp; Microgrid Node
+        </h1>
+        <p class="text-[18px] text-slate-600 mt-2 max-w-2xl mx-auto leading-relaxed">
+          Connect physical charging dispensers, configure local grid interconnect limits, and link to Mapletyne EMS.
+        </p>
+      </div>
+
+      <!-- Progress Stepper Bar (Horizontal 4-Step Tracker, Strict 16px Font) -->
+      <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 relative">
+          
+          <!-- Step 1: Completed -->
+          <div class="flex items-center gap-3 p-2 rounded-lg bg-emerald-50/60 border border-emerald-200/80">
+            <div class="w-9 h-9 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+              <span class="material-symbols-outlined text-[22px] fill-1">check_circle</span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[14px] font-medium text-emerald-800 leading-tight">Step 1 • Done</div>
+              <div class="text-[16px] font-semibold text-slate-900 truncate">Site &amp; Org</div>
+            </div>
+          </div>
+
+          <!-- Step 2: Active -->
+          <div class="flex items-center gap-3 p-2 rounded-lg bg-white border-2 border-[#006948] shadow-sm relative ring-2 ring-emerald-500/20">
+            <div class="w-9 h-9 rounded-full bg-[#006948] text-white flex items-center justify-center shrink-0 shadow">
+              <span class="material-symbols-outlined text-[22px]">ev_station</span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[14px] font-bold text-[#006948] leading-tight flex items-center gap-1">
+                Step 2 • Active
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#006948] animate-ping"></span>
+              </div>
+              <div class="text-[16px] font-bold text-slate-900 truncate">OCPP 2.0.1 Hardware</div>
+            </div>
+          </div>
+
+          <!-- Step 3: Upcoming -->
+          <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50/70 border border-slate-200 text-slate-500">
+            <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">bolt</span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[14px] font-medium text-slate-500 leading-tight">Step 3</div>
+              <div class="text-[16px] font-medium text-slate-700 truncate">Microgrid Limits</div>
+            </div>
+          </div>
+
+          <!-- Step 4: Upcoming -->
+          <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50/70 border border-slate-200 text-slate-500">
+            <div class="w-9 h-9 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-[20px]">verified</span>
+            </div>
+            <div class="min-w-0">
+              <div class="text-[14px] font-medium text-slate-500 leading-tight">Step 4</div>
+              <div class="text-[16px] font-medium text-slate-700 truncate">Live Telemetry</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Main Wizard Card Shell (Tabler White Card, rounded-xl, border border-slate-200, shadow-lg, p-8) -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-lg p-6 sm:p-8 md:p-10">
+        
+        <!-- Section Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-6 mb-8 border-b border-slate-100 gap-3">
+          <div>
+            <div class="text-[14px] font-bold uppercase tracking-wider text-[#006948] mb-1 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">settings_ethernet</span>
+              Hardware Integration Protocol
+            </div>
+            <h2 class="text-[24px] font-bold text-slate-900 tracking-tight">
+              Step 2: Connect Hardware &amp; OCPP 2.0.1 Dispensers
+            </h2>
+          </div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-[14px] font-medium self-start sm:self-auto border border-slate-200">
+            <span class="material-symbols-outlined text-[16px] text-slate-500">lock</span>
+            FIPS 140-2 Encrypted Session
+          </div>
+        </div>
+
+        <form onsubmit="return false;" class="space-y-8">
+          
+          <!-- 1. Station Identity (ChargeBoxIdentity) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="station-id" class="text-[16px] font-semibold text-slate-900 flex items-center gap-2">
+                <span>Station Identifier (ChargeBoxIdentity)</span>
+                <span class="text-rose-600 font-bold">*</span>
+                <button type="button" class="text-slate-400 hover:text-slate-600 transition-colors" title="Exact ChargePointIdentifier specified in the charger onboard firmware configuration">
+                  <span class="material-symbols-outlined text-[18px]">info</span>
+                </button>
+              </label>
+              <span class="text-[14px] text-slate-500">Required by OCPP 2.0.1 standard</span>
+            </div>
+            <div class="relative rounded-lg shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <span class="material-symbols-outlined text-[20px]">badge</span>
+              </div>
+              <input
+                type="text"
+                id="station-id"
+                name="station-id"
+                value="US-NY-MR-001"
+                placeholder="e.g. NY-ALB-001"
+                class="block w-full pl-11 pr-4 py-3 text-[16px] font-medium text-slate-900 bg-slate-50/50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-[#006948] focus:border-[#006948] focus:bg-white transition-all font-mono"
+                required
+              />
+            </div>
+            <p class="text-[14px] text-slate-500 leading-normal">
+              Broadcasted as the station's unique client ID during initial WebSocket handshake. Must match physical unit label.
+            </p>
+          </div>
+
+          <!-- 2. Charger Hardware Model Selection (Two Selectable Visual Radio Cards) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <label class="text-[16px] font-semibold text-slate-900 flex items-center gap-2">
+                <span>Charger Hardware Model Selection</span>
+                <span class="text-rose-600 font-bold">*</span>
+              </label>
+              <span class="text-[14px] text-slate-500">Preconfigures telemetry parsing &amp; voltage envelope</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              
+              <!-- Card A (Selected): ABB Terra 184 -->
+              <label class="relative flex flex-col p-5 rounded-xl border-2 border-[#006948] bg-emerald-50/30 cursor-pointer shadow-sm transition-all hover:bg-emerald-50/50">
+                <input type="radio" name="hardware_model" value="abb_terra_184" checked class="sr-only" />
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[24px]">power</span>
+                    </div>
+                    <div>
+                      <div class="text-[16px] font-bold text-slate-900">ABB Terra 184</div>
+                      <div class="text-[14px] font-medium text-emerald-800">Dual CCS2 • 180 kW DC Fast Charger</div>
+                    </div>
+                  </div>
+                  <!-- Checkmark indicator -->
+                  <div class="w-6 h-6 rounded-full bg-[#006948] text-white flex items-center justify-center shrink-0 shadow">
+                    <span class="material-symbols-outlined text-[18px] fill-1">check</span>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-200/60 flex flex-wrap gap-2 text-[14px]">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white text-slate-700 border border-slate-200 font-medium">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-600">verified</span>
+                    ISO 15118 Plug&amp;Charge
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-white text-slate-700 border border-slate-200 font-medium">
+                    <span class="material-symbols-outlined text-[16px] text-emerald-600">speed</span>
+                    Up to 920V DC
+                  </span>
+                </div>
+              </label>
+
+              <!-- Card B: Alpitronic Hypercharger HYC300 -->
+              <label class="relative flex flex-col p-5 rounded-xl border-2 border-slate-200 bg-white cursor-pointer hover:border-slate-300 transition-all">
+                <input type="radio" name="hardware_model" value="alpitronic_hyc300" class="sr-only" />
+                <div class="flex items-start justify-between">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-bold">
+                      <span class="material-symbols-outlined text-[24px]">electric_meter</span>
+                    </div>
+                    <div>
+                      <div class="text-[16px] font-bold text-slate-900">Alpitronic Hypercharger HYC300</div>
+                      <div class="text-[14px] font-medium text-slate-600">Dual CCS2 + CHAdeMO • 300 kW Ultra-Fast</div>
+                    </div>
+                  </div>
+                  <!-- Radio circle indicator -->
+                  <div class="w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center shrink-0">
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap gap-2 text-[14px]">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-50 text-slate-600 border border-slate-200 font-medium">
+                    <span class="material-symbols-outlined text-[16px] text-slate-500">grid_view</span>
+                    Dynamic SiC Matrix
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-50 text-slate-600 border border-slate-200 font-medium">
+                    <span class="material-symbols-outlined text-[16px] text-slate-500">speed</span>
+                    Up to 1000V DC
+                  </span>
+                </div>
+              </label>
+
+            </div>
+          </div>
+
+          <!-- 3. Central System CSMS WebSocket Endpoint -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label for="csms-endpoint" class="text-[16px] font-semibold text-slate-900 flex items-center gap-2">
+                <span>Central System CSMS WebSocket Endpoint</span>
+                <span class="text-rose-600 font-bold">*</span>
+              </label>
+              <button type="button" onclick="navigator.clipboard.writeText('wss://csms.mapletyne.com:8443/ocpp201/US-NY-MR-001')" class="text-[14px] text-[#006948] hover:text-[#004c33] font-semibold inline-flex items-center gap-1 transition-colors">
+                <span class="material-symbols-outlined text-[16px]">content_copy</span>
+                Copy URL
+              </button>
+            </div>
+            <div class="relative rounded-lg shadow-sm">
+              <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                <span class="material-symbols-outlined text-[20px]">lock</span>
+              </div>
+              <input
+                type="text"
+                id="csms-endpoint"
+                name="csms-endpoint"
+                readonly
+                value="wss://csms.mapletyne.com:8443/ocpp201/US-NY-MR-001"
+                class="block w-full pl-11 pr-4 py-3 text-[16px] font-mono text-slate-800 bg-slate-100/80 border border-slate-300 rounded-lg cursor-text select-all focus:ring-2 focus:ring-[#006948] focus:border-[#006948]"
+              />
+            </div>
+            <p class="text-[14px] text-slate-500">
+              Provide this URI in the dispenser's internal technician commissioning screen under CSMS Connection Settings.
+            </p>
+          </div>
+
+          <!-- 4. Security Profile -->
+          <div class="space-y-2">
+            <label for="security-profile" class="text-[16px] font-semibold text-slate-900 flex items-center gap-2">
+              <span>Security Profile &amp; Cryptographic Handshake</span>
+              <span class="text-rose-600 font-bold">*</span>
+            </label>
+            <div class="relative">
+              <select
+                id="security-profile"
+                name="security-profile"
+                class="block w-full px-4 py-3 pr-10 text-[16px] font-medium text-slate-900 bg-white border border-slate-300 rounded-lg appearance-none focus:ring-2 focus:ring-[#006948] focus:border-[#006948] shadow-sm cursor-pointer"
+              >
+                <option value="profile3" selected>Security Profile 3 - Mutual TLS (mTLS) with Client Certificates (Recommended)</option>
+                <option value="profile2">Security Profile 2 - TLS with Basic Authentication Password</option>
+                <option value="profile1">Security Profile 1 - Unencrypted HTTP (Lab / Testing Mode Only)</option>
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-slate-500">
+                <span class="material-symbols-outlined text-[22px]">expand_more</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 text-[14px] text-slate-600 pt-0.5">
+              <span class="material-symbols-outlined text-[18px] text-emerald-600">verified_user</span>
+              <span>Complies with California Rule 21 &amp; ISO 15118 root trust anchors.</span>
+            </div>
+          </div>
+
+          <!-- 5. Connection Test Banner -->
+          <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/90 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-100 text-[#006948] flex items-center justify-center shrink-0 mt-0.5">
+                  <span class="material-symbols-outlined text-[24px]">network_check</span>
+                </div>
+                <div>
+                  <div class="text-[16px] font-bold text-slate-900 flex items-center gap-2">
+                    Diagnostic Status Check
+                    <span class="px-2 py-0.5 rounded text-[14px] font-semibold bg-emerald-100 text-[#006948]">Ready</span>
+                  </div>
+                  <p class="text-[16px] text-slate-600 mt-0.5">
+                    Ready to Ping Station. Ensure port 8443 is open on the station firewall.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 text-[16px] font-semibold transition-all shadow-sm shrink-0 hover:border-slate-400 active:scale-[0.98]"
+              >
+                <span class="material-symbols-outlined text-[20px] text-emerald-700">sync</span>
+                <span>Send Ping Probe</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Wizard Footer Actions -->
+          <div class="pt-6 border-t border-slate-200 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
+            <!-- Left: Back Button -->
+            <button
+              type="button"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-[16px] font-semibold shadow-sm transition-all hover:text-slate-900 active:scale-[0.98]"
+            >
+              <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+              <span>Back to Site Details</span>
+            </button>
+
+            <!-- Right: Next Step Button -->
+            <button
+              type="button"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg bg-[#006948] hover:bg-[#005238] text-white text-[16px] font-semibold shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
+            >
+              <span>Test Connection &amp; Continue</span>
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
+          </div>
+
+        </form>
+
+      </div>
+
+      <!-- Additional Compliance & Microgrid Notice Badge -->
+      <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-slate-500 text-[14px] px-2">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px] text-emerald-600">lock</span>
+          <span>End-to-End mTLS 1.3 Handshake Enforced</span>
+        </div>
+        <div>
+          Substation Gateway: <span class="font-mono text-slate-700">CA-MR-SUB-04</span>
+        </div>
+        <div>
+          Grid Frequency: <span class="font-semibold text-emerald-700">60.02 Hz</span> (Synchronized)
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footprint / Copyright Footer -->
+  <footer class="border-t border-slate-200 bg-white py-4 px-6 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>&copy; 2026 Mapletyne Energy Technologies Inc. &bull; Enterprise Fleet EMS Platform</div>
+      <div class="flex items-center gap-4">
+        <span>FIPS 140-2 Level 3 Cryptography</span>
+        <span>OCPP 2.0.1 Specification Compliant</span>
+        <span>IEEE 2030.5 Protocol</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -79,15 +79,15 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
   };
 
   return (
-    <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-3xl space-y-5 shadow-sm">
-      <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-3">
+    <div className="tabler-card bg-surface-container border border-outline p-6 rounded-xl space-y-5 shadow-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-outline pb-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">
           <span className="material-symbols-outlined text-secondary text-[22px] shrink-0">shield</span>
-          <h3 className="font-headline text-base font-bold uppercase tracking-wider text-on-surface truncate">
+          <h3 className="font-headline text-base font-bold uppercase tracking-wider text-on-surface">
             Autonomous Peak Shaving Guardrails
           </h3>
         </div>
-        <span className="text-[11px] font-mono text-secondary bg-secondary/10 px-2.5 py-1 rounded-full border border-secondary/30 font-bold uppercase shrink-0">
+        <span className="text-xs font-mono text-secondary bg-secondary/10 px-2.5 py-1 rounded-full border border-secondary/30 font-bold uppercase shrink-0">
           Dynamic Load Governor
         </span>
       </div>
@@ -99,7 +99,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
       {statusFeedback && (
         <div className="p-3 bg-surface-container-high/90 border border-secondary/40 text-on-surface font-mono text-xs rounded-xl flex items-center gap-2.5">
           <span className="w-2 h-2 rounded-full bg-secondary animate-pulse shrink-0" />
-          <span className="truncate">{statusFeedback}</span>
+          <span className="break-words">{statusFeedback}</span>
         </div>
       )}
 
@@ -113,7 +113,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
             <select
               value={selectedSiteId}
               onChange={(e) => setSelectedSiteId(e.target.value)}
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
+              className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
             >
               <option value="default">🏢 Newcastle Primary Hub (Default)</option>
               {sites.map((s) => (
@@ -139,7 +139,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
                 value={gridLimitKw}
                 onChange={(e) => setGridLimitKw(e.target.value)}
                 placeholder="250"
-                className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 pr-10 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
+                className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 pr-10 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xs">
                 kW
@@ -155,7 +155,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
             <select
               value={bufferPct}
               onChange={(e) => setBufferPct(Number(e.target.value))}
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
+              className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
             >
               <option value={5}>5% Buffer (Trigger at 95% load)</option>
               <option value={10}>10% Buffer (Trigger at 90% load) [Standard]</option>
@@ -172,7 +172,7 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
             <select
               value={strategy}
               onChange={(e) => setStrategy(e.target.value)}
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
+              className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-secondary transition-all"
             >
               <option value="peak_shaving">Proportional Fair-Share</option>
               <option value="priority_fleet">Priority & Fleet First</option>
@@ -183,9 +183,9 @@ export const PeakShavingGuardrails: React.FC<PeakShavingGuardrailsProps> = ({
         </div>
 
         {/* Live Setpoint Info Pill & Submit Button */}
-        <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-white/5">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-outline">
           <div className="flex items-center gap-3 text-xs">
-            <div className="px-3.5 py-1.5 bg-surface-container-lowest rounded-xl border border-white/10 flex items-center gap-2">
+            <div className="px-3.5 py-1.5 bg-surface-container-lowest rounded-xl border border-outline flex items-center gap-2">
               <span className="text-on-surface-variant font-sans">Active Setpoint:</span>
               <span className="font-bold text-secondary tabular-nums">
                 {triggerThresholdKw} kW ({100 - bufferPct}% of {numericLimit} kW)

@@ -41,10 +41,12 @@ JWT_SECRET = os.environ.get("JWT_SECRET") or os.environ.get("SECRET_KEY")
 if not JWT_SECRET:
     raise RuntimeError("JWT_SECRET (or SECRET_KEY) must be set; refusing to start with a default signing secret")
 JWT_ALGO = "HS256"
-JWT_TTL_DAYS = 30
+JWT_TTL_HOURS = 1  # 1-hour access token TTL (GAP-SEC-08)
+REFRESH_TOKEN_TTL_DAYS = 30  # 30-day refresh token TTL
 
 
 def create_token(account_id: str, email: str, name: Optional[str] = None) -> str:
+    now = datetime.now(timezone.utc)
     return jwt.encode(
         {
             "sub": str(account_id),
@@ -52,7 +54,26 @@ def create_token(account_id: str, email: str, name: Optional[str] = None) -> str
             "name": name or email.split("@")[0].capitalize(),
             "role": "driver",
             "roles": ["cpo-driver", "driver"],
-            "exp": datetime.now(timezone.utc) + timedelta(days=JWT_TTL_DAYS),
+            "type": "access",
+            "iat": now,
+            "exp": now + timedelta(hours=JWT_TTL_HOURS),
+        },
+        JWT_SECRET,
+        algorithm=JWT_ALGO,
+    )
+
+
+def create_refresh_token(account_id: str, email: str) -> str:
+    now = datetime.now(timezone.utc)
+    return jwt.encode(
+        {
+            "sub": str(account_id),
+            "email": email,
+            "role": "driver",
+            "type": "refresh",
+            "jti": secrets.token_hex(16),
+            "iat": now,
+            "exp": now + timedelta(days=REFRESH_TOKEN_TTL_DAYS),
         },
         JWT_SECRET,
         algorithm=JWT_ALGO,
@@ -61,6 +82,7 @@ def create_token(account_id: str, email: str, name: Optional[str] = None) -> str
 
 def verify_token(token: str) -> dict:
     return jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGO])
+
 
 
 async def get_current_account(request: Request) -> dict:
@@ -408,10 +430,13 @@ async def login(req: LoginRequest):
         raise HTTPException(401, "Incorrect email or password")
 
     token = create_token(row["id"], row["email"], row["name"])
+    refresh_tok = create_refresh_token(row["id"], row["email"])
     logger.info("Local driver account login: %s", email)
 
     return {
         "token": token,
+        "access_token": token,
+        "refresh_token": refresh_tok,
         "account": {
             "id": row["id"],
             "email": row["email"],
@@ -422,6 +447,74 @@ async def login(req: LoginRequest):
             "created_at": row["created_at"].isoformat() if row["created_at"] else None,
         },
     }
+
+
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+
+@router.post("/refresh")
+async def refresh_driver_token(req: RefreshTokenRequest):
+    """Rotate and refresh driver tokens (GAP-SEC-08)."""
+    raw_refresh = req.refresh_token.strip()
+    if not raw_refresh:
+        raise HTTPException(400, "refresh_token is required")
+
+    # 1. Attempt Keycloak token refresh
+    try:
+        kc_tokens = await refresh_access_token(raw_refresh, client_id="opencpo-charge-app")
+        new_access = kc_tokens.get("access_token")
+        new_refresh = kc_tokens.get("refresh_token") or raw_refresh
+        return {
+            "ok": True,
+            "token": new_access,
+            "access_token": new_access,
+            "refresh_token": new_refresh,
+        }
+    except Exception:
+        pass
+
+    # 2. Local refresh token verification and rotation
+    try:
+        payload = jwt.decode(raw_refresh, JWT_SECRET, algorithms=[JWT_ALGO])
+        if payload.get("type") != "refresh":
+            raise HTTPException(400, "Token is not a valid refresh token")
+
+        account_id = payload.get("sub")
+        async with db.read() as conn:
+            row = await conn.fetchrow("""
+                SELECT id::text, email, name, phone, language, pricing_tier, created_at
+                  FROM ocpp.driver_accounts
+                 WHERE id = $1::uuid
+            """, account_id)
+
+        if not row:
+            raise HTTPException(401, "Driver account not found")
+
+        # Rotate tokens: new 1h access token and new rotated refresh token
+        new_access = create_token(row["id"], row["email"], row["name"])
+        new_refresh = create_refresh_token(row["id"], row["email"])
+
+        return {
+            "ok": True,
+            "token": new_access,
+            "access_token": new_access,
+            "refresh_token": new_refresh,
+            "account": {
+                "id": row["id"],
+                "email": row["email"],
+                "name": row["name"],
+                "phone": row["phone"],
+                "language": row["language"],
+                "pricing_tier": row["pricing_tier"] or "public",
+                "created_at": row["created_at"].isoformat() if row["created_at"] else None,
+            },
+        }
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(401, "Refresh token has expired. Please log in again.")
+    except Exception as e:
+        raise HTTPException(401, f"Invalid refresh token: {e}")
+
 
 
 @router.get("/profile")

@@ -1,39 +1,52 @@
 import * as echarts from 'echarts';
 
 /**
- * OpenCPO Luxury Apple HIG Dark Theme for Apache ECharts
+ * OpenCPO Luxury Material / Tabler Dark & Light Themes for Apache ECharts
  * Designed for real-time EV charging telemetry, grid management, and financial ledgers.
+ * No glassmorphism; solid Google Material / Tabler elevation surfaces.
  */
+
 export const OPENCPO_DARK_PALETTE = [
-  '#007AFF', // Electric Azure (Grid / EV Load)
-  '#10B981', // Emerald Mint (Solar / Healthy Status)
+  '#10B981', // Emerald Mint (Primary / Solar / Ready)
+  '#38BDF8', // Electric Azure (Grid / EV Load)
   '#F59E0B', // Amber Alert (BESS Storage / Peak Demand)
-  '#8B5CF6', // Purple Telematics (Fleet Dispatches)
+  '#A78BFA', // Purple Telematics (Fleet Dispatches)
   '#06B6D4', // Cyan Hydro (Building Base Load)
   '#EC4899', // Magenta (Tariff Retail Margin)
   '#EF4444', // Rose Coral (Grid Overload / Idle Penalties)
   '#14B8A6', // Teal (OCPI Roaming)
 ];
 
+export const OPENCPO_LIGHT_PALETTE = [
+  '#006948', // Deep Forest Emerald (Primary)
+  '#0284C7', // Electric Blue (Load / Dispensing)
+  '#D97706', // Amber (Demand / Storage)
+  '#7C3AED', // Purple (Fleet)
+  '#0891B2', // Cyan (Base Load)
+  '#DB2777', // Pink (Margin)
+  '#DC2626', // Red (Alerts / Faults)
+  '#0D9488', // Teal (Roaming)
+];
+
 export const openCpoDarkTheme = {
   color: OPENCPO_DARK_PALETTE,
   backgroundColor: 'transparent',
   textStyle: {
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", "Geist", "JetBrains Mono", sans-serif',
+    fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     color: '#94a3b8',
-    fontSize: 11,
+    fontSize: 12,
   },
   title: {
     textStyle: {
       color: '#f8fafc',
-      fontSize: 14,
+      fontSize: 16,
       fontWeight: 600,
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", sans-serif',
+      fontFamily: '"Inter", sans-serif',
     },
     subtextStyle: {
       color: '#64748b',
-      fontSize: 11,
-      fontFamily: 'monospace',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
     },
   },
   line: {
@@ -55,25 +68,25 @@ export const openCpoDarkTheme = {
   grid: {
     top: 32,
     right: 16,
-    bottom: 24,
+    bottom: 28,
     left: 48,
     containLabel: false,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
+    borderColor: '#334155',
   },
   categoryAxis: {
     axisLine: {
       show: true,
       lineStyle: {
-        color: 'rgba(255, 255, 255, 0.12)',
+        color: '#334155',
       },
     },
     axisTick: {
       show: false,
     },
     axisLabel: {
-      color: '#94a3b8',
-      fontSize: 10,
-      fontFamily: 'monospace',
+      color: '#cbd5e1',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
     },
     splitLine: {
       show: false,
@@ -87,14 +100,14 @@ export const openCpoDarkTheme = {
       show: false,
     },
     axisLabel: {
-      color: '#94a3b8',
-      fontSize: 10,
-      fontFamily: 'monospace',
+      color: '#cbd5e1',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
     },
     splitLine: {
       show: true,
       lineStyle: {
-        color: 'rgba(255, 255, 255, 0.06)',
+        color: '#1e293b',
         type: 'dashed',
       },
     },
@@ -103,9 +116,9 @@ export const openCpoDarkTheme = {
     top: 0,
     right: 8,
     textStyle: {
-      color: '#94a3b8',
-      fontSize: 11,
-      fontFamily: 'monospace',
+      color: '#cbd5e1',
+      fontSize: 12,
+      fontFamily: '"Inter", sans-serif',
     },
     itemWidth: 12,
     itemHeight: 8,
@@ -113,55 +126,198 @@ export const openCpoDarkTheme = {
     icon: 'roundRect',
   },
   tooltip: {
-    backgroundColor: 'rgba(15, 23, 42, 0.94)',
-    borderColor: 'rgba(255, 255, 255, 0.12)',
+    backgroundColor: '#0f172a',
+    borderColor: '#334155',
     borderWidth: 1,
     padding: [10, 14],
     textStyle: {
       color: '#f8fafc',
       fontSize: 12,
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Inter", monospace',
+      fontFamily: '"Inter", "IBM Plex Mono", sans-serif',
     },
-    extraCssText: 'backdrop-filter: blur(16px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border-radius: 12px;',
+    extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.2); border-radius: 8px;',
     axisPointer: {
       type: 'cross',
       lineStyle: {
-        color: 'rgba(0, 122, 255, 0.4)',
+        color: 'rgba(56, 189, 248, 0.5)',
         type: 'dashed',
         width: 1,
       },
       crossStyle: {
-        color: 'rgba(0, 122, 255, 0.4)',
+        color: 'rgba(56, 189, 248, 0.5)',
       },
       label: {
         backgroundColor: '#1e293b',
         color: '#f8fafc',
-        fontFamily: 'monospace',
-        fontSize: 10,
+        fontFamily: '"IBM Plex Mono", monospace',
+        fontSize: 12,
         borderRadius: 4,
       },
     },
   },
   dataZoom: {
-    backgroundColor: 'rgba(15, 23, 42, 0.4)',
-    dataBackgroundColor: 'rgba(0, 122, 255, 0.15)',
-    fillerColor: 'rgba(0, 122, 255, 0.25)',
-    handleColor: '#007AFF',
+    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    dataBackgroundColor: 'rgba(56, 189, 248, 0.15)',
+    fillerColor: 'rgba(56, 189, 248, 0.25)',
+    handleColor: '#38BDF8',
     handleSize: '100%',
     textStyle: {
-      color: '#94a3b8',
-      fontFamily: 'monospace',
-      fontSize: 10,
+      color: '#cbd5e1',
+      fontFamily: '"IBM Plex Mono", monospace',
+      fontSize: 12,
     },
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: '#334155',
   },
 };
 
-// Register custom theme once
+export const openCpoLightTheme = {
+  color: OPENCPO_LIGHT_PALETTE,
+  backgroundColor: 'transparent',
+  textStyle: {
+    fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    color: '#475569',
+    fontSize: 12,
+  },
+  title: {
+    textStyle: {
+      color: '#0f172a',
+      fontSize: 16,
+      fontWeight: 600,
+      fontFamily: '"Inter", sans-serif',
+    },
+    subtextStyle: {
+      color: '#64748b',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
+    },
+  },
+  line: {
+    itemStyle: {
+      borderWidth: 2,
+    },
+    lineStyle: {
+      width: 2.5,
+    },
+    symbolSize: 6,
+    symbol: 'circle',
+    smooth: true,
+  },
+  bar: {
+    itemStyle: {
+      borderRadius: [4, 4, 0, 0],
+    },
+  },
+  grid: {
+    top: 32,
+    right: 16,
+    bottom: 28,
+    left: 48,
+    containLabel: false,
+    borderColor: '#e2e8f0',
+  },
+  categoryAxis: {
+    axisLine: {
+      show: true,
+      lineStyle: {
+        color: '#cbd5e1',
+      },
+    },
+    axisTick: {
+      show: false,
+    },
+    axisLabel: {
+      color: '#475569',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
+    },
+    splitLine: {
+      show: false,
+    },
+  },
+  valueAxis: {
+    axisLine: {
+      show: false,
+    },
+    axisTick: {
+      show: false,
+    },
+    axisLabel: {
+      color: '#475569',
+      fontSize: 12,
+      fontFamily: '"IBM Plex Mono", monospace',
+    },
+    splitLine: {
+      show: true,
+      lineStyle: {
+        color: '#e2e8f0',
+        type: 'dashed',
+      },
+    },
+  },
+  legend: {
+    top: 0,
+    right: 8,
+    textStyle: {
+      color: '#475569',
+      fontSize: 12,
+      fontFamily: '"Inter", sans-serif',
+    },
+    itemWidth: 12,
+    itemHeight: 8,
+    itemGap: 14,
+    icon: 'roundRect',
+  },
+  tooltip: {
+    backgroundColor: '#ffffff',
+    borderColor: '#e2e8f0',
+    borderWidth: 1,
+    padding: [10, 14],
+    textStyle: {
+      color: '#0f172a',
+      fontSize: 12,
+      fontFamily: '"Inter", "IBM Plex Mono", sans-serif',
+    },
+    extraCssText: 'box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05); border-radius: 8px;',
+    axisPointer: {
+      type: 'cross',
+      lineStyle: {
+        color: 'rgba(2, 132, 199, 0.5)',
+        type: 'dashed',
+        width: 1,
+      },
+      crossStyle: {
+        color: 'rgba(2, 132, 199, 0.5)',
+      },
+      label: {
+        backgroundColor: '#f1f5f9',
+        color: '#0f172a',
+        fontFamily: '"IBM Plex Mono", monospace',
+        fontSize: 12,
+        borderRadius: 4,
+      },
+    },
+  },
+  dataZoom: {
+    backgroundColor: 'rgba(241, 245, 249, 0.8)',
+    dataBackgroundColor: 'rgba(2, 132, 199, 0.15)',
+    fillerColor: 'rgba(2, 132, 199, 0.25)',
+    handleColor: '#0284C7',
+    handleSize: '100%',
+    textStyle: {
+      color: '#475569',
+      fontFamily: '"IBM Plex Mono", monospace',
+      fontSize: 12,
+    },
+    borderColor: '#e2e8f0',
+  },
+};
+
+// Register custom themes once
 let isThemeRegistered = false;
 export function registerOpenCpoTheme(): void {
   if (!isThemeRegistered) {
     echarts.registerTheme('opencpo-dark', openCpoDarkTheme);
+    echarts.registerTheme('opencpo-light', openCpoLightTheme);
     isThemeRegistered = true;
   }
 }

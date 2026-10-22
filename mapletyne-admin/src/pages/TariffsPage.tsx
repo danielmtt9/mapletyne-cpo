@@ -168,7 +168,7 @@ export const TariffsPage: React.FC = () => {
     <div className="space-y-6 font-body max-w-7xl mx-auto">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 material-card bg-slate-900/95 backdrop-blur-xl border border-secondary/40 text-slate-100 px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-6 right-6 z-50 tabler-card bg-surface-container border border-secondary/40 text-on-surface px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
           <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
           <span>{toastMessage}</span>
         </div>
@@ -177,10 +177,10 @@ export const TariffsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-headline text-3xl font-bold tracking-tight text-slate-100">
+          <h1 className="font-headline text-4xl font-bold tracking-tight text-on-surface">
             Tariffs & Pricing Management
           </h1>
-          <p className="text-sm text-slate-400 font-body mt-1">
+          <p className="text-xs text-on-surface-variant font-body mt-1">
             Multi-component base billing models, operational cost basis configuration, and customer margin tiering.
           </p>
         </div>
@@ -190,7 +190,7 @@ export const TariffsPage: React.FC = () => {
               setEditingTier(null);
               setIsTierModalOpen(true);
             }}
-            className="px-4 py-2.5 material-card bg-slate-900/80 border border-slate-700/80 text-slate-200 hover:text-white font-semibold text-xs rounded-xl shadow-apple-sm hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center gap-2"
+            className="px-4 py-2.5 tabler-card bg-surface-container border border-outline text-on-surface hover:bg-surface-container-high font-semibold text-sm rounded-xl shadow-xs active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer"
           >
             <span className="material-symbols-outlined text-[16px] text-secondary">add</span>
             Add Margin Tier
@@ -200,7 +200,7 @@ export const TariffsPage: React.FC = () => {
               setEditingTariff(null);
               setIsTariffModalOpen(true);
             }}
-            className="px-4 py-2.5 bg-primary text-slate-950 font-semibold text-xs rounded-xl shadow-apple-sm hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2"
+            className="px-4 py-2.5 bg-primary text-on-primary font-semibold text-xs rounded-xl shadow-apple-sm hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             Create Tariff Model
@@ -210,21 +210,21 @@ export const TariffsPage: React.FC = () => {
 
       {/* Summary Metrics (Standardized Height, Borders, and High Contrast) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="material-card bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 p-5 rounded-2xl shadow-apple-sm hover:border-slate-600 transition-all flex flex-col justify-between h-24">
+        <div className="tabler-card bg-surface-container border border-outline p-5 rounded-xl shadow-xs transition-all flex flex-col justify-between h-24">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-xs text-slate-400 uppercase tracking-wider">
+            <span className="font-mono text-xs text-on-surface-variant uppercase tracking-wider">
               Active Tariff Plans
             </span>
             <span className="material-symbols-outlined text-primary text-[18px]">payments</span>
           </div>
-          <div className="font-headline text-2xl font-bold text-slate-100 tabular-nums">
+          <div className="font-headline text-2xl font-bold text-on-surface tabular-nums">
             {isTariffsLoading ? '...' : tariffs.length}
           </div>
         </div>
 
-        <div className="material-card bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 p-5 rounded-2xl shadow-apple-sm hover:border-slate-600 transition-all flex flex-col justify-between h-24">
+        <div className="tabler-card bg-surface-container border border-outline p-5 rounded-xl shadow-xs transition-all flex flex-col justify-between h-24">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-xs text-slate-400 uppercase tracking-wider">
+            <span className="font-mono text-xs text-on-surface-variant uppercase tracking-wider">
               Customer Pricing Tiers
             </span>
             <span className="material-symbols-outlined text-emerald-400 text-[18px]">loyalty</span>
@@ -234,21 +234,21 @@ export const TariffsPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="material-card bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 p-5 rounded-2xl shadow-apple-sm hover:border-slate-600 transition-all flex flex-col justify-between h-24">
+        <div className="tabler-card bg-surface-container border border-outline p-5 rounded-xl shadow-xs transition-all flex flex-col justify-between h-24">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-xs text-slate-400 uppercase tracking-wider">
+            <span className="font-mono text-xs text-on-surface-variant uppercase tracking-wider">
               Network Cost Basis
             </span>
             <span className="material-symbols-outlined text-blue-400 text-[18px]">account_balance</span>
           </div>
           <div className="font-headline text-2xl font-bold text-blue-400 tabular-nums flex items-baseline gap-1">
-            £{totalCostBasis.toFixed(3)} <span className="text-xs font-mono font-normal text-slate-400">/ kWh</span>
+            £{totalCostBasis.toFixed(3)} <span className="text-xs font-mono font-normal text-on-surface-variant">/ kWh</span>
           </div>
         </div>
 
-        <div className="material-card bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 p-5 rounded-2xl shadow-apple-sm hover:border-slate-600 transition-all flex flex-col justify-between h-24">
+        <div className="tabler-card bg-surface-container border border-outline p-5 rounded-xl shadow-xs transition-all flex flex-col justify-between h-24">
           <div className="flex items-center justify-between">
-            <span className="font-mono text-xs text-slate-400 uppercase tracking-wider">
+            <span className="font-mono text-xs text-on-surface-variant uppercase tracking-wider">
               Standard Tax / VAT
             </span>
             <span className="material-symbols-outlined text-amber-400 text-[18px]">percent</span>
@@ -261,14 +261,14 @@ export const TariffsPage: React.FC = () => {
 
       {/* Section 1: Base Tariff Models (Spacious Full-Width Layout) */}
       <div className="space-y-4">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-white/5 pb-3">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-outline pb-3">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-[20px]">payments</span>
             <div>
-              <h2 className="font-headline text-lg font-bold text-slate-100">
+              <h2 className="font-headline text-lg font-bold text-on-surface">
                 Configured Base Tariff Models
               </h2>
-              <span className="text-xs font-mono text-slate-400">
+              <span className="text-xs font-mono text-on-surface-variant">
                 OCPP & OCPI Compatible Dimensional Billing ({filteredTariffs.length} shown)
               </span>
             </div>
@@ -278,13 +278,13 @@ export const TariffsPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-2">
             {/* Search Input */}
             <div className="relative min-w-[220px]">
-              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">search</span>
+              <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-on-surface-variant text-[16px]">search</span>
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search tariffs by name or ID..."
-                className="w-full bg-slate-950/90 border border-slate-700 rounded-xl h-8 pl-8 pr-3 text-xs text-slate-100 placeholder:text-slate-400 focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all"
+                className="w-full bg-surface-container-high border border-outline rounded-xl h-10 pl-8 pr-3 text-base text-on-surface placeholder:text-on-surface-variant focus:border-primary focus:ring-1 focus:ring-primary/40 outline-none transition-all font-sans"
               />
             </div>
 
@@ -292,22 +292,22 @@ export const TariffsPage: React.FC = () => {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-slate-950/90 border border-slate-700 rounded-xl h-8 px-2.5 text-xs text-slate-200 focus:border-primary outline-none cursor-pointer"
+              className="bg-surface-container-high border border-outline rounded-xl h-10 px-3 text-base text-on-surface focus:border-primary outline-none cursor-pointer font-sans"
             >
-              <option value="name_asc" className="bg-slate-900">Sort: Name (A-Z)</option>
-              <option value="rate_desc" className="bg-slate-900">Sort: Rate (High to Low)</option>
-              <option value="rate_asc" className="bg-slate-900">Sort: Rate (Low to High)</option>
+              <option value="name_asc" className="bg-surface-container">Sort: Name (A-Z)</option>
+              <option value="rate_desc" className="bg-surface-container">Sort: Rate (High to Low)</option>
+              <option value="rate_asc" className="bg-surface-container">Sort: Rate (Low to High)</option>
             </select>
 
             {/* View Mode Toggle */}
-            <div className="flex items-center p-0.5 bg-slate-950 border border-slate-700 rounded-xl">
+            <div className="flex items-center p-1 bg-surface-container-high border border-outline rounded-xl">
               <button
                 type="button"
                 onClick={() => setViewMode('grid')}
                 className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium flex items-center gap-1 transition-all ${
                   viewMode === 'grid'
                     ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-on-surface-variant hover:text-on-surface'
                 }`}
                 title="Grid Card View"
               >
@@ -320,7 +320,7 @@ export const TariffsPage: React.FC = () => {
                 className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium flex items-center gap-1 transition-all ${
                   viewMode === 'table'
                     ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
-                    : 'text-slate-400 hover:text-slate-200'
+                    : 'text-on-surface-variant hover:text-on-surface'
                 }`}
                 title="Dense Table View"
               >
@@ -333,10 +333,10 @@ export const TariffsPage: React.FC = () => {
 
         {/* Full-Width Tariff Content */}
         {filteredTariffs.length === 0 ? (
-          <div className="material-card bg-slate-900/80 border border-slate-700/60 rounded-2xl p-10 text-center space-y-3">
-            <span className="material-symbols-outlined text-slate-500 text-[40px]">receipt_long</span>
-            <h3 className="font-headline text-base font-bold text-slate-200">No Matching Tariff Models</h3>
-            <p className="text-xs text-slate-400 font-mono max-w-md mx-auto">
+          <div className="tabler-card bg-surface-container border border-outline rounded-xl p-10 text-center space-y-3">
+            <span className="material-symbols-outlined text-on-surface-variant text-[40px]">receipt_long</span>
+            <h3 className="font-headline text-base font-bold text-on-surface">No Matching Tariff Models</h3>
+            <p className="text-xs text-on-surface-variant font-mono max-w-md mx-auto">
               {searchQuery ? `No tariff matches query '${searchQuery}'.` : 'Set up energy rates, idle penalty fees, and connection fees across your network.'}
             </p>
             <button
@@ -344,7 +344,7 @@ export const TariffsPage: React.FC = () => {
                 setEditingTariff(null);
                 setIsTariffModalOpen(true);
               }}
-              className="mt-2 px-4 py-2 bg-primary text-slate-950 font-mono text-xs font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all"
+              className="mt-2 px-4 py-2 bg-primary text-on-primary font-mono text-xs font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all"
             >
               Create Tariff Model
             </button>
@@ -355,45 +355,45 @@ export const TariffsPage: React.FC = () => {
             {filteredTariffs.map((t) => (
               <div
                 key={t.id}
-                className="material-card bg-slate-900/90 border border-slate-700/80 hover:border-slate-500 p-5 rounded-2xl shadow-apple-sm hover:shadow-lg transition-all flex flex-col justify-between space-y-4 group cursor-pointer"
+                className="tabler-card bg-surface-container border border-outline hover:border-primary/50 p-5 rounded-xl shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4 group cursor-pointer"
                 onClick={() => setDetailTariff(t)}
               >
                 <div>
                   <div className="flex justify-between items-start gap-3 min-w-0">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-headline font-bold text-base text-slate-100 truncate group-hover:text-blue-300 transition-colors">
+                      <h3 className="font-headline font-bold text-base text-on-surface truncate group-hover:text-blue-300 transition-colors">
                         {t.name || t.id}
                       </h3>
-                      <span className="text-xs font-mono text-slate-400 truncate block">ID: {t.id}</span>
+                      <span className="text-xs font-mono text-on-surface-variant truncate block">ID: {t.id}</span>
                     </div>
                     <span className="font-headline text-xl font-bold text-primary whitespace-nowrap shrink-0">
-                      £{(t.energy_rate ?? 0).toFixed(3)} <span className="text-xs font-mono font-normal text-slate-400">/kWh</span>
+                      £{(t.energy_rate ?? 0).toFixed(3)} <span className="text-xs font-mono font-normal text-on-surface-variant">/kWh</span>
                     </span>
                   </div>
 
                   {/* Strict Tabular Alignment with Dimmed Zero Values */}
-                  <div className="space-y-2 font-mono text-xs border-t border-white/5 pt-3 mt-3">
+                  <div className="space-y-2 font-mono text-xs border-t border-outline pt-3 mt-3">
                     <div className="grid grid-cols-2 gap-2 items-center">
-                      <span className="text-slate-400">Energy Rate:</span>
-                      <span className={`tabular-nums text-right font-semibold ${(t.energy_rate ?? 0) > 0 ? 'text-slate-100' : 'text-slate-500 font-normal'}`}>
+                      <span className="text-on-surface-variant">Energy Rate:</span>
+                      <span className={`tabular-nums text-right font-semibold ${(t.energy_rate ?? 0) > 0 ? 'text-on-surface' : 'text-on-surface-variant font-normal'}`}>
                         £{(t.energy_rate ?? 0).toFixed(3)} / kWh
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 items-center">
-                      <span className="text-slate-400">Time Rate:</span>
-                      <span className={`tabular-nums text-right ${(t.time_rate ?? 0) > 0 ? 'text-sky-300 font-semibold' : 'text-slate-500 font-normal'}`}>
+                      <span className="text-on-surface-variant">Time Rate:</span>
+                      <span className={`tabular-nums text-right ${(t.time_rate ?? 0) > 0 ? 'text-sky-300 font-semibold' : 'text-on-surface-variant font-normal'}`}>
                         £{(t.time_rate ?? 0).toFixed(3)} / min
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 items-center">
-                      <span className="text-slate-400">Idle Penalty:</span>
-                      <span className={`tabular-nums text-right ${(t.idle_rate ?? 0) > 0 ? 'text-amber-400 font-semibold' : 'text-slate-500 font-normal'}`}>
+                      <span className="text-on-surface-variant">Idle Penalty:</span>
+                      <span className={`tabular-nums text-right ${(t.idle_rate ?? 0) > 0 ? 'text-amber-400 font-semibold' : 'text-on-surface-variant font-normal'}`}>
                         £{(t.idle_rate ?? 0).toFixed(3)} / min
                       </span>
                     </div>
                     <div className="grid grid-cols-2 gap-2 items-center">
-                      <span className="text-slate-400">Start Flat Fee:</span>
-                      <span className={`tabular-nums text-right ${(t.flat_fee ?? 0) > 0 ? 'text-emerald-400 font-semibold' : 'text-slate-500 font-normal'}`}>
+                      <span className="text-on-surface-variant">Start Flat Fee:</span>
+                      <span className={`tabular-nums text-right ${(t.flat_fee ?? 0) > 0 ? 'text-emerald-400 font-semibold' : 'text-on-surface-variant font-normal'}`}>
                         £{(t.flat_fee ?? 0).toFixed(2)}
                       </span>
                     </div>
@@ -401,7 +401,7 @@ export const TariffsPage: React.FC = () => {
                 </div>
 
                 <div 
-                  className="flex items-center justify-between border-t border-white/5 pt-3"
+                  className="flex items-center justify-between border-t border-outline pt-3"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <button
@@ -417,7 +417,7 @@ export const TariffsPage: React.FC = () => {
                         setEditingTariff(t);
                         setIsTariffModalOpen(true);
                       }}
-                      className="px-2.5 py-1 bg-slate-950/80 border border-slate-700 text-slate-200 font-mono text-xs rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-1"
+                      className="px-2.5 py-1 bg-surface-container-high border border-outline text-on-surface font-sans text-sm rounded-lg hover:bg-surface-container-highest transition-colors flex items-center gap-1"
                     >
                       <span className="material-symbols-outlined text-[13px]">edit</span>
                       Edit
@@ -428,7 +428,7 @@ export const TariffsPage: React.FC = () => {
                           deleteTariffMutation.mutate(t.id);
                         }
                       }}
-                      className="p-1 bg-slate-950/80 border border-slate-700 text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors"
+                      className="p-1.5 bg-surface-container-high border border-outline text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors"
                       title="Delete Tariff"
                     >
                       <span className="material-symbols-outlined text-[14px]">delete</span>
@@ -440,10 +440,10 @@ export const TariffsPage: React.FC = () => {
           </div>
         ) : (
           /* Dense Table View */
-          <div className="material-card bg-slate-900/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-apple-sm">
+          <div className="tabler-card bg-surface-container border border-outline rounded-xl overflow-hidden shadow-xs">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-mono">
-                <thead className="bg-slate-950/90 border-b border-white/10 text-slate-400 uppercase text-[10px] tracking-wider">
+                <thead className="bg-surface-container-high border-b border-outline text-on-surface-variant uppercase text-xs tracking-wider">
                   <tr>
                     <th className="py-3 px-4 min-w-[200px]">Plan Name & ID</th>
                     <th className="py-3 px-3 text-right">Energy Rate</th>
@@ -458,41 +458,41 @@ export const TariffsPage: React.FC = () => {
                   {filteredTariffs.map((t) => (
                     <tr 
                       key={t.id} 
-                      className="hover:bg-slate-800/50 transition-colors cursor-pointer"
+                      className="hover:bg-surface-container-high/50 transition-colors cursor-pointer"
                       onClick={() => setDetailTariff(t)}
                     >
                       <td className="py-3 px-4">
-                        <div className="font-bold text-slate-100 font-sans text-xs flex items-center gap-2">
+                        <div className="font-bold text-on-surface font-sans text-xs flex items-center gap-2">
                           <span>{t.name || t.id}</span>
-                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">
+                          <span className="text-xs font-mono px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-300 border border-blue-500/20">
                             {t.id}
                           </span>
                         </div>
                       </td>
                       <td className="py-3 px-3 text-right tabular-nums">
-                        <span className={(t.energy_rate ?? 0) > 0 ? 'text-slate-100 font-bold' : 'text-slate-500'}>
+                        <span className={(t.energy_rate ?? 0) > 0 ? 'text-on-surface font-bold' : 'text-on-surface-variant'}>
                           £{(t.energy_rate ?? 0).toFixed(3)}
                         </span>
-                        <span className="text-[10px] text-slate-500 block">/kWh</span>
+                        <span className="text-xs text-on-surface-variant block">/kWh</span>
                       </td>
                       <td className="py-3 px-3 text-right tabular-nums">
-                        <span className={(t.time_rate ?? 0) > 0 ? 'text-sky-300 font-semibold' : 'text-slate-500'}>
+                        <span className={(t.time_rate ?? 0) > 0 ? 'text-sky-300 font-semibold' : 'text-on-surface-variant'}>
                           £{(t.time_rate ?? 0).toFixed(3)}
                         </span>
-                        <span className="text-[10px] text-slate-500 block">/min</span>
+                        <span className="text-xs text-on-surface-variant block">/min</span>
                       </td>
                       <td className="py-3 px-3 text-right tabular-nums">
-                        <span className={(t.idle_rate ?? 0) > 0 ? 'text-amber-400 font-semibold' : 'text-slate-500'}>
+                        <span className={(t.idle_rate ?? 0) > 0 ? 'text-amber-400 font-semibold' : 'text-on-surface-variant'}>
                           £{(t.idle_rate ?? 0).toFixed(3)}
                         </span>
-                        <span className="text-[10px] text-slate-500 block">/min</span>
+                        <span className="text-xs text-on-surface-variant block">/min</span>
                       </td>
                       <td className="py-3 px-3 text-right tabular-nums">
-                        <span className={(t.flat_fee ?? 0) > 0 ? 'text-emerald-400 font-semibold' : 'text-slate-500'}>
+                        <span className={(t.flat_fee ?? 0) > 0 ? 'text-emerald-400 font-semibold' : 'text-on-surface-variant'}>
                           £{(t.flat_fee ?? 0).toFixed(2)}
                         </span>
                       </td>
-                      <td className="py-3 px-3 text-center text-slate-400">
+                      <td className="py-3 px-3 text-center text-on-surface-variant">
                         {t.currency || 'GBP'}
                       </td>
                       <td 
@@ -502,7 +502,7 @@ export const TariffsPage: React.FC = () => {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => setDetailTariff(t)}
-                            className="p-1.5 bg-slate-950 border border-slate-700 text-blue-400 hover:text-blue-300 rounded-lg transition-colors"
+                            className="p-1.5 bg-surface-container-high border border-outline text-blue-400 hover:text-blue-500 rounded-lg transition-colors"
                             title="Inspect In-Depth Breakdown"
                           >
                             <span className="material-symbols-outlined text-[14px]">query_stats</span>
@@ -512,7 +512,7 @@ export const TariffsPage: React.FC = () => {
                               setEditingTariff(t);
                               setIsTariffModalOpen(true);
                             }}
-                            className="p-1.5 bg-slate-950 border border-slate-700 text-slate-200 hover:text-white rounded-lg transition-colors"
+                            className="p-1.5 bg-surface-container-high border border-outline text-on-surface hover:text-primary rounded-lg transition-colors"
                             title="Edit Tariff"
                           >
                             <span className="material-symbols-outlined text-[14px]">edit</span>
@@ -523,7 +523,7 @@ export const TariffsPage: React.FC = () => {
                                 deleteTariffMutation.mutate(t.id);
                               }
                             }}
-                            className="p-1.5 bg-slate-950 border border-slate-700 text-rose-400 hover:text-rose-200 hover:bg-rose-500/20 rounded-lg transition-colors"
+                            className="p-1.5 bg-surface-container-high border border-outline text-rose-400 hover:bg-rose-500/20 rounded-lg transition-colors"
                             title="Delete Tariff"
                           >
                             <span className="material-symbols-outlined text-[14px]">delete</span>
@@ -542,15 +542,15 @@ export const TariffsPage: React.FC = () => {
       {/* Section 2: Customer Pricing Tiers & Cost Basis Configuration */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
         {/* Left: Customer Pricing Tiers Table */}
-        <div className="material-card bg-slate-900/90 backdrop-blur-xl border border-slate-700/80 p-5 rounded-2xl space-y-4 shadow-apple-sm">
-          <div className="flex items-center justify-between border-b border-white/5 pb-3">
+        <div className="tabler-card bg-surface-container border border-outline p-5 rounded-xl space-y-4 shadow-xs">
+          <div className="flex items-center justify-between border-b border-outline pb-3">
             <div className="flex items-center gap-2">
               <span className="material-symbols-outlined text-secondary text-[20px]">loyalty</span>
               <div>
-                <h3 className="font-headline text-base font-bold text-slate-100">
+                <h3 className="font-headline text-base font-bold text-on-surface">
                   Customer Pricing Tiers
                 </h3>
-                <span className="text-xs font-mono text-slate-400">
+                <span className="text-xs font-mono text-on-surface-variant">
                   CPO profit margins added to base network costs
                 </span>
               </div>
@@ -560,7 +560,7 @@ export const TariffsPage: React.FC = () => {
                 setEditingTier(null);
                 setIsTierModalOpen(true);
               }}
-              className="px-3 py-1.5 bg-secondary text-slate-950 font-mono text-xs font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1 shadow-apple-sm"
+              className="px-3.5 py-2 bg-secondary text-white font-sans text-sm font-bold rounded-xl hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-1 shadow-xs"
             >
               <span className="material-symbols-outlined text-[14px]">add</span>
               Add Tier
@@ -569,7 +569,7 @@ export const TariffsPage: React.FC = () => {
 
           <div className="overflow-x-auto w-full">
             <table className="w-full text-left font-mono text-xs">
-              <thead className="bg-slate-950/80 text-slate-400 uppercase text-[10px] tracking-wider border-b border-white/10">
+              <thead className="bg-surface-container-high text-on-surface-variant uppercase text-xs tracking-wider border-b border-outline">
                 <tr>
                   <th className="p-3 min-w-[140px]">Tier Plan</th>
                   <th className="p-3 text-right">Margin</th>
@@ -581,21 +581,21 @@ export const TariffsPage: React.FC = () => {
               <tbody className="divide-y divide-white/5">
                 {pricingTiers.length === 0 ? (
                   <tr>
-                    <td colSpan={5} className="p-6 text-center text-slate-400">
+                    <td colSpan={5} className="p-6 text-center text-on-surface-variant">
                       No pricing tiers configured.
                     </td>
                   </tr>
                 ) : (
                   pricingTiers.map((tier) => (
-                    <tr key={tier.id} className="hover:bg-slate-800/40 transition-colors">
+                    <tr key={tier.id} className="hover:bg-surface-container-high/50 transition-colors">
                       <td className="p-3">
-                        <div className="font-bold text-slate-100 font-sans">{tier.name}</div>
-                        <div className="text-[10px] text-slate-500">{tier.id}</div>
+                        <div className="font-bold text-on-surface font-sans">{tier.name}</div>
+                        <div className="text-xs text-on-surface-variant">{tier.id}</div>
                       </td>
                       <td className="p-3 text-right text-emerald-400 font-bold tabular-nums">
                         +£{(tier.margin_kwh ?? 0).toFixed(3)}
                       </td>
-                      <td className="p-3 text-right text-slate-300 font-mono tabular-nums">
+                      <td className="p-3 text-right text-on-surface font-mono tabular-nums">
                         £{(tier.rate_excl ?? totalCostBasis + tier.margin_kwh).toFixed(3)}
                       </td>
                       <td className="p-3 text-right text-primary font-bold tabular-nums">
@@ -607,7 +607,7 @@ export const TariffsPage: React.FC = () => {
                             setEditingTier(tier);
                             setIsTierModalOpen(true);
                           }}
-                          className="px-2.5 py-1 bg-slate-950 border border-slate-700 rounded-lg text-slate-200 hover:text-white text-[11px] transition-colors"
+                          className="px-2.5 py-1 bg-surface-container-high border border-outline rounded-lg text-on-surface text-sm transition-colors"
                         >
                           Edit
                         </button>

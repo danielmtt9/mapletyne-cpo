@@ -95,15 +95,15 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
   };
 
   return (
-    <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-3xl space-y-5 shadow-sm">
-      <div className="flex items-center justify-between gap-3 border-b border-white/5 pb-3">
+    <div className="tabler-card bg-surface-container border border-outline p-6 rounded-xl space-y-5 shadow-sm">
+      <div className="flex items-center justify-between gap-3 border-b border-outline pb-3">
         <div className="flex items-center gap-2.5 min-w-0 flex-1">
           <span className="material-symbols-outlined text-primary text-[22px] shrink-0">electric_bolt</span>
-          <h3 className="font-headline text-base font-bold uppercase tracking-wider text-on-surface truncate">
+          <h3 className="font-headline text-base font-bold uppercase tracking-wider text-on-surface">
             Smart Charging Profile Dispatcher
           </h3>
         </div>
-        <span className="text-[11px] font-mono text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/30 font-bold uppercase shrink-0">
+        <span className="text-xs font-mono text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/30 font-bold uppercase shrink-0">
           OCPP 1.6 / 2.0.1
         </span>
       </div>
@@ -115,7 +115,7 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
       {statusFeedback && (
         <div className="p-3 bg-surface-container-high/90 border border-primary/40 text-on-surface font-mono text-xs rounded-xl flex items-center gap-2.5">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse shrink-0" />
-          <span className="truncate">{statusFeedback}</span>
+          <span className="break-words">{statusFeedback}</span>
         </div>
       )}
 
@@ -129,7 +129,7 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
             <select
               value={selectedChargerId}
               onChange={(e) => setSelectedChargerId(e.target.value)}
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
+              className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
             >
               <option value="all">⚡ All Site Hardware Chargers ({chargers.length})</option>
               {chargers.map((c) => (
@@ -155,7 +155,7 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
                 value={limitKw}
                 onChange={(e) => setLimitKw(e.target.value)}
                 placeholder="22.0"
-                className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 pr-10 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
+                className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 pr-10 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
               />
               <span className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xs">
                 kW
@@ -171,7 +171,7 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
             <select
               value={durationSeconds}
               onChange={(e) => setDurationSeconds(Number(e.target.value))}
-              className="w-full bg-surface-container-lowest border border-white/10 rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
+              className="w-full bg-surface-container-lowest border border-outline rounded-xl h-11 px-3 text-base text-on-surface font-mono focus:outline-none focus:border-primary transition-all"
             >
               <option value={900}>15 Minutes</option>
               <option value={1800}>30 Minutes</option>
@@ -184,12 +184,12 @@ export const SmartChargingProfileDispatcher: React.FC<SmartChargingProfileDispat
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/5">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-outline">
           <button
             type="button"
             onClick={handleReleaseOverride}
             disabled={profileMutation.isPending}
-            className="px-4 py-2.5 bg-surface-container-high rounded-xl border border-white/10 text-on-surface-variant hover:text-on-surface hover:border-secondary transition-all font-sans text-xs flex items-center gap-1.5"
+            className="px-4 py-2.5 bg-surface-container-high rounded-xl border border-outline text-on-surface-variant hover:text-on-surface hover:border-secondary transition-all font-sans text-xs flex items-center gap-1.5"
           >
             <span className="material-symbols-outlined text-[18px]">restart_alt</span>
             Release Cap (150 kW)

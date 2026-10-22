@@ -43,7 +43,7 @@ export const TariffSpotCurveChart: React.FC<TariffSpotCurveChartProps> = ({
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         itemWidth: 10,
         itemHeight: 10,
@@ -63,7 +63,7 @@ export const TariffSpotCurveChart: React.FC<TariffSpotCurveChartProps> = ({
         textStyle: {
           color: '#f8fafc',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         extraCssText: 'backdrop-filter: blur(16px); box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5); border-radius: 12px;',
         formatter: (params: any) => {
@@ -98,7 +98,7 @@ export const TariffSpotCurveChart: React.FC<TariffSpotCurveChartProps> = ({
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           interval: 2,
         },
       },
@@ -112,7 +112,7 @@ export const TariffSpotCurveChart: React.FC<TariffSpotCurveChartProps> = ({
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           formatter: '£{value}',
         },
       },
@@ -153,7 +153,7 @@ export const TariffSpotCurveChart: React.FC<TariffSpotCurveChartProps> = ({
             label: {
               color: '#f87171',
               fontFamily: 'monospace',
-              fontSize: 10,
+              fontSize: 12,
               position: 'insideTop',
             },
             data: [

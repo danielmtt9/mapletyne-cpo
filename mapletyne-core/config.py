@@ -89,7 +89,20 @@ class APIConfig:
     @property
     def api_key(self): return _env("API_KEY", "")
     @property
-    def cors_origins(self): return _env("CORS_ORIGINS", "*").split(",")
+    def cors_origins(self):
+        raw = _env("CORS_ORIGINS", "")
+        origins = [o.strip() for o in raw.split(",") if o.strip() and o.strip() != "*"]
+        return origins or [
+            "http://localhost:34000",
+            "http://localhost:34003",
+            "http://localhost:34080",
+            "http://127.0.0.1:34000",
+            "http://127.0.0.1:34003",
+            "http://127.0.0.1:34080",
+            "https://admin.mapletyne.com",
+            "https://app.mapletyne.com",
+            "https://opencpo.mapletyne.com",
+        ]
 
 
 @dataclass

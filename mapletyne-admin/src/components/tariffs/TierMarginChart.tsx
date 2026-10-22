@@ -45,7 +45,7 @@ export const TierMarginChart: React.FC<TierMarginChartProps> = ({ tiers, costBas
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
         },
         itemWidth: 10,
         itemHeight: 10,
@@ -66,7 +66,7 @@ export const TierMarginChart: React.FC<TierMarginChartProps> = ({ tiers, costBas
         textStyle: {
           color: '#f8fafc',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         extraCssText: 'backdrop-filter: blur(16px); box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.5); border-radius: 12px;',
         formatter: (params: any) => {
@@ -105,7 +105,7 @@ export const TierMarginChart: React.FC<TierMarginChartProps> = ({ tiers, costBas
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           interval: 0,
         },
       },
@@ -117,7 +117,7 @@ export const TierMarginChart: React.FC<TierMarginChartProps> = ({ tiers, costBas
         axisLabel: {
           color: '#64748b',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
           formatter: '£{value}',
         },
       },

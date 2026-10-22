@@ -23,70 +23,71 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
   const isOnline = partner.status === 'active' || partner.status === 'connected';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-      <div className="material-card bg-slate-900/95 backdrop-blur-2xl border border-slate-700/80 rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 animate-in zoom-in-95 font-body">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-150">
+      <div className="tabler-card bg-surface-container border border-outline rounded-xl max-w-2xl w-full p-6 shadow-2xl space-y-5 animate-in zoom-in-95 font-body">
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-white/10 pb-4">
+        <div className="flex items-start justify-between border-b border-outline pb-4">
           <div className="space-y-1">
             <div className="flex items-center gap-2.5">
               <span className="material-symbols-outlined text-primary text-[24px]">hub</span>
-              <h2 className="font-headline text-xl font-bold text-slate-100">
+              <h2 className="font-headline text-xl font-bold text-on-surface">
                 {partner.name || partner.party_id}
               </h2>
               <span
-                className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase border ${
+                className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold uppercase border ${
                   isOnline
-                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                    : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                    ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30'
+                    : 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30'
                 }`}
               >
                 {partner.status || 'Registered'}
               </span>
             </div>
-            <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
+            <div className="flex items-center gap-3 text-sm font-mono text-on-surface-variant">
               <span>Party ID: <strong className="text-primary font-bold">{partner.country_code}*{partner.party_id}</strong></span>
               <span>•</span>
-              <span>Role: <strong className="text-slate-300">{partner.role || 'EMSP'}</strong></span>
+              <span>Role: <strong className="text-on-surface">{partner.role || 'EMSP'}</strong></span>
               <span>•</span>
-              <span>Protocol: <strong className="text-emerald-400 font-bold">OCPI 2.2.1</strong></span>
+              <span>Protocol: <strong className="text-emerald-600 dark:text-emerald-400 font-bold">OCPI 2.2.1</strong></span>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-100 p-1.5 rounded-xl hover:bg-slate-800 transition-colors"
+            className="text-on-surface-variant hover:text-on-surface p-1.5 rounded-lg hover:bg-surface-container-high transition-colors cursor-pointer"
+            aria-label="Close"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 p-1 bg-slate-950 border border-slate-700/80 rounded-xl font-mono text-xs">
+        <div className="flex items-center gap-2 p-1 bg-surface-container-high border border-outline rounded-xl font-sans text-sm">
           <button
             onClick={() => setActiveTab('modules')}
-            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
+            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all cursor-pointer ${
               activeTab === 'modules'
-                ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-container text-primary font-bold shadow-xs border border-outline'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Module Handshake
           </button>
           <button
             onClick={() => setActiveTab('credentials')}
-            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
+            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all cursor-pointer ${
               activeTab === 'credentials'
-                ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-container text-primary font-bold shadow-xs border border-outline'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             Credentials & URLs
           </button>
           <button
             onClick={() => setActiveTab('cdrs')}
-            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all ${
+            className={`flex-1 py-1.5 px-3 rounded-lg font-medium transition-all cursor-pointer ${
               activeTab === 'cdrs'
-                ? 'bg-blue-600/30 text-blue-300 border border-blue-500/40'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-surface-container text-primary font-bold shadow-xs border border-outline'
+                : 'text-on-surface-variant hover:text-on-surface'
             }`}
           >
             CDR & Reconciliation
@@ -95,12 +96,12 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
 
         {/* Tab 1: Module Handshake Matrix */}
         {activeTab === 'modules' && (
-          <div className="space-y-4 font-mono text-xs">
-            <div className="bg-slate-950/80 p-4 rounded-2xl border border-slate-700/60 shadow-inner space-y-3">
-              <span className="text-[10px] uppercase text-slate-400 font-bold block">
+          <div className="space-y-4 font-sans text-sm">
+            <div className="bg-surface-container-high p-5 rounded-xl border border-outline shadow-xs space-y-3">
+              <span className="text-xs uppercase text-on-surface-variant font-bold tracking-wider block">
                 OCPI 2.2.1 Active Interface Endpoints
               </span>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {[
                   { name: 'Locations', role: 'Sender / Receiver', active: true },
                   { name: 'Tariffs', role: 'Sender', active: true },
@@ -109,20 +110,20 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
                   { name: 'Tokens (RFID/App)', role: 'Receiver', active: true },
                   { name: 'Commands', role: 'Receiver (Start/Stop)', active: isOnline },
                 ].map((m) => (
-                  <div key={m.name} className="p-2.5 bg-slate-900 border border-white/5 rounded-xl space-y-1">
+                  <div key={m.name} className="p-3 bg-surface-container border border-outline rounded-xl space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-100">{m.name}</span>
-                      <span className={`w-2 h-2 rounded-full ${m.active ? 'bg-emerald-400' : 'bg-amber-400'}`} />
+                      <span className="font-bold text-on-surface text-sm">{m.name}</span>
+                      <span className={`w-2.5 h-2.5 rounded-full ${m.active ? 'bg-emerald-500' : 'bg-amber-500'}`} />
                     </div>
-                    <span className="text-[10px] text-slate-400 block">{m.role}</span>
+                    <span className="text-xs text-on-surface-variant block">{m.role}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-slate-950/80 border border-slate-700/60 rounded-xl">
-              <span className="text-slate-400">Roaming Markup Rate:</span>
-              <span className="text-emerald-400 font-bold">
+            <div className="flex items-center justify-between p-4 bg-surface-container-high border border-outline rounded-xl">
+              <span className="text-on-surface-variant font-medium">Roaming Markup Rate:</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold font-mono">
                 {partner.roaming_fee_kwh ? `+£${partner.roaming_fee_kwh}/kWh` : 'Standard Network Rate (+£0.00)'}
               </span>
             </div>
@@ -131,19 +132,19 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
 
         {/* Tab 2: Credentials & URLs */}
         {activeTab === 'credentials' && (
-          <div className="space-y-3 font-mono text-xs bg-slate-950/80 p-4 rounded-2xl border border-slate-700/60 shadow-inner">
-            <div className="space-y-2.5">
+          <div className="space-y-4 font-sans text-sm bg-surface-container-high p-5 rounded-xl border border-outline shadow-xs">
+            <div className="space-y-3">
               <div>
-                <span className="text-[10px] uppercase text-slate-500 font-bold block">Versions URL</span>
-                <span className="text-slate-200 font-bold break-all">{partner.url || 'https://api.hubject.com/ocpi/versions'}</span>
+                <span className="text-xs uppercase text-on-surface-variant font-bold tracking-wider block mb-1">Versions URL</span>
+                <span className="text-on-surface font-mono font-bold break-all bg-surface-container p-2.5 rounded-lg border border-outline block">{partner.url || 'https://api.hubject.com/ocpi/versions'}</span>
               </div>
-              <div className="pt-2 border-t border-white/5">
-                <span className="text-[10px] uppercase text-slate-500 font-bold block">Client Token B (Inbound Header)</span>
-                <span className="text-cyan-300 font-bold break-all">Token {partner.token_b ? '••••••••••••' + partner.token_b.slice(-6) : 'GENERATED_JWT_SECURE'}</span>
+              <div className="pt-2 border-t border-outline">
+                <span className="text-xs uppercase text-on-surface-variant font-bold tracking-wider block mb-1">Client Token B (Inbound Header)</span>
+                <span className="text-blue-600 dark:text-cyan-400 font-mono font-bold break-all bg-surface-container p-2.5 rounded-lg border border-outline block">Token {partner.token_b ? '••••••••••••' + partner.token_b.slice(-6) : 'GENERATED_JWT_SECURE'}</span>
               </div>
-              <div className="pt-2 border-t border-white/5">
-                <span className="text-[10px] uppercase text-slate-500 font-bold block">Last Successful Sync</span>
-                <span className="text-slate-300 font-bold">{partner.last_sync ? formatTimestamp(partner.last_sync) : 'Synchronized Today'}</span>
+              <div className="pt-2 border-t border-outline">
+                <span className="text-xs uppercase text-on-surface-variant font-bold tracking-wider block mb-1">Last Successful Sync</span>
+                <span className="text-on-surface font-mono font-medium">{partner.last_sync ? formatTimestamp(partner.last_sync) : 'Synchronized Today'}</span>
               </div>
             </div>
           </div>
@@ -151,25 +152,25 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
 
         {/* Tab 3: CDR & Reconciliation */}
         {activeTab === 'cdrs' && (
-          <div className="space-y-4 font-mono text-xs">
-            <div className="grid grid-cols-3 gap-3 text-center bg-slate-950/80 border border-slate-700/60 p-3.5 rounded-2xl">
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-3 text-center bg-surface-container-high border border-outline p-4 rounded-xl">
               <div>
-                <span className="text-[10px] text-slate-400 uppercase block">Inbound Roaming</span>
-                <span className="text-base font-bold text-white">42 Sessions</span>
+                <span className="text-xs text-on-surface-variant uppercase font-medium block">Inbound Roaming</span>
+                <span className="text-base font-bold text-on-surface font-mono">42 Sessions</span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 uppercase block">Settled Volume</span>
-                <span className="text-base font-bold text-emerald-400">1,248.6 kWh</span>
+                <span className="text-xs text-on-surface-variant uppercase font-medium block">Settled Volume</span>
+                <span className="text-base font-bold text-emerald-600 dark:text-emerald-400 font-mono">1,248.6 kWh</span>
               </div>
               <div>
-                <span className="text-[10px] text-slate-400 uppercase block">Sync Error Rate</span>
-                <span className="text-base font-bold text-primary">0.00%</span>
+                <span className="text-xs text-on-surface-variant uppercase font-medium block">Sync Error Rate</span>
+                <span className="text-base font-bold text-primary font-mono">0.00%</span>
               </div>
             </div>
 
-            <div className="p-3 bg-slate-950/80 border border-slate-700/60 rounded-xl space-y-1">
-              <span className="text-[10px] text-slate-400 uppercase block font-bold">Reconciliation Rule</span>
-              <p className="text-[11px] text-slate-300 font-sans">
+            <div className="p-4 bg-surface-container-high border border-outline rounded-xl space-y-1">
+              <span className="text-xs text-on-surface font-bold uppercase tracking-wider block">Reconciliation Rule</span>
+              <p className="text-sm text-on-surface-variant">
                 CDRs are automatically delivered to {partner.name} over OCPI POST /cdrs within 15 seconds of session completion.
               </p>
             </div>
@@ -177,26 +178,26 @@ export const OcpiPartnerDetailModal: React.FC<OcpiPartnerDetailModalProps> = ({
         )}
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-white/10 font-mono text-xs">
+        <div className="flex items-center justify-between pt-4 border-t border-outline font-sans text-sm">
           <div className="flex items-center gap-2">
             <button
               onClick={() => onTestPing(partner.id)}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 rounded-xl transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface rounded-xl font-medium transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[14px] text-primary">network_ping</span>
+              <span className="material-symbols-outlined text-[16px] text-primary">network_ping</span>
               Test Connection Ping
             </button>
             <button
               onClick={() => onSync(partner.id)}
-              className="px-3 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/40 text-blue-300 font-bold rounded-xl transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 bg-primary/10 hover:bg-primary/20 border border-primary/30 text-primary font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
             >
-              <span className="material-symbols-outlined text-[14px]">sync</span>
+              <span className="material-symbols-outlined text-[16px]">sync</span>
               Sync Catalog & CDRs
             </button>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-slate-300 hover:text-white transition-colors"
+            className="px-5 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline rounded-xl text-on-surface font-semibold transition-colors cursor-pointer"
           >
             Close Inspector
           </button>

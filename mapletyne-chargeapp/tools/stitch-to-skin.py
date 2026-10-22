@@ -520,7 +520,7 @@ html, body {{
 }}
 
 .rate-note {{
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text3);
   margin-top: 4px;
 }}
@@ -892,7 +892,7 @@ html, body {{
   background: none;
   border: none;
   color: var(--text3);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: color 0.15s;

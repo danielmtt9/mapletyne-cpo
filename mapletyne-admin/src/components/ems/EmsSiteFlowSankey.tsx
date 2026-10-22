@@ -31,7 +31,7 @@ export const EmsSiteFlowSankey: React.FC<EmsSiteFlowSankeyProps> = ({
         textStyle: {
           color: '#e2e8f0',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         formatter: (params: any) => {
           if (params.dataType === 'edge') {
@@ -68,7 +68,7 @@ export const EmsSiteFlowSankey: React.FC<EmsSiteFlowSankeyProps> = ({
           label: {
             color: '#e2e8f0',
             fontFamily: 'monospace',
-            fontSize: 11,
+            fontSize: 12,
             formatter: '{b}',
           },
           data: [

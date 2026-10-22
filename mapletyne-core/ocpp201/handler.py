@@ -25,6 +25,8 @@ from events.bus import EventBus
 from events.types import Event, EventType
 from state.postgres import db
 from state.redis import redis_state
+import jsonschema
+
 from ocpp201.protocol import (
     OCPPMessage, MessageType, Action,
     RegistrationStatus, AuthorizationStatus,
@@ -33,6 +35,7 @@ from ocpp201.protocol import (
 from ocpp201.transaction import TransactionMixin
 from ocpp201.meter import MeterMixin
 from ocpp201.security import SecurityMixin
+from ocpp201.schemas import validate_ocpp201_payload
 
 logger = logging.getLogger(__name__)
 
@@ -107,8 +110,12 @@ class ChargePointHandler201(TransactionMixin, MeterMixin, SecurityMixin):
             return OCPPMessage.error(msg.unique_id, "NotImplemented", f"{msg.action} not supported")
 
         try:
+            validate_ocpp201_payload(msg.action, msg.payload)
             payload = await handler(msg.payload)
             return OCPPMessage.result(msg.unique_id, payload)
+        except jsonschema.ValidationError as ve:
+            logger.warning(f"[{self.cp_id}] Validation error for {msg.action}: {ve.message}")
+            return OCPPMessage.error(msg.unique_id, "PropertyConstraintViolation", ve.message)
         except Exception as e:
             logger.error(f"[{self.cp_id}] Error in {msg.action}: {e}", exc_info=True)
             return OCPPMessage.error(msg.unique_id, "InternalError", str(e))
@@ -239,7 +246,12 @@ class ChargePointHandler201(TransactionMixin, MeterMixin, SecurityMixin):
         # Certificate-based auth (Plug & Charge)
         cert_chain = payload.get("15118CertificateHashData")
 
-        if token_id.startswith(("APP_", "SIM_", "TEST_", "EVEREST_")) or token_id in ("REMOTE", "DEADBEEF", "04A1B2C3", "ISO15118", "BasicAuthSecureKey2026!"):
+        # Guard simulated/test token auto-accept behind ALLOW_SIMULATED_TOKENS env var.
+        allow_simulated = os.getenv("ALLOW_SIMULATED_TOKENS", "true").lower() in ("true", "1", "yes")
+        if allow_simulated and (
+            token_id.startswith(("APP_", "SIM_", "TEST_", "EVEREST_"))
+            or token_id in ("REMOTE", "DEADBEEF", "04A1B2C3", "ISO15118", "BasicAuthSecureKey2026!")
+        ):
             status = AuthorizationStatus.ACCEPTED
         elif token_type == "eMAID" and cert_chain:
             # P&C: validate contract cert against our PKI

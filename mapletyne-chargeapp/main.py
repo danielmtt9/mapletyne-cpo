@@ -82,8 +82,9 @@ app.state.templates = templates
 
 # ── Routes ────────────────────────────────────────────────────────────────
 from routes import home, charge, auth, session, receipt, qr, push, cert_setup
+from api.auth import router as api_auth_router
 
-for router in [home.router, charge.router, auth.router, session.router, receipt.router, qr.router, push.router, cert_setup.router]:
+for router in [home.router, charge.router, auth.router, session.router, receipt.router, qr.router, push.router, cert_setup.router, api_auth_router]:
     app.include_router(router)
 
 # ── Plugins ───────────────────────────────────────────────────────────────

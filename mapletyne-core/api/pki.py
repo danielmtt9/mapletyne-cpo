@@ -195,20 +195,21 @@ async def download_cert(serial: str):
 
     pki_dir = Path(ca.data_dir)
 
-    # Check for user cert bundle (P12/PEM saved at issue time)
-    for ext in ("p12", "pfx", "pem"):
+    # Only serve public PEM certificates — never private key bundles (P12/PFX).
+    for ext in ("pem",):
         bundle_path = pki_dir / "users" / f"{serial}.{ext}"
         if bundle_path.exists():
-            mime = {
-                "p12": "application/x-pkcs12",
-                "pfx": "application/x-pkcs12",
-                "pem": "application/x-pem-file",
-            }[ext]
             return Response(
                 content=bundle_path.read_bytes(),
-                media_type=mime,
+                media_type="application/x-pem-file",
                 headers={"Content-Disposition": f'attachment; filename="operator-cert.{ext}"'},
             )
+
+    # Reject requests for private key bundles (p12/pfx) with 403.
+    for ext in ("p12", "pfx"):
+        bundle_path = pki_dir / "users" / f"{serial}.{ext}"
+        if bundle_path.exists():
+            raise HTTPException(403, "Private key bundles are not downloadable via REST API")
 
     # Fallback: serve PEM from DB (SECC/contract certs — no private key)
     from state.postgres import db

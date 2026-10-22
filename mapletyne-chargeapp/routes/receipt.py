@@ -40,5 +40,5 @@ async def download_pdf(session_id: str):
         return Response(
             content=r.content,
             media_type="application/pdf",
-            headers={"Content-Disposition": f'attachment; filename="laadbon-{session_id[:8]}.pdf"'},
+            headers={"Content-Disposition": f'attachment; filename="receipt-{session_id[:8]}.pdf"'},
         )

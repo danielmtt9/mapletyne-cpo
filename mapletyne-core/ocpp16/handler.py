@@ -19,6 +19,7 @@ Known Hongjiali MAXPOWER quirks:
 - BootNotification vendor="MAXPOWER", model varies by config
 """
 import asyncio
+import jsonschema
 import json
 import logging
 import os
@@ -38,6 +39,7 @@ from ocpp16.session import handle_start_transaction, handle_stop_transaction
 from ocpp16.meter import handle_meter_values, session_energy, parse_sampled_values
 from charger_profiles.registry import resolve_profile, ChargerProfile, GENERIC_OCPP16
 from ocpp16.handler_helpers import ChargePointHelpersMixin
+from ocpp16.schemas import validate_ocpp16_payload
 
 logger = logging.getLogger(__name__)
 
@@ -102,8 +104,12 @@ class ChargePointHandler(ChargePointHelpersMixin):
             logger.warning(f"[{self.cp_id}] Unknown action: {msg.action}")
             return OCPPMessage.error(msg.unique_id, "NotImplemented", f"Action {msg.action} not supported")
         try:
+            validate_ocpp16_payload(msg.action, msg.payload)
             payload = await handler(msg.payload)
             return OCPPMessage.result(msg.unique_id, payload)
+        except jsonschema.ValidationError as ve:
+            logger.warning(f"[{self.cp_id}] Validation error for {msg.action}: {ve.message}")
+            return OCPPMessage.error(msg.unique_id, "PropertyConstraintViolation", ve.message)
         except Exception as e:
             logger.error(f"[{self.cp_id}] Error handling {msg.action}: {e}", exc_info=True)
             return OCPPMessage.error(msg.unique_id, "InternalError", str(e))
@@ -270,7 +276,12 @@ class ChargePointHandler(ChargePointHelpersMixin):
         """Authorization request — queries ocpp.tokens."""
         id_tag = payload.get("idTag", "")
 
-        if id_tag.startswith(("APP_", "SIM_", "TEST_", "EVEREST_")) or id_tag in ("REMOTE", "DEADBEEF", "04A1B2C3", "ISO15118", "BasicAuthSecureKey2026!"):
+        # Guard simulated/test token auto-accept behind ALLOW_SIMULATED_TOKENS env var.
+        allow_simulated = os.getenv("ALLOW_SIMULATED_TOKENS", "true").lower() in ("true", "1", "yes")
+        if allow_simulated and (
+            id_tag.startswith(("APP_", "SIM_", "TEST_", "EVEREST_"))
+            or id_tag in ("REMOTE", "DEADBEEF", "04A1B2C3", "ISO15118", "BasicAuthSecureKey2026!")
+        ):
             self._last_auth_billing = {"type": "prepaid", "group_id": None}
             status = AuthorizationStatus.ACCEPTED
         else:

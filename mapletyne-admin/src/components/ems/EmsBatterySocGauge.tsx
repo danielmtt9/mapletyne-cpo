@@ -70,14 +70,14 @@ export const EmsBatterySocGauge: React.FC<EmsBatterySocGaugeProps> = ({
           axisLabel: {
             distance: 14,
             color: '#94a3b8',
-            fontSize: 9,
+            fontSize: 12,
             fontFamily: 'monospace',
             formatter: '{value}%',
           },
           title: {
             show: true,
             offsetCenter: [0, '25%'],
-            fontSize: 10,
+            fontSize: 12,
             color: '#94a3b8',
             fontFamily: 'monospace',
           },
@@ -108,7 +108,7 @@ export const EmsBatterySocGauge: React.FC<EmsBatterySocGaugeProps> = ({
           BESS Battery Storage
         </h3>
         <span
-          className={`px-2 py-0.5 text-[10px] font-mono font-bold uppercase border ${
+          className={`px-2 py-0.5 text-xs font-mono font-bold uppercase border ${
             batteryState === 'discharging'
               ? 'bg-secondary/10 text-secondary border-secondary/30'
               : batteryState === 'charging'
@@ -126,13 +126,13 @@ export const EmsBatterySocGauge: React.FC<EmsBatterySocGaugeProps> = ({
 
       <div className="grid grid-cols-2 gap-2 text-center text-xs font-mono pt-2 border-t border-outline-variant/20">
         <div>
-          <span className="text-[10px] text-on-surface-variant uppercase block">Power Flow</span>
+          <span className="text-xs text-on-surface-variant uppercase block">Power Flow</span>
           <span className="font-bold text-on-surface tabular-nums">
             {batteryKw ? `${batteryKw > 0 ? `+${batteryKw.toFixed(1)}` : batteryKw.toFixed(1)} kW` : '0.0 kW'}
           </span>
         </div>
         <div>
-          <span className="text-[10px] text-on-surface-variant uppercase block">Cell Temp</span>
+          <span className="text-xs text-on-surface-variant uppercase block">Cell Temp</span>
           <span className="font-bold text-on-surface tabular-nums">
             {batteryTempC ? `${batteryTempC.toFixed(1)}°C` : '25.0°C'}
           </span>

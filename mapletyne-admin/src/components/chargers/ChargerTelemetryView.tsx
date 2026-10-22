@@ -40,14 +40,12 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
   const { data: telemetryData } = useQuery({
     queryKey: ['telemetry', chargerId],
     queryFn: () => api.get<any>(`/chargers/${chargerId}`).catch(() => null),
-    refetchInterval: status === 'Charging' ? 2000 : 10000,
   });
 
   // Query historical meter values for exact phase & power telemetry
   const { data: meterValuesData } = useQuery({
     queryKey: ['meter-values', chargerId],
     queryFn: () => api.get<any>(`/chargers/${chargerId}/meter-values?limit=30`).catch(() => null),
-    refetchInterval: status === 'Charging' ? 3000 : 15000,
   });
 
   // Extract latest connector reading if available
@@ -217,13 +215,13 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
           axisLabel: {
             distance: 14,
             color: '#94a3b8',
-            fontSize: 9,
+            fontSize: 12,
             fontFamily: 'monospace',
           },
           title: {
             show: true,
             offsetCenter: [0, '-20%'],
-            fontSize: 10,
+            fontSize: 12,
             color: '#94a3b8',
             fontFamily: 'monospace',
           },
@@ -277,7 +275,7 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
         textStyle: {
           color: '#e2e8f0',
           fontFamily: 'monospace',
-          fontSize: 11,
+          fontSize: 12,
         },
         formatter: (params: any) => {
           if (!Array.isArray(params) || params.length === 0) return '';
@@ -305,7 +303,7 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
         axisLabel: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 9,
+          fontSize: 12,
           interval: Math.floor(phaseHistory.length / 4),
         },
       },
@@ -318,7 +316,7 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
         axisLabel: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 9,
+          fontSize: 12,
           formatter: `{value} ${yUnit}`,
         },
       },
@@ -355,20 +353,20 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
     <div className="space-y-4 font-body">
       {/* 3 Metric Summary Boxes */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="material-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-on-surface-variant block">Active Output</span>
+        <div className="tabler-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
+          <span className="text-xs font-mono uppercase tracking-wider text-on-surface-variant block">Active Output</span>
           <span className="text-xl font-headline font-bold text-apple-green tabular-nums">
             {currentPowerKw.toFixed(1)} <span className="text-xs font-mono font-normal text-on-surface-variant">kW</span>
           </span>
         </div>
-        <div className="material-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-on-surface-variant block">Phase RMS Voltage</span>
+        <div className="tabler-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
+          <span className="text-xs font-mono uppercase tracking-wider text-on-surface-variant block">Phase RMS Voltage</span>
           <span className="text-xl font-headline font-bold text-on-surface tabular-nums">
             {isOnline ? `${((currentVL1 + currentVL2 + currentVL3) / 3).toFixed(0)}` : '0'} <span className="text-xs font-mono font-normal text-on-surface-variant">V</span>
           </span>
         </div>
-        <div className="material-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-on-surface-variant block">Total Draw</span>
+        <div className="tabler-card bg-surface-container/80 p-3.5 rounded-xl border border-white/5 text-center">
+          <span className="text-xs font-mono uppercase tracking-wider text-on-surface-variant block">Total Draw</span>
           <span className="text-xl font-headline font-bold text-apple-blue tabular-nums">
             {(currentAL1 + currentAL2 + currentAL3).toFixed(1)} <span className="text-xs font-mono font-normal text-on-surface-variant">A</span>
           </span>
@@ -378,9 +376,9 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
       {/* Visual Telemetry: Gauge & 3-Phase Oscilloscope */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
         {/* Left: Active Power Speedometer Gauge */}
-        <div className="md:col-span-2 material-card bg-surface-container/80 border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center min-h-[200px]">
+        <div className="md:col-span-2 tabler-card bg-surface-container/80 border border-white/5 p-4 rounded-xl flex flex-col items-center justify-center min-h-[200px]">
           <div className="w-full text-left mb-1">
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-on-surface-variant">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-on-surface-variant">
               Output Meter
             </span>
           </div>
@@ -390,20 +388,20 @@ export const ChargerTelemetryView: React.FC<ChargerTelemetryViewProps> = ({
         </div>
 
         {/* Right: 3-Phase Multi-Line Oscilloscope */}
-        <div className="md:col-span-3 material-card bg-surface-container/80 border border-white/5 p-4 rounded-xl flex flex-col justify-between min-h-[200px]">
+        <div className="md:col-span-3 tabler-card bg-surface-container/80 border border-white/5 p-4 rounded-xl flex flex-col justify-between min-h-[200px]">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-on-surface">
+              <span className="text-xs font-mono font-bold uppercase tracking-wider text-on-surface">
                 3-Phase Scope
               </span>
-              <div className="flex items-center gap-2 text-[10px] font-mono">
+              <div className="flex items-center gap-2 text-xs font-mono">
                 <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#34c759]" /> L1</span>
                 <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#0a84ff]" /> L2</span>
                 <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#ff9f0a]" /> L3</span>
               </div>
             </div>
             {/* Metric Toggle Segmented Control */}
-            <div className="flex bg-surface-container-lowest/80 p-0.5 rounded-lg border border-white/5 text-[10px] font-mono">
+            <div className="flex bg-surface-container-lowest/80 p-0.5 rounded-lg border border-white/5 text-xs font-mono">
               <button
                 type="button"
                 onClick={() => setViewMetric('voltage')}

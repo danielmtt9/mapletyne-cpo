@@ -74,14 +74,14 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
   }, [powerPct, occupancyPct, headroomPct]);
 
   return (
-    <div className="material-card p-5 flex flex-col justify-between h-full">
+    <div className="tabler-card p-5 flex flex-col justify-between h-full">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/5 pb-3">
         <div>
           <h3 className="text-sm font-semibold text-white">System Utilization</h3>
-          <p className="text-[11px] text-slate-400 font-mono">Multi-Vector Activity</p>
+          <p className="text-xs text-slate-400 font-mono">Multi-Vector Activity</p>
         </div>
-        <span className="text-[10px] font-mono font-bold bg-white/10 px-2 py-0.5 rounded-full text-slate-300 uppercase">
+        <span className="text-xs font-mono font-bold bg-white/10 px-2 py-0.5 rounded-full text-slate-300 uppercase">
           Live Rings
         </span>
       </div>
@@ -95,7 +95,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
             <span className="text-lg font-bold text-white tabular-nums tracking-tight">
               {currentLoadKw.toFixed(1)}
             </span>
-            <span className="text-[10px] font-mono text-slate-400 uppercase">
+            <span className="text-xs font-mono text-slate-400 uppercase">
               kW Live
             </span>
           </div>
@@ -139,7 +139,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
       </div>
 
       {/* Footer Info */}
-      <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400 font-mono">
+      <div className="pt-2 border-t border-white/5 flex items-center justify-between text-xs text-slate-400 font-mono">
         <span>Endpoints: {onlineCount} / {totalCount} Active</span>
         <span className="text-emerald-400 font-medium">Normal Grid State</span>
       </div>

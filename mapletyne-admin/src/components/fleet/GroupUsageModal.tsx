@@ -25,7 +25,7 @@ export const GroupUsageModal: React.FC<GroupUsageModalProps> = ({ isOpen, onClos
   if (!isOpen || !group) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 animate-in fade-in duration-150">
       <div className="w-full max-w-2xl bg-surface-container-low border border-outline-variant/30 p-6 space-y-5 shadow-2xl">
         <div className="flex items-center justify-between border-b border-outline-variant/20 pb-3">
           <div className="flex items-center gap-2">
@@ -51,13 +51,13 @@ export const GroupUsageModal: React.FC<GroupUsageModalProps> = ({ isOpen, onClos
           </div>
           <div className="text-right flex items-center gap-4">
             <div>
-              <span className="text-[10px] text-on-surface-variant font-mono block">Total Energy</span>
+              <span className="text-xs text-on-surface-variant font-mono block">Total Energy</span>
               <span className="text-sm font-bold text-primary font-mono">
                 {Number(usageData?.total_kwh ?? group.month_kwh ?? 0).toFixed(1)} kWh
               </span>
             </div>
             <div>
-              <span className="text-[10px] text-on-surface-variant font-mono block">Cards Active</span>
+              <span className="text-xs text-on-surface-variant font-mono block">Cards Active</span>
               <span className="text-sm font-bold text-secondary font-mono">
                 {cards.length}
               </span>
@@ -67,7 +67,7 @@ export const GroupUsageModal: React.FC<GroupUsageModalProps> = ({ isOpen, onClos
 
         <div className="overflow-x-auto max-h-[50vh]">
           <table className="w-full text-left font-mono text-xs">
-            <thead className="bg-surface-container text-on-surface-variant uppercase text-[10px] tracking-wider">
+            <thead className="bg-surface-container text-on-surface-variant uppercase text-xs tracking-wider">
               <tr>
                 <th className="p-2.5">Card UID</th>
                 <th className="p-2.5">Driver Name</th>

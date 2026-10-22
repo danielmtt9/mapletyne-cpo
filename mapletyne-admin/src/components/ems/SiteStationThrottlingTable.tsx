@@ -15,7 +15,6 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
   const { data: rawChargers, isLoading } = useQuery({
     queryKey: ['chargers'],
     queryFn: () => api.get<any>('/chargers'),
-    refetchInterval: 5000,
   });
 
   const chargers = ensureArray<any>(rawChargers, 'chargers');
@@ -35,18 +34,18 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
   });
 
   return (
-    <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 rounded-3xl overflow-hidden shadow-sm">
-      <div className="p-6 border-b border-white/5 flex items-center justify-between gap-4">
+    <div className="tabler-card bg-surface-container border border-outline rounded-xl overflow-hidden shadow-sm">
+      <div className="p-6 border-b border-outline flex items-center justify-between gap-4">
         <div className="min-w-0 flex-1">
           <h3 className="font-headline text-base font-bold uppercase tracking-wider text-on-surface flex items-center gap-2.5 truncate">
             <span className="material-symbols-outlined text-primary text-[20px] shrink-0">table_chart</span>
-            <span className="truncate">Hardware Station Power Allocation & Throttling Status</span>
+            <span>Hardware Station Power Allocation & Throttling Status</span>
           </h3>
           <p className="text-xs text-on-surface-variant font-mono mt-1">
             Real-time OCPP 1.6 / 2.0.1 power ceilings allocated per physical endpoint.
           </p>
         </div>
-        <span className="text-xs font-mono text-on-surface-variant px-3 py-1 bg-surface-container-lowest rounded-full border border-white/10 shrink-0">
+        <span className="text-xs font-mono text-on-surface-variant px-3 py-1 bg-surface-container-lowest rounded-full border border-outline shrink-0">
           {chargers.length} Registered Endpoints
         </span>
       </div>
@@ -54,7 +53,7 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
       <div className="overflow-x-auto w-full">
         <table className="w-full min-w-[720px] text-left border-collapse font-mono text-xs">
           <thead>
-            <tr className="border-b border-white/5 bg-surface-container-low/60 text-[11px] text-on-surface-variant uppercase tracking-wider h-11">
+            <tr className="border-b border-outline bg-surface-container-low/60 text-xs text-on-surface-variant uppercase tracking-wider h-11">
               <th className="px-6 min-w-[150px]">Station ID</th>
               <th className="px-4 min-w-[110px]">Status</th>
               <th className="px-4 min-w-[120px]">Hardware Rating</th>
@@ -64,7 +63,7 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
               <th className="px-6 min-w-[160px] text-center">Quick Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-outline">
             {isLoading ? (
               <tr>
                 <td colSpan={7} className="p-8 text-center text-on-surface-variant">
@@ -100,7 +99,7 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
                     </td>
                     <td className="px-4">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase ${
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase ${
                           isCharging
                             ? 'bg-secondary/10 text-secondary border border-secondary/30'
                             : isOnline
@@ -120,7 +119,7 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
                     </td>
                     <td className="px-4 text-center">
                       <span
-                        className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase border ${
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold uppercase border ${
                           isThrottled
                             ? 'bg-amber-400/10 text-amber-400 border-amber-400/30'
                             : 'bg-primary/10 text-primary border-primary/30'
@@ -134,14 +133,14 @@ export const SiteStationThrottlingTable: React.FC<SiteStationThrottlingTableProp
                         <button
                           onClick={() => throttleMutation.mutate({ cpId: c.id, limit: 22.0 })}
                           disabled={throttleMutation.isPending}
-                          className="px-2.5 py-1 rounded-lg bg-surface-container-high border border-white/10 text-[10px] hover:border-amber-400 hover:text-amber-400 transition-all font-sans"
+                          className="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline text-xs hover:border-amber-400 hover:text-amber-400 transition-all font-sans"
                         >
                           Throttle 22kW
                         </button>
                         <button
                           onClick={() => throttleMutation.mutate({ cpId: c.id, limit: maxPower })}
                           disabled={throttleMutation.isPending}
-                          className="px-2.5 py-1 rounded-lg bg-surface-container-high border border-white/10 text-[10px] hover:border-primary hover:text-primary transition-all font-sans"
+                          className="px-2.5 py-1 rounded-lg bg-surface-container-high border border-outline text-xs hover:border-primary hover:text-primary transition-all font-sans"
                         >
                           Restore
                         </button>

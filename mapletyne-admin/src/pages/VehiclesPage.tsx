@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import { api } from '@/lib/api-client';
 import { ensureArray } from '@/lib/utils';
 import { VehicleModal, type VehicleItem } from '@/components/fleet/VehicleModal';
@@ -49,7 +50,6 @@ export const VehiclesPage: React.FC = () => {
       if (tierFilter) params.append('priority_tier', tierFilter);
       return api.get<any>(`/fleet/vehicles?${params.toString()}`);
     },
-    refetchInterval: 10000,
   });
 
   const allVehicles = ensureArray<VehicleItem>(rawVehicles, 'vehicles');
@@ -72,14 +72,12 @@ export const VehiclesPage: React.FC = () => {
   const { data: depotSnapshot } = useQuery({
     queryKey: ['fleet', 'depots', selectedSiteId, 'snapshot'],
     queryFn: () => api.get<any>(`/fleet/depots/${selectedSiteId}/snapshot`),
-    refetchInterval: 5000,
   });
 
   // 3. Fetch Shift Schedules
   const { data: rawSchedules, isLoading: isSchedulesLoading } = useQuery({
     queryKey: ['fleet', 'schedules'],
     queryFn: () => api.get<any>('/fleet/schedules?limit=50'),
-    refetchInterval: 10000,
   });
 
   const schedules = ensureArray<ScheduleItem>(rawSchedules, 'schedules');
@@ -88,7 +86,6 @@ export const VehiclesPage: React.FC = () => {
   const { data: overrideStatus } = useQuery({
     queryKey: ['ems', 'override', selectedSiteId],
     queryFn: () => api.get<any>(`/ems/override?site_id=${selectedSiteId}`),
-    refetchInterval: 5000,
   });
 
   // ── Vehicle Mutations ──────────────────────────────────────────────
@@ -210,24 +207,33 @@ export const VehiclesPage: React.FC = () => {
 
   const depotBays: DepotBayItem[] = depotSnapshot?.bays || [];
 
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const rowVirtualizer = useVirtualizer({
+    count: vehicles.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: () => 40,
+    overscan: 15,
+  });
+  void rowVirtualizer.getTotalSize();
+
   return (
     <div className="space-y-6">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900 text-slate-100 px-4 py-2.5 rounded-xl shadow-2xl text-xs font-mono flex items-center gap-2 border border-slate-700 animate-fade-in">
+        <div className="fixed bottom-6 right-6 z-50 bg-surface-container text-on-surface px-4 py-2.5 rounded-xl shadow-2xl text-xs font-mono flex items-center gap-2 border border-outline animate-fade-in">
           <span className="material-symbols-outlined text-primary text-[18px]">info</span>
           {toastMessage}
         </div>
       )}
 
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline pb-4">
         <div>
-          <h1 className="font-headline text-2xl font-bold text-white tracking-tight flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary text-[28px]">local_shipping</span>
+          <h1 className="font-headline text-4xl font-bold text-on-surface tracking-tight flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary text-[32px]">local_shipping</span>
             Fleet Operations & Depot Cockpit
           </h1>
-          <p className="text-xs text-slate-300 mt-1">
+          <p className="text-xs text-on-surface-variant mt-1">
             Multi-tier commercial EV asset registration, real-time depot bay telemetry, smart charging dispatch, and SCADA override.
           </p>
         </div>
@@ -240,7 +246,7 @@ export const VehiclesPage: React.FC = () => {
             className={`px-3.5 py-2 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all shadow-md ${
               overrideStatus?.is_override_active
                 ? 'bg-red-600 text-white animate-pulse border border-red-400'
-                : 'bg-slate-900/90 hover:bg-slate-800 text-slate-100 border border-slate-700'
+                : 'bg-surface-container/90 hover:bg-surface-container-highest text-on-surface border border-outline'
             }`}
           >
             <span className="material-symbols-outlined text-[16px]">bolt</span>
@@ -264,14 +270,14 @@ export const VehiclesPage: React.FC = () => {
       </div>
 
       {/* Main Navigation Tabs */}
-      <div className="flex border-b border-white/10 gap-6">
+      <div className="flex border-b border-outline gap-6">
         <button
           type="button"
           onClick={() => setActiveTab('inventory')}
           className={`pb-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
             activeTab === 'inventory'
               ? 'border-primary text-primary'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           <span className="material-symbols-outlined text-[18px]">inventory_2</span>
@@ -284,7 +290,7 @@ export const VehiclesPage: React.FC = () => {
           className={`pb-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
             activeTab === 'depot'
               ? 'border-primary text-primary'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           <span className="material-symbols-outlined text-[18px]">garage</span>
@@ -297,7 +303,7 @@ export const VehiclesPage: React.FC = () => {
           className={`pb-3 text-sm font-semibold border-b-2 transition-all flex items-center gap-2 ${
             activeTab === 'schedules'
               ? 'border-primary text-primary'
-              : 'border-transparent text-slate-400 hover:text-slate-200'
+              : 'border-transparent text-on-surface-variant hover:text-on-surface'
           }`}
         >
           <span className="material-symbols-outlined text-[18px]">schedule</span>
@@ -309,53 +315,53 @@ export const VehiclesPage: React.FC = () => {
       {activeTab === 'inventory' && (
         <div className="space-y-4">
           {/* Filters Bar */}
-          <div className="material-card bg-slate-900/90 border border-slate-700/80 p-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
+          <div className="tabler-card bg-surface-container border border-outline p-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-md">
             <div className="flex items-center gap-3 flex-1 min-w-[280px]">
               <div className="relative flex-1">
-                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">search</span>
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
                 <input
                   type="text"
                   placeholder="Search license plate, unit number, VIN, make..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-slate-950/80 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-400 font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-all shadow-xs"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl pl-9 pr-3 py-2 text-xs text-on-surface placeholder:text-on-surface-variant font-medium focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40 transition-all shadow-xs"
                 />
               </div>
 
               <select
                 value={tierFilter}
                 onChange={(e) => setTierFilter(e.target.value)}
-                className="bg-slate-950/80 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-primary cursor-pointer"
+                className="bg-surface-container-high border border-outline rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary cursor-pointer"
               >
-                <option value="" className="bg-slate-900 text-slate-200">All Priority Tiers</option>
-                <option value="1" className="bg-slate-900 text-slate-200">Tier 1: Emergency/VIP</option>
-                <option value="2" className="bg-slate-900 text-slate-200">Tier 2: Fixed Route</option>
-                <option value="3" className="bg-slate-900 text-slate-200">Tier 3: Flexible</option>
-                <option value="4" className="bg-slate-900 text-slate-200">Tier 4: Standby</option>
+                <option value="" className="bg-surface-container text-on-surface">All Priority Tiers</option>
+                <option value="1" className="bg-surface-container text-on-surface">Tier 1: Emergency/VIP</option>
+                <option value="2" className="bg-surface-container text-on-surface">Tier 2: Fixed Route</option>
+                <option value="3" className="bg-surface-container text-on-surface">Tier 3: Flexible</option>
+                <option value="4" className="bg-surface-container text-on-surface">Tier 4: Standby</option>
               </select>
 
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-slate-950/80 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-primary cursor-pointer"
+                className="bg-surface-container-high border border-outline rounded-xl px-3 py-2 text-xs text-on-surface focus:outline-none focus:border-primary cursor-pointer"
               >
-                <option value="" className="bg-slate-900 text-slate-200">All Statuses</option>
-                <option value="active" className="bg-slate-900 text-slate-200">Active</option>
-                <option value="maintenance" className="bg-slate-900 text-slate-200">Maintenance</option>
-                <option value="inactive" className="bg-slate-900 text-slate-200">Inactive</option>
+                <option value="" className="bg-surface-container text-on-surface">All Statuses</option>
+                <option value="active" className="bg-surface-container text-on-surface">Active</option>
+                <option value="maintenance" className="bg-surface-container text-on-surface">Maintenance</option>
+                <option value="inactive" className="bg-surface-container text-on-surface">Inactive</option>
               </select>
             </div>
 
-            <span className="text-xs text-slate-300 font-mono">
+            <span className="text-xs text-on-surface font-mono">
               Showing {vehicles.length} of {allVehicles.length} assets
             </span>
           </div>
 
           {/* Vehicles Table */}
-          <div className="material-card bg-slate-900/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-md">
+          <div className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-md">
             <div className="overflow-x-auto w-full">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-950/90 uppercase text-[11px] tracking-wider text-slate-300 border-b border-slate-800">
+                <thead className="bg-surface-container-high uppercase text-xs tracking-wider text-on-surface border-b border-outline">
                   <tr>
                     <th className="py-3.5 px-4 font-semibold min-w-[200px] whitespace-nowrap">Unit / Plate</th>
                     <th className="py-3.5 px-4 font-semibold min-w-[170px] whitespace-nowrap">Make & Model</th>
@@ -367,17 +373,17 @@ export const VehiclesPage: React.FC = () => {
                     <th className="py-3.5 px-4 font-semibold text-right min-w-[130px] whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-200 font-sans">
+                <tbody className="divide-y divide-outline text-on-surface font-sans">
                   {isVehiclesLoading ? (
                     <tr>
-                      <td colSpan={8} className="py-12 text-center text-slate-400">
+                      <td colSpan={8} className="py-12 text-center text-on-surface-variant">
                         <span className="material-symbols-outlined text-3xl animate-spin mb-2 block text-primary">sync</span>
                         Streaming fleet inventory...
                       </td>
                     </tr>
                   ) : vehicles.length === 0 ? (
                     <tr>
-                      <td colSpan={8} className="py-12 text-center text-slate-400">
+                      <td colSpan={8} className="py-12 text-center text-on-surface-variant">
                         No vehicles found matching search filters.
                       </td>
                     </tr>
@@ -385,7 +391,7 @@ export const VehiclesPage: React.FC = () => {
                     vehicles.map((v) => {
                       const soc = v.current_soc_pct ?? 50;
                       return (
-                        <tr key={v.id} className="hover:bg-slate-800/60 transition-colors">
+                        <tr key={v.id} className="hover:bg-surface-container-high/50 transition-colors">
                           {/* Indestructible License Plate & Unit Badge */}
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="inline-flex items-center gap-1.5 whitespace-nowrap">
@@ -394,23 +400,23 @@ export const VehiclesPage: React.FC = () => {
                                   {v.unit_number}
                                 </span>
                               )}
-                              <span className="px-2.5 py-1 bg-slate-950 border border-slate-700 text-white font-mono font-bold text-xs tracking-wider rounded uppercase shadow-xs">
+                              <span className="px-2.5 py-1 bg-surface-container-high border border-outline text-white font-mono font-bold text-xs tracking-wider rounded uppercase shadow-xs">
                                 {v.license_plate}
                               </span>
                             </div>
                             {v.vin && (
-                              <div className="text-[10px] text-slate-400 font-mono mt-1 truncate max-w-[190px]" title={v.vin}>
+                              <div className="text-xs text-on-surface-variant font-mono mt-1 truncate max-w-[190px]" title={v.vin}>
                                 VIN: {v.vin}
                               </div>
                             )}
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="font-semibold text-white">{v.make || 'Unknown'} {v.model || ''}</div>
-                            <div className="text-[11px] text-slate-300 font-mono">{v.year || 2025} • {v.connector_type}</div>
+                            <div className="text-xs text-on-surface font-mono">{v.year || 2025} • {v.connector_type}</div>
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <span
-                              className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold shrink-0 ${
+                              className={`px-2 py-0.5 rounded font-mono text-xs font-bold shrink-0 ${
                                 v.priority_tier === 1
                                   ? 'bg-red-500/20 text-red-300 border border-red-500/40'
                                   : v.priority_tier === 2
@@ -421,43 +427,43 @@ export const VehiclesPage: React.FC = () => {
                               Tier {v.priority_tier || 2}
                             </span>
                           </td>
-                          <td className="py-3.5 px-4 font-mono text-[11px] whitespace-nowrap">
-                            <div className="text-slate-100 font-medium">{v.usable_battery_kwh || 70} / {v.battery_capacity_kwh || 75} kWh</div>
-                            <div className="text-[10px] text-slate-400">
+                          <td className="py-3.5 px-4 font-mono text-xs whitespace-nowrap">
+                            <div className="text-on-surface font-medium">{v.usable_battery_kwh || 70} / {v.battery_capacity_kwh || 75} kWh</div>
+                            <div className="text-xs text-on-surface-variant">
                               AC: {v.max_ac_power_kw || 11}kW • DC: {v.max_dc_power_kw || 150}kW
                             </div>
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <span className="font-mono font-bold text-xs text-white">{soc}%</span>
-                              <div className="w-16 bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                              <div className="w-16 bg-surface-container-high h-2 rounded-full overflow-hidden border border-outline">
                                 <div
                                   className={`h-full transition-all ${soc > 70 ? 'bg-emerald-400' : soc > 30 ? 'bg-blue-400' : 'bg-red-400'}`}
                                   style={{ width: `${Math.min(100, soc)}%` }}
                                 ></div>
                               </div>
                             </div>
-                            <div className="text-[10px] text-slate-300 font-mono mt-0.5">
+                            <div className="text-xs text-on-surface font-mono mt-0.5">
                               {v.estimated_range_km ? `${v.estimated_range_km} km` : 'No range data'}
                             </div>
                           </td>
                           <td className="py-3.5 px-4 font-mono text-xs whitespace-nowrap">
                             {v.assigned_bay_id ? (
-                              <span className="px-2 py-0.5 bg-slate-950 border border-slate-700 text-primary font-bold rounded">
+                              <span className="px-2 py-0.5 bg-surface-container-high border border-outline text-primary font-bold rounded">
                                 {v.assigned_bay_id}
                               </span>
                             ) : (
-                              <span className="text-slate-400">Unassigned</span>
+                              <span className="text-on-surface-variant">Unassigned</span>
                             )}
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <span
-                              className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider shrink-0 border ${
+                              className={`px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider shrink-0 border ${
                                 v.status === 'active'
                                   ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
                                   : v.status === 'maintenance'
                                   ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                                  : 'bg-slate-500/15 text-slate-300 border-slate-500/30'
+                                  : 'bg-surface-container-high text-on-surface-variant border-outline'
                               }`}
                             >
                               {v.status}
@@ -469,7 +475,7 @@ export const VehiclesPage: React.FC = () => {
                                 type="button"
                                 title="Live Telematics"
                                 onClick={() => setViewingTelematicsVehicle(v)}
-                                className="p-1.5 hover:bg-slate-800 text-primary rounded-lg transition-colors"
+                                className="p-1.5 hover:bg-surface-container-highest text-primary rounded-lg transition-colors"
                               >
                                 <span className="material-symbols-outlined text-[18px]">sensors</span>
                               </button>
@@ -477,7 +483,7 @@ export const VehiclesPage: React.FC = () => {
                                 type="button"
                                 title="Charging Sessions"
                                 onClick={() => setViewingSessionsVehicle(v)}
-                                className="p-1.5 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors"
+                                className="p-1.5 hover:bg-surface-container-highest text-on-surface hover:text-white rounded-lg transition-colors"
                               >
                                 <span className="material-symbols-outlined text-[18px]">history</span>
                               </button>
@@ -488,7 +494,7 @@ export const VehiclesPage: React.FC = () => {
                                   setEditingVehicle(v);
                                   setIsVehicleModalOpen(true);
                                 }}
-                                className="p-1.5 hover:bg-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors"
+                                className="p-1.5 hover:bg-surface-container-highest text-on-surface hover:text-white rounded-lg transition-colors"
                               >
                                 <span className="material-symbols-outlined text-[18px]">edit</span>
                               </button>
@@ -518,42 +524,42 @@ export const VehiclesPage: React.FC = () => {
         <div className="space-y-6">
           {/* KPI Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="material-card bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl shadow-md">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <div className="tabler-card bg-surface-container border border-outline p-4 rounded-2xl shadow-md">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 Total Depot Bays
               </span>
               <div className="text-2xl font-bold font-mono text-white mt-1">
                 {depotSummary.total_bays}
               </div>
-              <span className="text-[11px] text-primary font-medium">
+              <span className="text-xs text-primary font-medium">
                 {depotSummary.occupied_bays} Docked Vehicles
               </span>
             </div>
 
-            <div className="material-card bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl shadow-md">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <div className="tabler-card bg-surface-container border border-outline p-4 rounded-2xl shadow-md">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 Active Depot Charging Load
               </span>
               <div className="text-2xl font-bold font-mono text-primary mt-1">
                 {depotSummary.total_active_charging_kw.toFixed(1)} kW
               </div>
-              <span className="text-[11px] text-slate-300">
+              <span className="text-xs text-on-surface">
                 {depotSummary.active_charging_sessions} Active Sessions
               </span>
             </div>
 
-            <div className="material-card bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl shadow-md">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <div className="tabler-card bg-surface-container border border-outline p-4 rounded-2xl shadow-md">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 Grid Power Headroom
               </span>
               <div className="text-2xl font-bold font-mono text-emerald-400 mt-1">
                 {depotSummary.headroom_kw.toFixed(1)} kW
               </div>
-              <span className="text-[11px] text-emerald-400/90 font-medium">Available for Smart Dispatch</span>
+              <span className="text-xs text-emerald-400/90 font-medium">Available for Smart Dispatch</span>
             </div>
 
-            <div className="material-card bg-slate-900/90 border border-slate-700/80 p-4 rounded-2xl shadow-md">
-              <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">
+            <div className="tabler-card bg-surface-container border border-outline p-4 rounded-2xl shadow-md">
+              <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 EMS Operating Mode
               </span>
               <div
@@ -563,7 +569,7 @@ export const VehiclesPage: React.FC = () => {
               >
                 {depotSummary.ems_mode}
               </div>
-              <span className="text-[11px] text-slate-300">
+              <span className="text-xs text-on-surface">
                 Cap: {depotSummary.effective_limit_kw} kW
               </span>
             </div>
@@ -588,7 +594,7 @@ export const VehiclesPage: React.FC = () => {
               <select
                 value={selectedSiteId}
                 onChange={(e) => setSelectedSiteId(e.target.value)}
-                className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-200 font-mono focus:outline-none focus:border-primary cursor-pointer"
+                className="bg-surface-container border border-outline rounded-xl px-3 py-1.5 text-xs text-on-surface font-mono focus:outline-none focus:border-primary cursor-pointer"
               >
                 <option value="default">Site: default</option>
                 <option value="depot-north">Site: depot-north</option>
@@ -601,7 +607,7 @@ export const VehiclesPage: React.FC = () => {
                 setEditingBay(null);
                 setIsBayModalOpen(true);
               }}
-              className="px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-100 font-semibold text-xs rounded-xl transition-colors flex items-center gap-1 shadow-sm"
+              className="px-3.5 py-1.5 bg-surface-container hover:bg-surface-container-highest border border-outline text-on-surface font-semibold text-xs rounded-xl transition-colors flex items-center gap-1 shadow-sm"
             >
               <span className="material-symbols-outlined text-[16px]">add</span> Add Charging Bay
             </button>
@@ -625,15 +631,15 @@ export const VehiclesPage: React.FC = () => {
           <FleetGanttTimeline schedules={schedules} isLoading={isSchedulesLoading} />
 
           {/* Schedules Table */}
-          <div className="material-card bg-slate-900/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-md">
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+          <div className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-md">
+            <div className="p-4 border-b border-outline flex items-center justify-between">
               <h3 className="font-headline text-sm font-bold text-white">
                 Scheduled Vehicle Shift Departures
               </h3>
             </div>
             <div className="overflow-x-auto w-full">
               <table className="w-full text-left text-xs border-collapse">
-                <thead className="bg-slate-950/90 uppercase text-[11px] tracking-wider text-slate-300 border-b border-slate-800">
+                <thead className="bg-surface-container-high uppercase text-xs tracking-wider text-on-surface border-b border-outline">
                   <tr>
                     <th className="py-3 px-4 font-semibold min-w-[180px] whitespace-nowrap">Vehicle</th>
                     <th className="py-3 px-4 font-semibold min-w-[170px] whitespace-nowrap">Target Departure</th>
@@ -642,15 +648,15 @@ export const VehiclesPage: React.FC = () => {
                     <th className="py-3 px-4 font-semibold min-w-[100px] whitespace-nowrap">Status</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800 text-slate-200 font-sans">
+                <tbody className="divide-y divide-outline text-on-surface font-sans">
                   {schedules.map((s) => (
-                    <tr key={s.id} className="hover:bg-slate-800/60 transition-colors">
+                    <tr key={s.id} className="hover:bg-surface-container-high/50 transition-colors">
                       <td className="py-3 px-4 font-mono font-bold text-white whitespace-nowrap">
-                        <span className="px-2 py-1 bg-slate-950 border border-slate-700 rounded text-xs">
+                        <span className="px-2 py-1 bg-surface-container-high border border-outline rounded text-xs">
                           {s.unit_number ? `${s.unit_number} (${s.license_plate})` : s.license_plate}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-mono whitespace-nowrap text-slate-200">
+                      <td className="py-3 px-4 font-mono whitespace-nowrap text-on-surface">
                         {new Date(s.target_departure_at).toLocaleString()}
                       </td>
                       <td className="py-3 px-4 font-mono text-emerald-400 font-bold whitespace-nowrap">
@@ -660,7 +666,7 @@ export const VehiclesPage: React.FC = () => {
                         {s.min_emergency_soc_pct}%
                       </td>
                       <td className="py-3 px-4 whitespace-nowrap">
-                        <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-primary/15 text-primary border border-primary/30 uppercase">
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/15 text-primary border border-primary/30 uppercase">
                           {s.status}
                         </span>
                       </td>

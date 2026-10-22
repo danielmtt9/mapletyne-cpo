@@ -28,7 +28,7 @@ def get_url() -> str:
     name = os.environ.get("PG_NAME", "ocpp")
     user = os.environ.get("PG_USER", "ocpp")
     password = os.environ.get("PG_PASSWORD", "")
-    return f"postgresql://{user}:{password}@{host}:{port}/{name}"
+    return f"postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}"
 
 
 def run_migrations_online() -> None:

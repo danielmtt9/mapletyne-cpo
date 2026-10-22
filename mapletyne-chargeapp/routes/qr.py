@@ -30,7 +30,7 @@ async def qr_landing(request: Request, code: str):
         return RedirectResponse(redirect_url, status_code=302)
     except HTTPException as e:
         return templates.TemplateResponse(request, "error.html", {
-            "message": "QR-code niet gevonden",
+            "message": "QR code not found",
             "detail": "This QR code is not active or not linked to a charger.",
             "code": code,
             "flags": flags,

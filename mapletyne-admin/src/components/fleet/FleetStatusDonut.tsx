@@ -24,7 +24,7 @@ export const FleetStatusDonut: React.FC<FleetStatusDonutProps> = ({ title, slice
         trigger: 'item',
         backgroundColor: '#171f33',
         borderColor: '#3a445d',
-        textStyle: { color: '#e2e8f0', fontFamily: 'monospace', fontSize: 11 },
+        textStyle: { color: '#e2e8f0', fontFamily: 'monospace', fontSize: 12 },
         formatter: '{b}: <span class="font-bold">{c}</span> ({d}%)',
       },
       legend: {
@@ -33,7 +33,7 @@ export const FleetStatusDonut: React.FC<FleetStatusDonutProps> = ({ title, slice
         textStyle: {
           color: '#94a3b8',
           fontFamily: 'monospace',
-          fontSize: 10,
+          fontSize: 12,
         },
         itemWidth: 8,
         itemHeight: 8,

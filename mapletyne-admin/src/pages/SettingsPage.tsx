@@ -425,7 +425,7 @@ export const SettingsPage: React.FC = () => {
     <div className="space-y-6 max-w-6xl font-body">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 material-card bg-surface-container-highest/90 backdrop-blur-xl border border-primary/40 text-on-surface px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-mono text-xs animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-6 right-6 z-50 tabler-card bg-surface-container border border-primary/40 text-on-surface px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 font-sans text-sm animate-in fade-in slide-in-from-bottom-3 duration-200">
           <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span>{toastMessage}</span>
         </div>
@@ -434,20 +434,20 @@ export const SettingsPage: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-headline text-3xl font-bold tracking-tight text-on-surface">
+          <h1 className="font-headline text-4xl font-bold tracking-tight text-on-surface">
             Platform Configuration & Settings
           </h1>
-          <p className="text-sm text-on-surface-variant font-body mt-1">
+          <p className="text-xs text-on-surface-variant font-body mt-1">
             Enterprise organization identity, white-label brand studio, transactional communications, and PKI backup engine.
           </p>
         </div>
       </div>
 
       {/* 6 Responsive Navigation Tabs */}
-      <div className="flex border-b border-white/5 space-x-1 overflow-x-auto no-scrollbar">
+      <div className="flex border-b border-outline space-x-1 overflow-x-auto no-scrollbar">
         <button
           onClick={() => setActiveTab('org')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'org'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -459,7 +459,7 @@ export const SettingsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('branding')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'branding'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -471,7 +471,7 @@ export const SettingsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('smtp')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'smtp'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -483,7 +483,7 @@ export const SettingsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('sms')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'sms'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -495,7 +495,7 @@ export const SettingsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('ocpi')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'ocpi'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -507,7 +507,7 @@ export const SettingsPage: React.FC = () => {
 
         <button
           onClick={() => setActiveTab('backups')}
-          className={`px-4 py-2.5 font-mono text-xs uppercase tracking-wider border-b-2 font-bold transition-all flex items-center gap-2 cursor-pointer ${
+          className={`px-4 py-2.5 font-sans text-sm font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'backups'
               ? 'border-primary text-primary bg-primary/5 rounded-t-xl'
               : 'border-transparent text-on-surface-variant hover:text-on-surface'
@@ -520,9 +520,9 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 1: Organization & Legal ────────────────────────────────────── */}
       {activeTab === 'org' && (
-        <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6 font-body">
-          <div className="border-b border-white/5 pb-3">
-            <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+        <div className="space-y-6 font-body pt-2">
+          <div className="border-b border-outline/30 pb-3">
+            <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
               <span className="material-symbols-outlined text-primary">domain</span>
               Organization & Legal Business Profile
             </h2>
@@ -534,7 +534,7 @@ export const SettingsPage: React.FC = () => {
           <form onSubmit={handleSaveOrg} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Trading / Company Name
                 </label>
                 <input
@@ -542,12 +542,12 @@ export const SettingsPage: React.FC = () => {
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
                   placeholder="e.g. Acme Charge Network"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Registered Legal Entity
                 </label>
                 <input
@@ -555,12 +555,12 @@ export const SettingsPage: React.FC = () => {
                   value={legalEntity}
                   onChange={(e) => setLegalEntity(e.target.value)}
                   placeholder="e.g. Acme Energy Solutions B.V."
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Tax / VAT Identification No.
                 </label>
                 <input
@@ -568,12 +568,12 @@ export const SettingsPage: React.FC = () => {
                   value={taxVatId}
                   onChange={(e) => setTaxVatId(e.target.value)}
                   placeholder="e.g. NL859612345B01, GB123456789"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Company Registration No. (CRN)
                 </label>
                 <input
@@ -581,12 +581,12 @@ export const SettingsPage: React.FC = () => {
                   value={regNumber}
                   onChange={(e) => setRegNumber(e.target.value)}
                   placeholder="e.g. 74839201"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Registered Physical Address Line 1
                 </label>
                 <input
@@ -594,12 +594,12 @@ export const SettingsPage: React.FC = () => {
                   value={addressLine1}
                   onChange={(e) => setAddressLine1(e.target.value)}
                   placeholder="Street address, building number"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Address Line 2 (Suite / Unit / Floor)
                 </label>
                 <input
@@ -607,12 +607,12 @@ export const SettingsPage: React.FC = () => {
                   value={addressLine2}
                   onChange={(e) => setAddressLine2(e.target.value)}
                   placeholder="Suite or Unit"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   City / Municipality
                 </label>
                 <input
@@ -620,12 +620,12 @@ export const SettingsPage: React.FC = () => {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   placeholder="e.g. Amsterdam"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   State / Province
                 </label>
                 <input
@@ -633,12 +633,12 @@ export const SettingsPage: React.FC = () => {
                   value={stateProvince}
                   onChange={(e) => setStateProvince(e.target.value)}
                   placeholder="e.g. North Holland"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Postal / ZIP Code
                 </label>
                 <input
@@ -646,12 +646,12 @@ export const SettingsPage: React.FC = () => {
                   value={postalCode}
                   onChange={(e) => setPostalCode(e.target.value)}
                   placeholder="e.g. 1016 EK"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Country (ISO 2-letter)
                 </label>
                 <input
@@ -660,12 +660,12 @@ export const SettingsPage: React.FC = () => {
                   value={country}
                   onChange={(e) => setCountry(e.target.value.toUpperCase())}
                   placeholder="e.g. NL, US, DE, GB"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Invoicing & Billing Email
                 </label>
                 <input
@@ -673,12 +673,12 @@ export const SettingsPage: React.FC = () => {
                   value={invoicingEmail}
                   onChange={(e) => setInvoicingEmail(e.target.value)}
                   placeholder="billing@yourcompany.com"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Customer Support Hotline
                 </label>
                 <input
@@ -686,12 +686,12 @@ export const SettingsPage: React.FC = () => {
                   value={supportHotline}
                   onChange={(e) => setSupportHotline(e.target.value)}
                   placeholder="+1 (555) 0199"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Corporate Website URL
                 </label>
                 <input
@@ -699,18 +699,18 @@ export const SettingsPage: React.FC = () => {
                   value={websiteUrl}
                   onChange={(e) => setWebsiteUrl(e.target.value)}
                   placeholder="https://yourcompany.com"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Default Currency
                 </label>
                 <select
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value="EUR">EUR (€) - Euro</option>
                   <option value="USD">USD ($) - US Dollar</option>
@@ -724,13 +724,13 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Operating Timezone
                 </label>
                 <select
                   value={timezone}
                   onChange={(e) => setTimezone(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value="UTC">UTC (Coordinated Universal Time)</option>
                   <option value="Europe/Amsterdam">Europe/Amsterdam (CET/CEST)</option>
@@ -745,11 +745,11 @@ export const SettingsPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-white/5">
+            <div className="flex justify-end pt-3 border-t border-outline">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSaving && <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>}
                 Save Organization Profile
@@ -761,10 +761,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 2: Brand & Logo Studio ────────────────────────────────────── */}
       {activeTab === 'branding' && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 font-body">
-          <div className="lg:col-span-2 material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6">
-            <div className="border-b border-white/5 pb-3">
-              <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 font-body pt-2">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="border-b border-outline/30 pb-3">
+              <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">palette</span>
                 Brand Visual Identity & Dynamic Token Studio
               </h2>
@@ -776,11 +776,11 @@ export const SettingsPage: React.FC = () => {
             <form onSubmit={handleSaveBranding} className="space-y-5">
               {/* Logo Upload Section */}
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-slate-200">
+                <label className="block text-base font-semibold text-on-surface">
                   Company Logo (PNG, SVG, WebP, ICO - Max 5MB)
                 </label>
                 <div className="flex items-center gap-4">
-                  <div className="w-18 h-18 rounded-2xl bg-[#070d19]/80 border border-white/10 flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
+                  <div className="w-18 h-18 rounded-2xl bg-surface-container-high border border-outline flex items-center justify-center overflow-hidden p-2 shadow-sm shrink-0">
                     {logoDataUri || logoUrl ? (
                       <img
                         src={logoDataUri || logoUrl}
@@ -805,7 +805,7 @@ export const SettingsPage: React.FC = () => {
                         type="button"
                         disabled={isUploadingLogo}
                         onClick={() => fileInputRef.current?.click()}
-                        className="px-4 py-2.5 bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-on-surface rounded-xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer"
+                        className="px-4 py-2.5 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface rounded-xl font-bold text-xs transition-all flex items-center gap-2 cursor-pointer"
                       >
                         <span className="material-symbols-outlined text-[16px] text-primary">upload_file</span>
                         {isUploadingLogo ? 'Uploading...' : 'Choose Logo File'}
@@ -834,7 +834,7 @@ export const SettingsPage: React.FC = () => {
               {/* Portal Titles */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-base font-semibold text-on-surface mb-1.5">
                     Portal Display Title
                   </label>
                   <input
@@ -842,11 +842,11 @@ export const SettingsPage: React.FC = () => {
                     value={appTitle}
                     onChange={(e) => setAppTitle(e.target.value)}
                     placeholder="e.g. Charge Station Management System"
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-base font-semibold text-on-surface mb-1.5">
                     Portal Tagline / Subtitle
                   </label>
                   <input
@@ -854,19 +854,19 @@ export const SettingsPage: React.FC = () => {
                     value={portalTagline}
                     onChange={(e) => setPortalTagline(e.target.value)}
                     placeholder="e.g. Enterprise EV Charging Management (CSMS)"
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   />
                 </div>
               </div>
 
               {/* Color Palette Selectors */}
-              <div className="space-y-3 pt-2 border-t border-white/5">
-                <label className="block text-sm font-semibold text-slate-200">
+              <div className="space-y-3 pt-2 border-t border-outline">
+                <label className="block text-base font-semibold text-on-surface">
                   Color Tokens & Theme Customization
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  <div className="p-3 bg-[#070d19]/80 border border-white/10 rounded-xl space-y-2">
-                    <span className="text-xs font-semibold text-slate-200 block">Primary Brand Color</span>
+                  <div className="p-3 bg-surface-container-high border border-outline rounded-xl space-y-2">
+                    <span className="text-sm font-semibold text-on-surface block">Primary Brand Color</span>
                     <div className="flex items-center gap-2">
                       <input
                         type="color"
@@ -878,13 +878,13 @@ export const SettingsPage: React.FC = () => {
                         type="text"
                         value={primaryColor}
                         onChange={(e) => setPrimaryColor(e.target.value)}
-                        className="w-full bg-transparent text-sm font-mono text-slate-100 outline-none"
+                        className="w-full bg-transparent text-base font-mono text-on-surface outline-none"
                       />
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#070d19]/80 border border-white/10 rounded-xl space-y-2">
-                    <span className="text-xs font-semibold text-slate-200 block">Secondary Surface</span>
+                  <div className="p-3 bg-surface-container-high border border-outline rounded-xl space-y-2">
+                    <span className="text-sm font-semibold text-on-surface block">Secondary Surface</span>
                     <div className="flex items-center gap-2">
                       <input
                         type="color"
@@ -896,13 +896,13 @@ export const SettingsPage: React.FC = () => {
                         type="text"
                         value={secondaryColor}
                         onChange={(e) => setSecondaryColor(e.target.value)}
-                        className="w-full bg-transparent text-sm font-mono text-slate-100 outline-none"
+                        className="w-full bg-transparent text-base font-mono text-on-surface outline-none"
                       />
                     </div>
                   </div>
 
-                  <div className="p-3 bg-[#070d19]/80 border border-white/10 rounded-xl space-y-2">
-                    <span className="text-xs font-semibold text-slate-200 block">Electric Accent</span>
+                  <div className="p-3 bg-surface-container-high border border-outline rounded-xl space-y-2">
+                    <span className="text-sm font-semibold text-on-surface block">Electric Accent</span>
                     <div className="flex items-center gap-2">
                       <input
                         type="color"
@@ -914,18 +914,18 @@ export const SettingsPage: React.FC = () => {
                         type="text"
                         value={accentColor}
                         onChange={(e) => setAccentColor(e.target.value)}
-                        className="w-full bg-transparent text-sm font-mono text-slate-100 outline-none"
+                        className="w-full bg-transparent text-base font-mono text-on-surface outline-none"
                       />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-end pt-3 border-t border-white/5">
+              <div className="flex justify-end pt-3 border-t border-outline">
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   {isSaving && <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>}
                   Save & Apply Branding
@@ -934,21 +934,21 @@ export const SettingsPage: React.FC = () => {
             </form>
           </div>
 
-          {/* Real-time Interactive Live Simulation Widget */}
-          <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+          {/* Real-time Interactive Live Simulation Widget - Flush Column */}
+          <div className="space-y-4 flex flex-col justify-between border-t lg:border-t-0 lg:border-l border-outline/30 lg:pl-8">
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="font-headline font-bold text-base text-on-surface flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">visibility</span>
                   Live Simulation Preview
                 </h3>
-                <span className="text-[10px] font-mono text-primary bg-primary/10 px-2 py-0.5 rounded-full border border-primary/20 font-bold">
+                <span className="text-xs font-mono text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20 font-bold">
                   REAL-TIME
                 </span>
               </div>
 
               {/* Simulated Sidebar Tile */}
-              <div className="p-4 rounded-xl border border-white/10 bg-surface-container-lowest/90 space-y-3">
+              <div className="p-4 rounded-xl border border-outline bg-surface-container-lowest/90 space-y-3">
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base shadow-sm shrink-0 overflow-hidden"
@@ -961,8 +961,8 @@ export const SettingsPage: React.FC = () => {
                     )}
                   </div>
                   <div className="overflow-hidden">
-                    <span className="font-bold text-sm text-white block truncate">{companyName || '—'}</span>
-                    <span className="text-xs font-mono text-slate-400 block truncate">{appTitle}</span>
+                    <span className="font-bold text-sm text-on-surface block">{companyName || '—'}</span>
+                    <span className="text-xs font-mono text-on-surface-variant block">{appTitle}</span>
                   </div>
                 </div>
 
@@ -983,13 +983,13 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               {/* Simulated Mobile Driver Screen Card */}
-              <div className="p-4 rounded-xl border border-white/10 bg-slate-950/80 space-y-2.5 font-mono text-xs">
-                <div className="text-[10px] text-slate-400 uppercase font-bold tracking-wider flex justify-between">
+              <div className="p-4 rounded-xl border border-outline bg-surface-container-high space-y-2.5 font-mono text-xs">
+                <div className="text-xs text-on-surface-variant uppercase font-bold tracking-wider flex justify-between">
                   <span>Driver Mobile View</span>
                   <span style={{ color: primaryColor }}>{currency} 0.42 / kWh</span>
                 </div>
-                <div className="p-3 rounded-lg bg-surface-container-high/60 border border-white/5 flex items-center justify-between">
-                  <span className="text-white font-bold">Fast Charger #01</span>
+                <div className="p-3 rounded-lg bg-surface-container border border-outline flex items-center justify-between">
+                  <span className="text-on-surface font-bold">Fast Charger #01</span>
                   <span
                     className="px-2 py-0.5 rounded-full text-xs font-bold"
                     style={{ backgroundColor: primaryColor, color: '#000' }}
@@ -1009,10 +1009,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 3: Email & SMTP ────────────────────────────────────────────── */}
       {activeTab === 'smtp' && (
-        <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6 font-body">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
+        <div className="space-y-6 font-body pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline/30 pb-3">
             <div>
-              <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+              <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">mail</span>
                 Transactional Email & SMTP Relay
               </h2>
@@ -1027,7 +1027,7 @@ export const SettingsPage: React.FC = () => {
                 setSmtpTestResult(null);
                 setIsSmtpTestModalOpen(true);
               }}
-              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 cursor-pointer transition-all"
+              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 cursor-pointer transition-all"
             >
               <span className="material-symbols-outlined text-[16px] text-primary">send</span>
               Send Test Email
@@ -1037,7 +1037,7 @@ export const SettingsPage: React.FC = () => {
           <form onSubmit={handleSaveSmtp} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   SMTP Host
                 </label>
                 <input
@@ -1045,24 +1045,24 @@ export const SettingsPage: React.FC = () => {
                   placeholder="e.g. smtp.sendgrid.net, smtp.mailgun.org, smtp.gmail.com"
                   value={smtpHost}
                   onChange={(e) => setSmtpHost(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Port (587 STARTTLS / 465 SSL)
                 </label>
                 <input
                   type="number"
                   value={smtpPort}
                   onChange={(e) => setSmtpPort(Number(e.target.value))}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   SMTP User / Username
                 </label>
                 <input
@@ -1070,12 +1070,12 @@ export const SettingsPage: React.FC = () => {
                   value={smtpUser}
                   onChange={(e) => setSmtpUser(e.target.value)}
                   placeholder="e.g. apikey or user@domain.com"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   SMTP Password / API Key
                 </label>
                 <div className="relative">
@@ -1084,12 +1084,12 @@ export const SettingsPage: React.FC = () => {
                     value={smtpPassword}
                     onChange={(e) => setSmtpPassword(e.target.value)}
                     placeholder="••••••••••••"
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 pl-4 pr-10 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 pl-4 pr-10 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   />
                   <button
                     type="button"
                     onClick={() => setShowSmtpPassword(!showSmtpPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-on-surface"
                   >
                     <span className="material-symbols-outlined text-[18px]">
                       {showSmtpPassword ? 'visibility_off' : 'visibility'}
@@ -1099,13 +1099,13 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Security Protocol
                 </label>
                 <select
                   value={smtpTls ? 'tls' : 'plain'}
                   onChange={(e) => setSmtpTls(e.target.value === 'tls')}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value="tls">STARTTLS / TLS (Recommended)</option>
                   <option value="plain">Plain / Unencrypted</option>
@@ -1113,7 +1113,7 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Sender From Address
                 </label>
                 <input
@@ -1121,12 +1121,12 @@ export const SettingsPage: React.FC = () => {
                   placeholder="no-reply@yourcompany.com"
                   value={smtpFromAddress}
                   onChange={(e) => setSmtpFromAddress(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Sender Display Name
                 </label>
                 <input
@@ -1134,16 +1134,16 @@ export const SettingsPage: React.FC = () => {
                   placeholder="e.g. Acme EV Charging System"
                   value={smtpFromName}
                   onChange={(e) => setSmtpFromName(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-white/5">
+            <div className="flex justify-end pt-3 border-t border-outline">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSaving && <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>}
                 Save SMTP Configuration
@@ -1155,10 +1155,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 4: SMS & Alerts ────────────────────────────────────────────── */}
       {activeTab === 'sms' && (
-        <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6 font-body">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
+        <div className="space-y-6 font-body pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline/30 pb-3">
             <div>
-              <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+              <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">sms</span>
                 SMS Gateway & One-Time Passcode (OTP)
               </h2>
@@ -1173,7 +1173,7 @@ export const SettingsPage: React.FC = () => {
                 setSmsTestResult(null);
                 setIsSmsTestModalOpen(true);
               }}
-              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 cursor-pointer transition-all"
+              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 cursor-pointer transition-all"
             >
               <span className="material-symbols-outlined text-[16px] text-primary">send_to_mobile</span>
               Send Test SMS
@@ -1183,13 +1183,13 @@ export const SettingsPage: React.FC = () => {
           <form onSubmit={handleSaveSms} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   SMS Provider
                 </label>
                 <select
                   value={smsProvider}
                   onChange={(e) => setSmsProvider(e.target.value)}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value="twilio">Twilio Programmable SMS</option>
                   <option value="messagebird">Bird (MessageBird)</option>
@@ -1200,7 +1200,7 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Account SID / Workspace ID
                 </label>
                 <input
@@ -1208,12 +1208,12 @@ export const SettingsPage: React.FC = () => {
                   value={smsAccountSid}
                   onChange={(e) => setSmsAccountSid(e.target.value)}
                   placeholder="e.g. ACxxxxxxxxxxxxxxxxxxxx"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Auth Token / API Key
                 </label>
                 <input
@@ -1221,12 +1221,12 @@ export const SettingsPage: React.FC = () => {
                   value={smsApiKey}
                   onChange={(e) => setSmsApiKey(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Sender ID / Alphanumeric Originator
                 </label>
                 <input
@@ -1234,18 +1234,18 @@ export const SettingsPage: React.FC = () => {
                   value={smsSenderId}
                   onChange={(e) => setSmsSenderId(e.target.value)}
                   placeholder="e.g. CHARGE"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   OTP Code Length
                 </label>
                 <select
                   value={otpCodeLength}
                   onChange={(e) => setOtpCodeLength(Number(e.target.value))}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 >
                   <option value={6}>6 Digits (Standard Enterprise)</option>
                   <option value={4}>4 Digits (Fast Driver Access)</option>
@@ -1253,7 +1253,7 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   OTP Expiry TTL (Seconds)
                 </label>
                 <input
@@ -1262,16 +1262,16 @@ export const SettingsPage: React.FC = () => {
                   max="900"
                   value={otpTtlSeconds}
                   onChange={(e) => setOtpTtlSeconds(Number(e.target.value))}
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-white/5">
+            <div className="flex justify-end pt-3 border-t border-outline">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSaving && <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>}
                 Save SMS Configuration
@@ -1283,10 +1283,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 5: Roaming & OCPI ────────────────────────────────────────── */}
       {activeTab === 'ocpi' && (
-        <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6 font-body">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/5 pb-3">
+        <div className="space-y-6 font-body pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-outline/30 pb-3">
             <div>
-              <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+              <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">hub</span>
                 OCPI 2.2.1 Node Identity & Federation
               </h2>
@@ -1296,7 +1296,7 @@ export const SettingsPage: React.FC = () => {
             </div>
             <Link
               to="/roaming"
-              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-white/10 text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 transition-all"
+              className="px-4 py-2 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface font-sans text-xs rounded-xl font-bold flex items-center gap-2 transition-all"
             >
               <span className="material-symbols-outlined text-[16px] text-secondary">open_in_new</span>
               Open Roaming Partner Hub
@@ -1306,7 +1306,7 @@ export const SettingsPage: React.FC = () => {
           <form onSubmit={handleSaveOcpi} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Country Code (ISO 2-letter)
                 </label>
                 <input
@@ -1315,12 +1315,12 @@ export const SettingsPage: React.FC = () => {
                   value={ocpiCountryCode}
                   onChange={(e) => setOcpiCountryCode(e.target.value.toUpperCase())}
                   placeholder="e.g. US, NL, DE, FR"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Party ID (3-letter CPO Code)
                 </label>
                 <input
@@ -1329,12 +1329,12 @@ export const SettingsPage: React.FC = () => {
                   value={ocpiPartyId}
                   onChange={(e) => setOcpiPartyId(e.target.value.toUpperCase())}
                   placeholder="e.g. CPO, ACM, EVN"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all uppercase"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Operator Public Name
                 </label>
                 <input
@@ -1342,12 +1342,12 @@ export const SettingsPage: React.FC = () => {
                   value={ocpiOperatorName}
                   onChange={(e) => setOcpiOperatorName(e.target.value)}
                   placeholder="e.g. Acme EV Network"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Public Base URL
                 </label>
                 <input
@@ -1355,12 +1355,12 @@ export const SettingsPage: React.FC = () => {
                   value={ocpiBaseUrl}
                   onChange={(e) => setOcpiBaseUrl(e.target.value)}
                   placeholder="https://api.yourcompany.com"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
               <div className="col-span-2">
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Versions Endpoint Path
                 </label>
                 <input
@@ -1368,16 +1368,16 @@ export const SettingsPage: React.FC = () => {
                   value={ocpiVersionsPath}
                   onChange={(e) => setOcpiVersionsPath(e.target.value)}
                   placeholder="/ocpi/versions"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-white/5">
+            <div className="flex justify-end pt-3 border-t border-outline">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {isSaving && <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>}
                 Save OCPI Identity
@@ -1389,11 +1389,11 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── TAB 6: Splits & Backups ────────────────────────────────────────── */}
       {activeTab === 'backups' && (
-        <div className="space-y-6 font-body">
-          {/* Site Host Revenue Splits */}
-          <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6">
-            <div className="border-b border-white/5 pb-3">
-              <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+        <div className="space-y-8 font-body pt-2">
+          {/* Site Host Revenue Splits - Flush Canvas */}
+          <div className="space-y-6">
+            <div className="border-b border-outline/30 pb-3">
+              <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-secondary">payments</span>
                 Site Host Revenue Splits & Auto Settlement
               </h2>
@@ -1404,9 +1404,9 @@ export const SettingsPage: React.FC = () => {
 
             <form onSubmit={handleSavePayouts} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center justify-between p-4 bg-[#070d19]/80 border border-white/10 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-surface-container-high/60 border border-outline/30 rounded-xl">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-200">Auto-Settlement Engine</label>
+                    <label className="block text-base font-semibold text-on-surface">Auto-Settlement Engine</label>
                     <span className="text-xs text-on-surface-variant">
                       Auto-generate monthly host payout credit notes
                     </span>
@@ -1420,7 +1420,7 @@ export const SettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-base font-semibold text-on-surface mb-1.5">
                     Default Host Revenue Split (%)
                   </label>
                   <input
@@ -1430,18 +1430,18 @@ export const SettingsPage: React.FC = () => {
                     step="0.5"
                     value={defaultSplitPct}
                     onChange={(e) => setDefaultSplitPct(Number(e.target.value))}
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-base font-semibold text-on-surface mb-1.5">
                     Payout Schedule
                   </label>
                   <select
                     value={payoutSchedule}
                     onChange={(e) => setPayoutSchedule(e.target.value)}
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   >
                     <option value="weekly">Weekly Settlement</option>
                     <option value="monthly">Monthly Calendar Close</option>
@@ -1450,7 +1450,7 @@ export const SettingsPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                  <label className="block text-base font-semibold text-on-surface mb-1.5">
                     Minimum Payout Threshold ({currency})
                   </label>
                   <input
@@ -1459,16 +1459,16 @@ export const SettingsPage: React.FC = () => {
                     step="5"
                     value={minimumPayout}
                     onChange={(e) => setMinimumPayout(Number(e.target.value))}
-                    className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                    className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end pt-3 border-t border-white/5">
+              <div className="flex justify-end pt-3 border-t border-outline/30">
                 <button
                   type="submit"
                   disabled={isSaving}
-                  className="px-6 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                  className="px-6 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
                 >
                   Save Revenue Split Rules
                 </button>
@@ -1476,11 +1476,11 @@ export const SettingsPage: React.FC = () => {
             </form>
           </div>
 
-          {/* Database & PKI Backups */}
-          <div className="material-card bg-surface-container/70 backdrop-blur-md border border-white/5 p-6 rounded-2xl space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/5 pb-3">
+          {/* Database & PKI Backups - Flush Canvas */}
+          <div className="space-y-6 pt-8 border-t border-outline/30">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-outline/30 pb-3">
               <div>
-                <h2 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+                <h2 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                   <span className="material-symbols-outlined text-primary">cloud_sync</span>
                   Cryptographic Database & PKI Snapshots
                 </h2>
@@ -1492,7 +1492,7 @@ export const SettingsPage: React.FC = () => {
                 type="button"
                 disabled={createBackupMutation.isPending}
                 onClick={() => createBackupMutation.mutate()}
-                className="px-5 py-2.5 bg-primary text-[#070d19] font-headline font-bold text-xs rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2.5 bg-primary text-on-primary font-headline font-bold text-base rounded-xl shadow-md hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[16px]">archive</span>
                 Create Snapshot Backup
@@ -1502,7 +1502,7 @@ export const SettingsPage: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse text-sm">
                 <thead>
-                  <tr className="border-b border-white/5 bg-surface-container-high/40 text-on-surface-variant uppercase text-xs tracking-wider">
+                  <tr className="border-b border-outline bg-surface-container-high/40 text-on-surface-variant uppercase text-xs tracking-wider">
                     <th className="px-4 py-3 font-semibold">Archive Filename</th>
                     <th className="px-4 py-3 font-semibold">Created</th>
                     <th className="px-4 py-3 font-semibold">Size</th>
@@ -1510,7 +1510,7 @@ export const SettingsPage: React.FC = () => {
                     <th className="px-4 py-3 text-right font-semibold">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 text-on-surface">
+                <tbody className="divide-y divide-outline text-on-surface">
                   {isBackupsLoading ? (
                     <tr>
                       <td colSpan={5} className="px-4 py-6 text-center text-on-surface-variant">
@@ -1561,10 +1561,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── Diagnostic SMTP Test Modal ──────────────────────────────────────── */}
       {isSmtpTestModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in font-body">
-          <div className="material-card bg-surface-container-high/95 backdrop-blur-2xl border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
-              <h3 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-150 font-body">
+          <div className="tabler-card bg-surface-container border border-outline rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-outline">
+              <h3 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">mark_email_read</span>
                 Diagnostic SMTP Handshake Test
               </h3>
@@ -1578,7 +1578,7 @@ export const SettingsPage: React.FC = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-sm font-semibold text-on-surface mb-1.5">
                   Recipient Destination Email
                 </label>
                 <input
@@ -1587,7 +1587,7 @@ export const SettingsPage: React.FC = () => {
                   value={testEmailAddress}
                   onChange={(e) => setTestEmailAddress(e.target.value)}
                   placeholder="admin@yourdomain.com"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
@@ -1606,7 +1606,7 @@ export const SettingsPage: React.FC = () => {
                   <p className="text-xs break-words">
                     {smtpTestResult.message || smtpTestResult.error}
                   </p>
-                  <div className="text-xs text-on-surface-variant pt-1 border-t border-white/10 flex justify-between">
+                  <div className="text-xs text-on-surface-variant pt-1 border-t border-outline flex justify-between">
                     <span>Host: {smtpTestResult.host}:{smtpTestResult.port}</span>
                     <span>TLS: {smtpTestResult.tls ? 'YES' : 'NO'}</span>
                   </div>
@@ -1618,7 +1618,7 @@ export const SettingsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSmtpTestModalOpen(false)}
-                className="px-4 py-2 rounded-xl border border-white/10 text-on-surface-variant text-sm cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-outline text-on-surface-variant text-base cursor-pointer"
               >
                 Close
               </button>
@@ -1626,7 +1626,7 @@ export const SettingsPage: React.FC = () => {
                 type="button"
                 disabled={!testEmailAddress || smtpTestMutation.isPending}
                 onClick={() => smtpTestMutation.mutate(testEmailAddress)}
-                className="px-5 py-2 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl hover:brightness-110 disabled:opacity-50 transition-all flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2 bg-primary text-on-primary font-headline font-bold text-base rounded-xl hover:brightness-110 disabled:opacity-50 transition-all flex items-center gap-2 cursor-pointer"
               >
                 {smtpTestMutation.isPending && (
                   <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>
@@ -1640,10 +1640,10 @@ export const SettingsPage: React.FC = () => {
 
       {/* ── Diagnostic SMS Test Modal ───────────────────────────────────────── */}
       {isSmsTestModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in font-body">
-          <div className="material-card bg-surface-container-high/95 backdrop-blur-2xl border border-white/10 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-white/5">
-              <h3 className="font-headline text-lg font-bold text-on-surface flex items-center gap-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 animate-in fade-in duration-150 font-body">
+          <div className="tabler-card bg-surface-container border border-outline rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-outline">
+              <h3 className="font-headline text-xl font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">sms</span>
                 Diagnostic SMS Gateway Test
               </h3>
@@ -1657,7 +1657,7 @@ export const SettingsPage: React.FC = () => {
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-semibold text-slate-200 mb-1.5">
+                <label className="block text-base font-semibold text-on-surface mb-1.5">
                   Destination Phone Number (E.164 format)
                 </label>
                 <input
@@ -1666,7 +1666,7 @@ export const SettingsPage: React.FC = () => {
                   value={testPhoneNumber}
                   onChange={(e) => setTestPhoneNumber(e.target.value)}
                   placeholder="+31612345678 or +14155552671"
-                  className="w-full bg-[#070d19]/80 border border-white/10 rounded-xl h-11 px-4 text-slate-100 font-sans text-base placeholder:text-slate-500 focus:border-primary/60 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
+                  className="w-full bg-surface-container-high border border-outline rounded-xl h-11 px-4 text-on-surface font-sans text-base placeholder:text-on-surface-variant focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                 />
               </div>
 
@@ -1685,7 +1685,7 @@ export const SettingsPage: React.FC = () => {
                   <p className="text-xs break-words">
                     {smsTestResult.message || smsTestResult.error}
                   </p>
-                  <div className="text-xs text-on-surface-variant pt-1 border-t border-white/10 flex justify-between">
+                  <div className="text-xs text-on-surface-variant pt-1 border-t border-outline flex justify-between">
                     <span>Provider: {smsTestResult.provider}</span>
                     <span>Target: {smsTestResult.sent_to}</span>
                   </div>
@@ -1697,7 +1697,7 @@ export const SettingsPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setIsSmsTestModalOpen(false)}
-                className="px-4 py-2 rounded-xl border border-white/10 text-on-surface-variant text-sm cursor-pointer"
+                className="px-4 py-2 rounded-xl border border-outline text-on-surface-variant text-sm cursor-pointer"
               >
                 Close
               </button>
@@ -1705,7 +1705,7 @@ export const SettingsPage: React.FC = () => {
                 type="button"
                 disabled={!testPhoneNumber || smsTestMutation.isPending}
                 onClick={() => smsTestMutation.mutate(testPhoneNumber)}
-                className="px-5 py-2 bg-primary text-[#070d19] font-headline font-bold text-sm rounded-xl hover:brightness-110 disabled:opacity-50 transition-all flex items-center gap-2 cursor-pointer"
+                className="px-5 py-2 bg-primary text-on-primary font-headline font-bold text-base rounded-xl hover:brightness-110 disabled:opacity-50 transition-all flex items-center gap-2 cursor-pointer"
               >
                 {smsTestMutation.isPending && (
                   <span className="material-symbols-outlined text-[16px] animate-spin">refresh</span>

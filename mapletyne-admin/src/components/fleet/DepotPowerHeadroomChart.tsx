@@ -33,7 +33,7 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
     legend: {
       data: ['Active Charging Load', 'Available Headroom', 'Site Power Ceiling'],
       top: 0,
-      textStyle: { color: '#94A3B8', fontSize: 11, fontFamily: 'monospace' },
+      textStyle: { color: '#94A3B8', fontSize: 12, fontFamily: 'monospace' },
     },
     grid: {
       top: 36,
@@ -47,15 +47,15 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
       data: ['Current Depot Load'],
       axisLine: { show: false },
       axisTick: { show: false },
-      axisLabel: { color: '#94A3B8', fontSize: 11, fontFamily: 'monospace' },
+      axisLabel: { color: '#94A3B8', fontSize: 12, fontFamily: 'monospace' },
     },
     yAxis: {
       type: 'value',
       name: 'Power (kW)',
       max: Math.max(gridLimitKw, effectiveLimitKw) * 1.15,
       splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.05)', type: 'dashed' } },
-      axisLabel: { color: '#94A3B8', fontSize: 10, fontFamily: 'monospace' },
-      nameTextStyle: { color: '#64748B', fontSize: 10, fontFamily: 'monospace' },
+      axisLabel: { color: '#94A3B8', fontSize: 12, fontFamily: 'monospace' },
+      nameTextStyle: { color: '#64748B', fontSize: 12, fontFamily: 'monospace' },
     },
     series: [
       {
@@ -82,7 +82,7 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
           position: 'inside',
           formatter: '{c} kW',
           color: '#FFFFFF',
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 'bold',
           fontFamily: 'monospace',
         },
@@ -104,7 +104,7 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
           position: 'top',
           formatter: `Headroom: ${headroomKw.toFixed(1)} kW`,
           color: '#10B981',
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 600,
           fontFamily: 'monospace',
         },
@@ -127,7 +127,7 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
                 position: 'end',
                 formatter: isOverride ? `SCADA Override: ${effectiveLimitKw} kW` : `Grid Cap: ${gridLimitKw} kW`,
                 color: isOverride ? '#EF4444' : '#F59E0B',
-                fontSize: 11,
+                fontSize: 12,
                 fontWeight: 'bold',
                 fontFamily: 'monospace',
               },
@@ -145,7 +145,7 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
           <span className="material-symbols-outlined text-primary text-[16px]">speed</span> Depot Power Stack & Headroom
         </span>
         <span
-          className={`text-[11px] px-2 py-0.5 rounded-lg font-mono font-semibold ${
+          className={`text-xs px-2 py-0.5 rounded-lg font-mono font-semibold ${
             isOverride
               ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30 animate-pulse'
               : 'bg-primary/10 text-primary border border-primary/20'

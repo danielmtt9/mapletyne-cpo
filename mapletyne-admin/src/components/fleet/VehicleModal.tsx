@@ -181,10 +181,10 @@ export const VehicleModal: React.FC<VehicleModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-      <div className="w-full max-w-2xl bg-surface-container-low border border-outline-variant/30 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 animate-in fade-in duration-150">
+      <div className="w-full max-w-2xl tabler-card bg-surface-container border border-outline rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-outline-variant/20 px-6 py-4 bg-surface-container">
+        <div className="flex items-center justify-between border-b border-outline px-6 py-4 bg-surface-container">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-primary text-[24px]">local_shipping</span>
             <h2 className="font-headline text-lg font-bold text-on-surface">
@@ -194,14 +194,14 @@ export const VehicleModal: React.FC<VehicleModalProps> = ({
           <button
             onClick={onClose}
             type="button"
-            className="text-on-surface-variant hover:text-on-surface transition-colors"
+            className="text-on-surface-variant hover:text-on-surface transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex border-b border-outline-variant/20 px-6 bg-surface-container-lowest gap-4">
+        <div className="flex border-b border-outline px-6 bg-surface-container-high gap-4 font-sans">
           <button
             type="button"
             onClick={() => setActiveTab('general')}
@@ -252,7 +252,7 @@ export const VehicleModal: React.FC<VehicleModalProps> = ({
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-4">
           {/* TAB 1: GENERAL */}
           {activeTab === 'general' && (
-            <div className="grid grid-cols-2 gap-4">
+            <section className="grid grid-cols-2 gap-4" aria-label="General Vehicle Specifications">
               <div className="space-y-1">
                 <label className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">
                   License Plate *
@@ -383,7 +383,7 @@ export const VehicleModal: React.FC<VehicleModalProps> = ({
                   ))}
                 </select>
               </div>
-            </div>
+            </section>
           )}
 
           {/* TAB 2: BATTERY & POWER */}
