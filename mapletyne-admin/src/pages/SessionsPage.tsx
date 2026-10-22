@@ -10,6 +10,7 @@ export const SessionsPage: React.FC = () => {
   const { selectedSite, setSelectedSite, availableSites } = useSiteContext();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSession, setSelectedSession] = useState<any | null>(null);
+  const [anonymizePii, setAnonymizePii] = useState(false);
 
   const { data: rawSessions, isLoading } = useQuery({
     queryKey: ['sessions'],
@@ -72,6 +73,17 @@ export const SessionsPage: React.FC = () => {
       alert('No sessions available to export.');
       return;
     }
+
+    // Log data export event to audit trail
+    const exportEvent = {
+      timestamp: new Date().toISOString(),
+      recordCount: filteredSessions.length,
+      anonymized: anonymizePii,
+      action: 'session_csv_export',
+    };
+    console.log('[AUDIT] Data export:', JSON.stringify(exportEvent));
+    // In production, send to audit API: api.post('/audit/export-log', exportEvent);
+
     const headers = [
       'Session ID',
       'Charge Point',
@@ -83,11 +95,28 @@ export const SessionsPage: React.FC = () => {
       'Total Cost (£)',
       'Status',
     ];
+
+    const anonymize = (value: string) => {
+      if (!anonymizePii || !value || value === 'Guest') return value;
+      // Anonymise email addresses: keep first char + last 4 chars, mask middle
+      if (value.includes('@')) {
+        const [local, domain] = value.split('@');
+        const maskedLocal = local.charAt(0) + '*'.repeat(Math.max(local.length - 1, 2));
+        return maskedLocal + '@' + domain;
+      }
+      // Anonymise phone numbers: keep last 4 digits
+      if (/^\+?\d[\d\s-]+$/.test(value)) {
+        const digits = value.replace(/\D/g, '');
+        return '***' + digits.slice(-4);
+      }
+      return value;
+    };
+
     const rows = filteredSessions.map((s) => [
       `"${s.id || s.transaction_id || ''}"`,
       `"${s.charge_point || s.charge_point_id || ''}"`,
       `"${s.connector_id || 1}"`,
-      `"${s.auth_id || s.driver_email || s.id_tag || 'Guest'}"`,
+      `"${anonymize(s.auth_id || s.driver_email || s.id_tag || 'Guest')}"`,
       `"${s.start_time || ''}"`,
       `"${s.stop_time || ''}"`,
       `"${s.energy_kwh ?? 0}"`,
@@ -128,8 +157,28 @@ export const SessionsPage: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <label className="flex items-center gap-2 px-4 py-2.5 bg-surface-container-high border border-outline rounded-xl cursor-pointer min-w-[44px] min-h-[44px]" title="Anonymise PII in export">
+            <input
+              type="checkbox"
+              checked={anonymizePii}
+              onChange={(e) => setAnonymizePii(e.target.checked)}
+              className="w-5 h-5 accent-primary cursor-pointer"
+            />
+            <span className="text-sm text-on-surface font-sans whitespace-nowrap">Anonymise PII</span>
+          </label>
           <button
-            onClick={handleExportCsv}
+            onClick={() => {
+              if (!filteredSessions || filteredSessions.length === 0) {
+                alert('No sessions available to export.');
+                return;
+              }
+              const confirmed = confirm(
+                'Export CDR session data.\n\nGDPR disclosure: This export may contain personal data. Use the anonymisation toggle above to redact PII before download.'
+              );
+              if (confirmed) {
+                handleExportCsv();
+              }
+            }}
             className="px-5 py-2.5 bg-surface-container-high border border-outline text-on-surface font-sans text-base rounded-xl hover:bg-surface-container-highest transition-colors flex items-center gap-2 shadow-xs cursor-pointer"
           >
             <span className="material-symbols-outlined text-[18px]">download</span>

@@ -109,8 +109,15 @@ async function loadReceipt() {
     }
 
     var rate = session.rate_kwh || 0.35;
-    var total = session.total_cost || session.total_eur || (kwh * rate * 1.21);
-    var vat = kwh * rate * 0.20;
+    var total = session.total_cost || session.total_eur || (kwh * rate);
+    // Dynamic VAT based on station jurisdiction/currency
+    var vatRate = 0;
+    if (session.currency === 'EUR') {
+      vatRate = 0.21; // Dutch/EU standard VAT
+    } else if (session.currency === 'GBP' || session.currency === 'USD') {
+      vatRate = 0.20; // UK/standard rate
+    }
+    var vat = kwh * rate * vatRate;
     var subtotal = kwh * rate;
 
     var startDate = session.started_at
@@ -156,6 +163,9 @@ async function loadReceipt() {
         '<div class="divider"></div>' +
         '<div class="receipt-row"><span class="label">' + (I18N.receipt_method || 'Payment method') + '</span><span class="value">' + (session.payment_method || 'Card') + '</span></div>' +
         '<div class="receipt-row"><span class="label">' + (I18N.receipt_ref || 'Reference') + '</span><span class="value" style="font-size:12px;">' + refStr + '</span></div>' +
+        '<div class="divider"></div>' +
+        '<div class="receipt-row"><span class="label">' + (I18N.receipt_vat_number || 'VAT Number') + '</span><span class="value" style="font-size:12px;">' + (session.vat_number || branding?.vat_number || '—') + '</span></div>' +
+        '<div class="receipt-row"><span class="label">' + (I18N.receipt_reg_number || 'Company Reg. No.') + '</span><span class="value" style="font-size:12px;">' + (session.company_registration || branding?.company_registration || '—') + '</span></div>' +
       '</div>' +
       '<a href="/app/api/sessions/' + SESSION_ID + '/pdf?lang=' + encodeURIComponent('{{ lang | default("en") }}') + '" target="_blank" rel="noopener noreferrer" class="btn btn-pdf" style="margin-top:16px;">' +
         '📄 ' + (I18N.download_pdf || 'Download PDF') +
