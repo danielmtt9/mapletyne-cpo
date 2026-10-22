@@ -88,7 +88,7 @@
       <!-- Stats Grid Card (Glassmorphism) -->
       <div class="session-stats glass-card" style="padding:16px 20px;border-radius:20px;">
         <div class="stat-row">
-          <span class="stat-label">⚡ {{ t.energy | default('Delivered') }}</span>
+          <span class="stat-label"><span class="material-symbols-outlined" style="font-size:18px;">bolt</span> {{ t.energy | default('Delivered') }}</span>
           <span class="stat-value mono" id="kwh-val">0.000 kWh</span>
         </div>
         <div class="stat-row">
@@ -111,7 +111,7 @@
       {# AC / Manual Battery SoC Estimation Controls #}
       <details class="ac-battery-panel" style="margin-top:14px;cursor:pointer;">
         <summary style="font-size:12px;font-weight:600;color:var(--text2);user-select:none;display:flex;align-items:center;gap:6px;">
-          ⚙️ Adjust AC Vehicle Battery Parameters
+          <span class="material-symbols-outlined" style="font-size:16px;">settings</span> Adjust AC Vehicle Battery Parameters
         </summary>
         <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;gap:8px;">
@@ -159,7 +159,7 @@
 
     <!-- Stuck session warning (shown after 90s in starting state) -->
     <div id="stuck-warning" style="display:none;margin-top:20px;padding:16px;background:rgba(239,68,68,0.12);border:1px solid #ef4444;border-radius:14px;text-align:center;">
-      <div style="font-size:16px;font-weight:700;color:#ef4444;margin-bottom:8px;">⚠️ {{ t.charger_not_responding | default('Charger not responding') }}</div>
+      <div style="font-size:16px;font-weight:700;color:#ef4444;margin-bottom:8px;"><span class="material-symbols-outlined" style="font-size:20px;">warning</span> {{ t.charger_not_responding | default('Charger not responding') }}</div>
       <button class="btn btn-danger" onclick="cancelStuckSession()" style="width:100%;">
         {{ t.cancel_return_home | default('Cancel and go back') }}
       </button>

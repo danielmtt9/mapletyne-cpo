@@ -19,7 +19,7 @@
 
   <div class="page-content">
     <div style="text-align:center;padding:20px 0 8px;">
-      <div class="success-icon check-bounce">✅</div>
+      <span class="material-symbols-outlined success-icon check-bounce" style="font-size:48px;">check_circle</span>
       <h2 style="font-size:22px;font-weight:700;">{{ t.receipt_thanks | default('Thank you for charging!') }}</h2>
     </div>
 
@@ -29,7 +29,7 @@
 
     {% if flags.get('co2_savings') %}
     <div id="co2-receipt-badge" style="display:none; margin:16px 0; padding:12px 16px; background:rgba(132,189,0,0.12); border:1px solid #84BD00; border-radius:10px; align-items:center; gap:12px;">
-      <span style="font-size:24px;">🌱</span>
+      <span class="material-symbols-outlined" style="font-size:24px;">eco</span>
       <div>
         <div style="font-size:13px; color:#84BD00; font-weight:600;">{{ t.co2_saved | default('CO₂ saved') }} {{ t.co2_receipt_note | default('this session') }}</div>
         <div id="co2-receipt-val" style="font-size:20px; font-weight:700; color:#fff;">— kg</div>
@@ -39,7 +39,7 @@
     {% endif %}
 
     <div class="mt-16">
-      <a href="/app/" class="btn btn-outline">{{ t.charge_again | default('⚡ Charge again') }}</a>
+      <a href="/app/" class="btn btn-outline"><span class="material-symbols-outlined" style="font-size:18px;">bolt</span> {{ t.charge_again | default('Charge again') }}</a>
     </div>
   </div>
 

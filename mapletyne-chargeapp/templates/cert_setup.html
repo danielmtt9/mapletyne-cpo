@@ -46,7 +46,7 @@
   <!-- ── Error State ──────────────────────────────────────── -->
   <div class="cert-error">
     <div class="cert-error-icon">
-      {% if error == 'token_expired' %}⏰{% elif error == 'token_used' %}✅{% elif error == 'token_invalid' %}🔗{% else %}⚠️{% endif %}
+      {% if error == 'token_expired' %}<span class="material-symbols-outlined" style="font-size:64px;">schedule</span>{% elif error == 'token_used' %}<span class="material-symbols-outlined" style="font-size:64px;">check_circle</span>{% elif error == 'token_invalid' %}<span class="material-symbols-outlined" style="font-size:64px;">link</span>{% else %}<span class="material-symbols-outlined" style="font-size:64px;">warning</span>{% endif %}
     </div>
     <h2 class="cert-title" style="text-align:center;">
       {% if error == 'missing_token' %}No setup link
@@ -81,7 +81,7 @@
   <!-- Step 1: Welcome -->
   <div class="cert-step active" id="step-1">
     <div class="cert-card">
-      <div class="cert-icon">🔐</div>
+      <span class="material-symbols-outlined cert-icon" style="font-size:48px;">lock</span>
       <h2 class="cert-title">Welcome, {{ driver.name.split(' ')[0] }}</h2>
       <p class="cert-sub">
         We'll install your security certificate.
@@ -100,7 +100,7 @@
   <!-- Step 2: Root CA -->
   <div class="cert-step" id="step-2">
     <div class="cert-card">
-      <div class="cert-icon">🛡️</div>
+      <span class="material-symbols-outlined cert-icon" style="font-size:48px;">security</span>
       <h2 class="cert-title">Step 1: Trust Certificate</h2>
       <p class="cert-sub">
         Download and install the Root CA certificate.
@@ -141,7 +141,7 @@
          href="/app/api/cert-setup/root-ca"
          download="mapletyne-root-ca.crt"
          onclick="rootCaDownloaded()">
-        ⬇️ Download Root CA
+        <span class="material-symbols-outlined" style="font-size:18px;">download</span> Download Root CA
       </a>
       <button class="cert-btn cert-btn-primary" id="btn-step3" onclick="goStep(3)" disabled style="opacity:0.5;">
         Next →
@@ -153,7 +153,7 @@
   <!-- Step 3: Issue + Install client cert -->
   <div class="cert-step" id="step-3">
     <div class="cert-card">
-      <div class="cert-icon">📱</div>
+      <span class="material-symbols-outlined cert-icon" style="font-size:48px;">install_mobile</span>
       <h2 class="cert-title">Step 2: Your Certificate</h2>
       <p class="cert-sub">
         Click below to generate and download your personal certificate.
@@ -161,14 +161,14 @@
 
       <div id="cert-issue-area">
         <button class="cert-btn cert-btn-primary" onclick="issueCert()" id="btn-issue">
-          🔑 Generate certificate
+          <span class="material-symbols-outlined" style="font-size:18px;">key</span> Generate certificate
         </button>
       </div>
 
       <!-- Shown after cert is issued -->
       <div id="cert-issued-area" style="display:none;">
         <p class="cert-sub" style="color:var(--accent,#10B981);font-weight:600;">
-          ✅ Certificate created!
+          <span class="material-symbols-outlined" style="font-size:18px;">check_circle</span> Certificate created!
         </p>
 
         <p class="cert-sub">
@@ -180,10 +180,10 @@
         <p class="cert-hint" id="copy-hint" style="text-align:center;">Click the password to copy</p>
 
         <a class="cert-btn cert-btn-download" id="cert-download-link" href="#" style="display:none;">
-          ⬇️ Download certificate
+          <span class="material-symbols-outlined" style="font-size:18px;">download</span> Download certificate
         </a>
         <a class="cert-btn cert-btn-download" id="cert-mobileconfig-link" href="#" style="display:none;">
-          📱 Install via profile (iOS)
+          <span class="material-symbols-outlined" style="font-size:18px;">install_mobile</span> Install via profile (iOS)
         </a>
 
         <!-- iOS P12 instructions -->
@@ -220,7 +220,7 @@
   <!-- Step 4: Verify -->
   <div class="cert-step" id="step-4">
     <div class="cert-card">
-      <div class="cert-icon">✅</div>
+      <span class="material-symbols-outlined cert-icon" style="font-size:48px;">check_circle</span>
       <h2 class="cert-title">Step 3: Verify</h2>
       <p class="cert-sub">
         Let's check that your certificate is installed correctly.
@@ -229,25 +229,25 @@
       <div id="verify-result"></div>
 
       <button class="cert-btn cert-btn-primary" onclick="verifyCert()" id="btn-verify">
-        🔍 Test certificate
+        <span class="material-symbols-outlined" style="font-size:18px;">search</span> Test certificate
       </button>
 
       <div id="verify-success" style="display:none;">
         <div class="cert-check cert-check-ok">
-          <span style="font-size:24px;">✅</span>
+          <span class="material-symbols-outlined" style="font-size:24px;">check_circle</span>
           <div>
             <strong style="color:var(--accent,#10B981);">Certificate working!</strong><br>
             <span style="font-size:13px;color:var(--text2);" id="verify-email"></span>
           </div>
         </div>
         <a class="cert-btn cert-btn-primary" href="/app/" style="margin-top:16px;">
-          🔌 Open Charge App
+          <span class="material-symbols-outlined" style="font-size:18px;">cable</span> Open Charge App
         </a>
       </div>
 
       <div id="verify-fail" style="display:none;">
         <div class="cert-check cert-check-fail">
-          <span style="font-size:24px;">❌</span>
+          <span class="material-symbols-outlined" style="font-size:24px;">cancel</span>
           <div>
             <strong style="color:#ef4444;">Certificate not detected</strong><br>
             <span style="font-size:13px;color:var(--text2);">Check that you installed both certificates and try again.</span>
