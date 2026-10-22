@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}{{ t.favorites | default('Favorites') }} — {{ app_title }}{% endblock %}
+{% block content %}
+<div class="screen active" style="background: radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%); min-height: 100vh; display: flex; flex-direction: column;">
+  <!-- Header Bar -->
+  <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
+    <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span>{{ t.back | default('Back') }}</span>
+    </a>
+    <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
+      {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
+        <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:24px; max-width:140px; object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+      {% else %}
+        <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px; max-width:140px; object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
+      {% endif %}
+    </a>
+    <div style="width:50px;"></div>
+  </div>
+
+  <div style="flex:1; padding:24px 20px max(32px, env(safe-area-inset-bottom)); max-width:480px; margin:0 auto; width:100%; box-sizing:border-box;">
+    
+    <div id="favorites-error" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.3); color:#fca5a5; font-size:13px; line-height:1.4;"></div>
+    <div id="favorites-success" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#86efac; font-size:13px; line-height:1.4;"></div>
+
+    <!-- Header -->
+    <div style="text-align:center; margin-bottom:28px;">
+      <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:16px; background:rgba(250, 204, 21, 0.12); border:1px solid rgba(250, 204, 21, 0.3); color:#facc15; margin-bottom:16px; box-shadow:0 8px 24px rgba(250, 204, 21, 0.15);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      </div>
+      <h1 style="font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#ffffff; margin:0 0 6px 0;">{{ t.favorites | default('Favorites') }}</h1>
+      <p style="font-size:14px; color:#94a3b8; margin:0; line-height:1.4;">{{ t.favorites_subtitle | default('Your saved charging stations for quick access.') }}</p>
+    </div>
+
+    <!-- Favorites List -->
+    <div id="favorites-loading" style="text-align:center;padding:40px 0;color:#94a3b8;">{{ t.loading | default('Loading...') }}</div>
+    <div id="favorites-content" style="display:none;"></div>
+  </div>
+</div>
+
+<script>
+var I18N = {{ t | tojson if t is defined else '{}' }};
+
+async function loadFavorites() {
+  var errEl = document.getElementById('favorites-error');
+  var successEl = document.getElementById('favorites-success');
+  var loadingEl = document.getElementById('favorites-loading');
+  var contentEl = document.getElementById('favorites-content');
+  
+  errEl.style.display = 'none';
+  successEl.style.display = 'none';
+  loadingEl.style.display = 'block';
+  contentEl.style.display = 'none';
+
+  try {
+    var r = await fetch('/app/api/account/favorites', { method: 'GET' });
+    
+    if (!r.ok) {
+      errEl.textContent = I18N.error || 'Failed to load favorites';
+      errEl.style.display = 'block';
+      return;
+    }
+
+    var data = await r.json();
+    var favorites = data.favorites || [];
+
+    if (favorites.length === 0) {
+      contentEl.innerHTML = '<div style="text-align:center;padding:40px 0;color:#94a3b8;">' + (I18N.no_favorites || 'No favorites yet. Search for stations and tap the star to save them.') + '</div>';
+    } else {
+      var html = '';
+      favorites.forEach(function(fav) {
+        html += '<div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(16px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:16px; padding:16px; margin-bottom:12px; box-shadow:0 8px 24px rgba(0, 0, 0, 0.3);">';
+        html += '<div style="display:flex; justify-content:space-between; align-items:center;">';
+        html += '<div style="flex:1;">';
+        html += '<div style="font-size:15px; font-weight:600; color:#ffffff; margin-bottom:4px;">' + (fav.name || fav.cp_id || 'Station') + '</div>';
+        html += '<div style="font-size:13px; color:#94a3b8;">' + (fav.address || '') + '</div>';
+        if (fav.available_connectors !== undefined) {
+          html += '<div style="font-size:12px; color:#48e260; margin-top:4px;">' + fav.available_connectors + ' connectors available</div>';
+        }
+        html += '</div>';
+        html += '<button onclick="removeFavorite(\'' + (fav.cp_id || fav.id) + '\')" style="background:none; border:none; color:#facc15; cursor:pointer; padding:8px; font-size:20px;" title="' + (I18N.remove | default('Remove from favorites')) + '">★</button>';
+        html += '</div></div>';
+      });
+      contentEl.innerHTML = html;
+    }
+
+    loadingEl.style.display = 'none';
+    contentEl.style.display = 'block';
+
+  } catch(e) {
+    errEl.textContent = I18N.connection_error || 'Connection error';
+    errEl.style.display = 'block';
+  }
+}
+
+async function removeFavorite(cpId) {
+  var successEl = document.getElementById('favorites-success');
+  
+  try {
+    var r = await fetch('/app/api/account/favorites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ cp_id: cpId })
+    });
+
+    if (r.ok) {
+      successEl.textContent = '✓ ' + (I18N.removed | default('Removed from favorites'));
+      successEl.style.display = 'block';
+      setTimeout(function() { loadFavorites(); }, 500);
+    } else {
+      var data = await r.json();
+      successEl.textContent = data.error || I18N.error || 'Failed to remove';
+      successEl.style.display = 'block';
+    }
+  } catch(e) {
+    successEl.textContent = I18N.connection_error || 'Connection error';
+    successEl.style.display = 'block';
+  }
+}
+
+// Load favorites on page load
+loadFavorites();
+</script>
+{% endblock %}
