@@ -5,7 +5,9 @@ FROM nginxinc/nginx-unprivileged:alpine
 COPY --chown=101:101 dist /usr/share/nginx/html
 
 # Copy optimized SPA nginx configuration
-COPY --chown=101:101 nginx.conf /etc/nginx/conf.d/default.conf
+# Rendered at container start by the official image entrypoint (envsubst); only defined env vars are substituted
+COPY --chown=101:101 nginx.conf /etc/nginx/templates/default.conf.template
+ENV NGINX_ENVSUBST_FILTER=PAYLOAD_
 
 # Mapletyne Admin runs on non-root unprivileged port 8080
 EXPOSE 8080

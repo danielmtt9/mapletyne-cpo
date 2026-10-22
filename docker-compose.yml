@@ -85,6 +85,7 @@ services:
       - "${CPO_ADMIN_PORT:-34000}:8080"  # Dashboard UI (host port 34000, container port 8080)
     environment:
       OCPP_CORE_API: http://mapletyne-core:8000
+      PAYLOAD_API_KEY: ${PAYLOAD_API_KEY:?set PAYLOAD_API_KEY in .env}
       CORE_API_KEY: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       JWT_SECRET: ${MANAGEMENT_API_KEY:-CHANGE_ME_IN_PROD}
       PUBLIC_URL: ${PUBLIC_URL:-https://admin.mapletyne.com}
