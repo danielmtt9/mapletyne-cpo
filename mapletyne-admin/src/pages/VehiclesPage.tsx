@@ -400,7 +400,7 @@ export const VehiclesPage: React.FC = () => {
                                   {v.unit_number}
                                 </span>
                               )}
-                              <span className="px-2.5 py-1 bg-surface-container-high border border-outline text-white font-mono font-bold text-xs tracking-wider rounded uppercase shadow-xs">
+                              <span className="px-2.5 py-1 bg-surface-container-high border border-outline text-on-surface font-mono font-bold text-xs tracking-wider rounded uppercase shadow-xs">
                                 {v.license_plate}
                               </span>
                             </div>
@@ -411,7 +411,7 @@ export const VehiclesPage: React.FC = () => {
                             )}
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
-                            <div className="font-semibold text-white">{v.make || 'Unknown'} {v.model || ''}</div>
+                            <div className="font-semibold text-on-surface">{v.make || 'Unknown'} {v.model || ''}</div>
                             <div className="text-xs text-on-surface font-mono">{v.year || 2025} • {v.connector_type}</div>
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
@@ -435,7 +435,7 @@ export const VehiclesPage: React.FC = () => {
                           </td>
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono font-bold text-xs text-white">{soc}%</span>
+                              <span className="font-mono font-bold text-xs text-on-surface">{soc}%</span>
                               <div className="w-16 bg-surface-container-high h-2 rounded-full overflow-hidden border border-outline">
                                 <div
                                   className={`h-full transition-all ${soc > 70 ? 'bg-emerald-400' : soc > 30 ? 'bg-blue-400' : 'bg-red-400'}`}

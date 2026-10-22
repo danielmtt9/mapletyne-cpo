@@ -152,7 +152,7 @@ export const RoamingPage: React.FC = () => {
           <span className="text-xs font-mono font-semibold uppercase tracking-wider text-on-surface-variant">
             Connected Partners
           </span>
-          <div className="text-2xl font-bold font-mono text-white tracking-tight">
+          <div className="text-2xl font-bold font-mono text-on-surface tracking-tight">
             {isPartnersLoading ? '...' : partners.length} <span className="text-xs font-mono font-normal text-on-surface-variant">eMSPs</span>
           </div>
         </div>
