@@ -1328,7 +1328,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
     },
     defaultProps: {
       fontFamily: 'Barlow Condensed',
-      primaryColor: '#0284c7',
+      primaryColor: '#006948',
       showHeader: true,
       showFooter: true,
       metaDescription: '',
