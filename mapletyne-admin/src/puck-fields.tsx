@@ -107,7 +107,7 @@ export function IconPicker({ value = 'star', onChange, label }: IconPickerProps)
           <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
             {value || 'Select an icon...'}
           </div>
-          <div style={{ fontSize: '0.7rem', color: '#64748b' }}>Google Material Symbol</div>
+          <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Google Material Symbol</div>
         </div>
         <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#94a3b8' }}>
           {isOpen ? 'expand_less' : 'expand_more'}
@@ -176,7 +176,7 @@ export function IconPicker({ value = 'star', onChange, label }: IconPickerProps)
                   onClick={() => setActiveCategory(cat)}
                   style={{
                     padding: '3px 8px',
-                    fontSize: '0.72rem',
+                    fontSize: '0.75rem',
                     fontWeight: activeCategory === cat ? 600 : 400,
                     borderRadius: '12px',
                     border: 'none',
@@ -255,7 +255,7 @@ export function IconPicker({ value = 'star', onChange, label }: IconPickerProps)
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              fontSize: '0.72rem',
+              fontSize: '0.75rem',
               color: '#64748b',
             }}
           >
@@ -267,7 +267,7 @@ export function IconPicker({ value = 'star', onChange, label }: IconPickerProps)
               onChange={(e) => onChange(e.target.value.trim().toLowerCase())}
               style={{
                 width: '120px',
-                fontSize: '0.72rem',
+                fontSize: '0.75rem',
                 padding: '2px 6px',
                 border: '1px solid #cbd5e1',
                 borderRadius: '4px',
@@ -542,7 +542,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
                 type="button"
                 onClick={handleOpen}
                 style={{
-                  fontSize: '0.72rem',
+                  fontSize: '0.75rem',
                   color: '#0284c7',
                   border: 'none',
                   background: 'none',
@@ -751,7 +751,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
                         alt={item.alt || item.filename}
                         style={{ width: '100%', height: '100px', objectFit: 'cover' }}
                       />
-                      <div style={{ padding: '6px', fontSize: '0.72rem', color: '#334155', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ padding: '6px', fontSize: '0.75rem', color: '#334155', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {item.filename}
                       </div>
                     </div>

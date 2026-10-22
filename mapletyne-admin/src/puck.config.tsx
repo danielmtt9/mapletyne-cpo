@@ -24,7 +24,7 @@ function sanitizeCssColor(val: string, fallback = '#006948'): string {
 }
 
 const Eyebrow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span style={{ display: 'inline-block', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--primary, #006948)', marginBottom: '8px' }}>
+  <span style={{ display: 'inline-block', fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--primary, #006948)', marginBottom: '8px' }}>
     {children}
   </span>
 )
@@ -811,9 +811,9 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                       {aud.badge && (
                         <span
                           style={{
-                            fontSize: '11px',
+                            fontSize: '12px',
                             fontWeight: 700,
-                            padding: '3px 8px',
+                            padding: '4px 8px',
                             border: '1px solid var(--rule, rgba(9,12,11,0.14))',
                             textTransform: 'uppercase',
                             letterSpacing: '0.05em',
@@ -922,7 +922,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
             { label: 'Card Title (Barlow 36px)', value: 'h3' },
             { label: 'Lead Paragraph (17px bold)', value: 'lead' },
             { label: 'Standard Body (Inter)', value: 'body' },
-            { label: 'Eyebrow Caption (11px tracked)', value: 'caption' },
+            { label: 'Eyebrow Caption (12px tracked)', value: 'caption' },
           ],
         },
         align: {
@@ -994,7 +994,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
         }
         if (variant === 'caption') {
           return (
-            <p style={{ ...baseStyle, fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0.5rem 0' }}>
+            <p style={{ ...baseStyle, fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0.5rem 0' }}>
               {text}
             </p>
           )
@@ -1460,7 +1460,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
 
                   <div style={{ display: 'flex', gap: '50px', flexWrap: 'wrap', fontSize: '13px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Operations</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>Operations</span>
                       <a href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Live Dashboard</a>
                       <a href="/chargers" style={{ color: '#64748b', textDecoration: 'none' }}>Charger Farm</a>
                       <a href="/sessions" style={{ color: '#64748b', textDecoration: 'none' }}>Live Sessions</a>
@@ -1468,7 +1468,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Management</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>Management</span>
                       <a href="/fleet" style={{ color: '#64748b', textDecoration: 'none' }}>RFID &amp; Fleet</a>
                       <a href="/vehicles" style={{ color: '#64748b', textDecoration: 'none' }}>EV Models</a>
                       <a href="/pki-vault" style={{ color: '#64748b', textDecoration: 'none' }}>PKI Security Vault</a>
@@ -1476,7 +1476,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>System</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>System</span>
                       <a href="/settings" style={{ color: '#64748b', textDecoration: 'none' }}>Settings &amp; Branding</a>
                       <a href="/terms" style={{ color: '#64748b', textDecoration: 'none' }}>Terms &amp; Policies</a>
                       <a href="/profile" style={{ color: '#64748b', textDecoration: 'none' }}>Operator Profile</a>

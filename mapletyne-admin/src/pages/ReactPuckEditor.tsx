@@ -126,7 +126,7 @@ export const ReactPuckEditor: React.FC<ReactPuckEditorProps> = ({
           zIndex: 9999,
           padding: '4px 10px',
           borderRadius: '9999px',
-          fontSize: '11px',
+          fontSize: '12px',
           fontWeight: 600,
           backgroundColor: saveStatus.includes('Error') ? '#fee2e2' : '#f0fdf4',
           color: saveStatus.includes('Error') ? '#b91c1c' : '#15803d',
