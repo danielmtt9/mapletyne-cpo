@@ -89,7 +89,7 @@ const parseJwtPayload = (token: string): any => {
 
 const loadInitialUser = (): AuthUser => {
   try {
-    const storedUserStr = localStorage.getItem('opencpo_user');
+    const storedUserStr = localStorage.getItem('mapletyne_user') || localStorage.getItem('opencpo_user');
     if (storedUserStr) {
       const parsed = JSON.parse(storedUserStr);
       const name = parsed.name || (parsed.email ? parsed.email.split('@')[0].replace('.', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) : 'Daniel Aroko');
@@ -104,7 +104,7 @@ const loadInitialUser = (): AuthUser => {
       };
     }
 
-    const token = localStorage.getItem('opencpo_admin_jwt');
+    const token = localStorage.getItem('mapletyne_admin_jwt') || localStorage.getItem('opencpo_admin_jwt');
     if (token) {
       const claims = parseJwtPayload(token);
       if (claims) {
@@ -143,14 +143,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const next = { ...prev, ...updated };
       next.role = formatRole(next.role, next.roles);
       next.initials = getInitials(next.name, next.email);
-      localStorage.setItem('opencpo_user', JSON.stringify(next));
+      localStorage.setItem('mapletyne_user', JSON.stringify(next));
       return next;
     });
   };
 
   const logout = () => {
+    localStorage.removeItem('mapletyne_admin_jwt');
     localStorage.removeItem('opencpo_admin_jwt');
     localStorage.removeItem('opencpo_refresh_token');
+    localStorage.removeItem('mapletyne_user');
     localStorage.removeItem('opencpo_user');
     window.location.href = '/login';
   };

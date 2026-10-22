@@ -268,81 +268,94 @@ export const SessionsPage: React.FC = () => {
             Showing <strong className="text-on-surface font-bold">{filteredSessions.length}</strong> CDR records (click any row for deep-dive breakdown)
           </div>
         </div>
-        <div className="overflow-x-auto w-full">
-          <table className="w-full text-left border-collapse font-body text-sm">
-            <thead>
-              <tr className="border-b border-outline bg-surface-container-high text-xs font-sans text-on-surface-variant uppercase tracking-wider h-11">
-                <th className="px-5 min-w-[140px] whitespace-nowrap">Session ID</th>
-                <th className="px-4 min-w-[140px] whitespace-nowrap">Station ID</th>
-                <th className="px-4 min-w-[170px] whitespace-nowrap">Driver / Tag / Plate</th>
-                <th className="px-4 min-w-[160px] whitespace-nowrap">Start Time</th>
-                <th className="px-4 min-w-[130px] text-right whitespace-nowrap">Energy Dispensed</th>
-                <th className="px-4 min-w-[120px] text-right whitespace-nowrap">Total Amount</th>
-                <th className="px-4 min-w-[120px] whitespace-nowrap">Status</th>
-                <th className="px-5 min-w-[90px] text-center whitespace-nowrap">Audit</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-outline font-mono text-sm">
-              {isLoading ? (
-                <tr>
-                  <td colSpan={8} className="p-8 text-center text-on-surface-variant">
-                    <span className="material-symbols-outlined text-3xl animate-spin mb-2 block text-primary">sync</span>
-                    Loading CDR records...
-                  </td>
-                </tr>
-              ) : filteredSessions.length === 0 ? (
-                <tr>
-                  <td colSpan={8} className="p-8 text-center text-on-surface-variant">
-                    No charging sessions recorded yet.
-                  </td>
-                </tr>
-              ) : (
-                filteredSessions.map((s) => {
-                  const isCompleted = s.status === 'completed' || s.status === 'Stopped';
-
-                  return (
-                    <tr
-                      key={s.id}
-                      onClick={() => setSelectedSession(s)}
-                      className="h-12 hover:bg-surface-container-high/50 transition-colors cursor-pointer group"
-                    >
-                      <td className="px-5 font-bold text-on-surface whitespace-nowrap group-hover:text-primary transition-colors">
-                        {s.id}
-                      </td>
-                      <td className="px-4 text-primary font-bold whitespace-nowrap truncate">{s.charge_point || s.charge_point_id || 'Unknown'}</td>
-                      <td className="px-4 whitespace-nowrap">
-                        <span className="px-2 py-0.5 bg-surface-container-high border border-outline text-on-surface rounded font-medium text-sm">
-                          {s.auth_id || s.driver_email || s.id_tag || 'Driver'}
-                        </span>
-                      </td>
-                      <td className="px-4 text-on-surface-variant whitespace-nowrap">{formatTimestamp(s.start_time || s.created_at)}</td>
-                      <td className="px-4 text-right font-bold text-on-surface whitespace-nowrap">{formatKwh(s.energy_kwh ?? s.kwh_delivered ?? 0)}</td>
-                      <td className="px-4 text-right font-bold text-primary whitespace-nowrap">{formatCurrency(s.total_cost ?? s.amount_total ?? ((s.energy_kwh || 0) * 0.42))}</td>
-                      <td className="px-4 whitespace-nowrap">
-                        <span
-                          className={`px-2.5 py-0.5 text-xs uppercase font-bold rounded-full border shrink-0 ${
-                            isCompleted
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                              : 'bg-emerald-500/15 text-emerald-400 border-blue-500/30'
-                          }`}
-                        >
-                          {s.status || 'Active'}
-                        </span>
-                      </td>
-                      <td className="px-5 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
-                        <button
-                          onClick={() => setSelectedSession(s)}
-                          className="px-2.5 py-1 bg-emerald-600/20 text-emerald-400 hover:bg-blue-600/30 text-sm rounded-lg inline-block font-bold border border-blue-500/30 transition-colors cursor-pointer"
-                        >
-                          Deep Dive
-                        </button>
-                      </td>
+        <div
+          ref={tableContainerRef}
+          className="overflow-y-auto w-full"
+          style={{ height: '500px' }}
+        >
+          <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
+            {isLoading ? (
+              <div className="p-8 text-center text-on-surface-variant">
+                <span className="material-symbols-outlined text-3xl animate-spin mb-2 block text-primary">sync</span>
+                Loading CDR records...
+              </div>
+            ) : filteredSessions.length === 0 ? (
+              <div className="p-8 text-center text-on-surface-variant">
+                No charging sessions recorded yet.
+              </div>
+            ) : (
+              <>
+                <table className="w-full text-left border-collapse font-body text-sm" style={{ position: 'absolute', top: 0, left: 0 }}>
+                  <thead>
+                    <tr className="border-b border-outline bg-surface-container-high text-xs font-sans text-on-surface-variant uppercase tracking-wider h-11 sticky top-0 z-10">
+                      <th className="px-5 min-w-[140px] whitespace-nowrap">Session ID</th>
+                      <th className="px-4 min-w-[140px] whitespace-nowrap">Station ID</th>
+                      <th className="px-4 min-w-[170px] whitespace-nowrap">Driver / Tag / Plate</th>
+                      <th className="px-4 min-w-[160px] whitespace-nowrap">Start Time</th>
+                      <th className="px-4 min-w-[130px] text-right whitespace-nowrap">Energy Dispensed</th>
+                      <th className="px-4 min-w-[120px] text-right whitespace-nowrap">Total Amount</th>
+                      <th className="px-4 min-w-[120px] whitespace-nowrap">Status</th>
+                      <th className="px-5 min-w-[90px] text-center whitespace-nowrap">Audit</th>
                     </tr>
-                  );
-                })
-              )}
-            </tbody>
-          </table>
+                  </thead>
+                  <tbody className="divide-y divide-outline font-mono text-sm">
+                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const s = filteredSessions[virtualRow.index];
+                      const isCompleted = s.status === 'completed' || s.status === 'Stopped';
+
+                      return (
+                        <tr
+                          key={s.id}
+                          data-index={virtualRow.index}
+                          onClick={() => setSelectedSession(s)}
+                          className="hover:bg-surface-container-high/50 transition-colors cursor-pointer group"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                        >
+                          <td className="px-5 font-bold text-on-surface whitespace-nowrap group-hover:text-primary transition-colors">
+                            {s.id}
+                          </td>
+                          <td className="px-4 text-primary font-bold whitespace-nowrap truncate">{s.charge_point || s.charge_point_id || 'Unknown'}</td>
+                          <td className="px-4 whitespace-nowrap">
+                            <span className="px-2 py-0.5 bg-surface-container-high border border-outline text-on-surface rounded font-medium text-sm">
+                              {s.auth_id || s.driver_email || s.id_tag || 'Driver'}
+                            </span>
+                          </td>
+                          <td className="px-4 text-on-surface-variant whitespace-nowrap">{formatTimestamp(s.start_time || s.created_at)}</td>
+                          <td className="px-4 text-right font-bold text-on-surface whitespace-nowrap">{formatKwh(s.energy_kwh ?? s.kwh_delivered ?? 0)}</td>
+                          <td className="px-4 text-right font-bold text-primary whitespace-nowrap">{formatCurrency(s.total_cost ?? s.amount_total ?? ((s.energy_kwh || 0) * 0.42))}</td>
+                          <td className="px-4 whitespace-nowrap">
+                            <span
+                              className={`px-2.5 py-0.5 text-xs uppercase font-bold rounded-full border shrink-0 ${
+                                isCompleted
+                                  ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                                  : 'bg-emerald-500/15 text-emerald-400 border-blue-500/30'
+                              }`}
+                            >
+                              {s.status || 'Active'}
+                            </span>
+                          </td>
+                          <td className="px-5 text-center whitespace-nowrap" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              onClick={() => setSelectedSession(s)}
+                              className="px-2.5 py-1 bg-emerald-600/20 text-emerald-400 hover:bg-blue-600/30 text-sm rounded-lg inline-block font-bold border border-blue-500/30 transition-colors cursor-pointer"
+                            >
+                              Deep Dive
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

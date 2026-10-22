@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const token = localStorage.getItem('opencpo_admin_jwt');
+  const token = localStorage.getItem('mapletyne_admin_jwt') || localStorage.getItem('opencpo_admin_jwt');
   if (!token) {
     return <Navigate to="/login" replace />;
   }

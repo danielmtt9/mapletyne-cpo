@@ -94,12 +94,12 @@ export const LoginPage: React.FC = () => {
   const handleAuthSuccess = (res: AuthResponse) => {
     const jwt = res.access_token || res.token;
     if (jwt) {
-      localStorage.setItem('opencpo_admin_jwt', jwt);
+      localStorage.setItem('mapletyne_admin_jwt', jwt);
       if (res.refresh_token) {
         localStorage.setItem('opencpo_refresh_token', res.refresh_token);
       }
       if (res.user) {
-        localStorage.setItem('opencpo_user', JSON.stringify(res.user));
+        localStorage.setItem('mapletyne_user', JSON.stringify(res.user));
       }
       navigate('/');
     }

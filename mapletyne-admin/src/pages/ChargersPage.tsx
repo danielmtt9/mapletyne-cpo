@@ -361,43 +361,115 @@ export const ChargersPage: React.FC = () => {
         </div>
       ) : (
         /* High-Density Virtualized Table - Flush Canvas */
-        <div className="overflow-x-auto w-full mt-4">
-          <table className="w-full text-left border-collapse font-body text-sm">
-              <thead>
-                <tr className="border-b border-outline bg-surface-container-high text-xs font-mono text-on-surface-variant uppercase tracking-wider h-11">
-                  <th className="px-5 min-w-[150px]">Station ID</th>
-                  <th className="px-4 min-w-[120px]">Status</th>
-                  <th className="px-4 min-w-[180px]">Vendor / Model</th>
-                  <th className="px-4 min-w-[140px]">Site Location</th>
-                  <th className="px-4 min-w-[110px] text-right">Max Power</th>
-                  <th className="px-4 min-w-[120px] text-right">Default Tariff</th>
-                  <th className="px-4 min-w-[150px]">Last Heartbeat</th>
-                  <th className="px-5 min-w-[110px] text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-outline font-mono text-sm">
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={8} className="p-8 text-center text-on-surface-variant">
-                      Streaming hardware inventory...
-                    </td>
-                  </tr>
-                ) : filteredChargers.length === 0 ? (
-                  <tr>
-                    <td colSpan={8} className="p-8 text-center text-on-surface-variant">
-                      No charging stations found matching the filter criteria.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredChargers.map((c) => {
-                    const isOnline = c.status === 'online' || c.status === 'Available' || c.status === 'Charging';
-                    const isFaulted = c.status === 'Faulted';
+        <div
+          ref={tableContainerRef}
+          className="overflow-y-auto w-full mt-4"
+          style={{ height: '500px' }}
+        >
+          <div style={{ height: `${rowVirtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
+            {isLoading ? (
+              <div className="p-8 text-center text-on-surface-variant">
+                Streaming hardware inventory...
+              </div>
+            ) : filteredChargers.length === 0 ? (
+              <div className="p-8 text-center text-on-surface-variant">
+                No charging stations found matching the filter criteria.
+              </div>
+            ) : (
+              <>
+                <table className="w-full text-left border-collapse font-body text-sm" style={{ position: 'absolute', top: 0, left: 0 }}>
+                  <thead>
+                    <tr className="border-b border-outline bg-surface-container-high text-xs font-mono text-on-surface-variant uppercase tracking-wider h-11 sticky top-0 z-10">
+                      <th className="px-5 min-w-[150px]">Station ID</th>
+                      <th className="px-4 min-w-[120px]">Status</th>
+                      <th className="px-4 min-w-[180px]">Vendor / Model</th>
+                      <th className="px-4 min-w-[140px]">Site Location</th>
+                      <th className="px-4 min-w-[110px] text-right">Max Power</th>
+                      <th className="px-4 min-w-[120px] text-right">Default Tariff</th>
+                      <th className="px-4 min-w-[150px]">Last Heartbeat</th>
+                      <th className="px-5 min-w-[110px] text-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-outline font-mono text-sm">
+                    {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const c = filteredChargers[virtualRow.index];
+                      const isOnline = c.status === 'online' || c.status === 'Available' || c.status === 'Charging';
+                      const isFaulted = c.status === 'Faulted';
 
-                    return (
-                      <tr
-                        key={c.id}
-                        onClick={() => setSelectedCharger(c)}
-                        className="h-11 hover:bg-surface-container-high/60 transition-colors cursor-pointer group"
+                      return (
+                        <tr
+                          key={c.id}
+                          data-index={virtualRow.index}
+                          onClick={() => setSelectedCharger(c)}
+                          className="hover:bg-surface-container-high/60 transition-colors cursor-pointer group"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                        >
+                          <td className="px-5 font-bold text-on-surface flex items-center gap-2.5 h-11">
+                            <span
+                              className={`w-2 h-2 rounded-full shrink-0 ${
+                                isOnline ? 'bg-emerald-400' : isFaulted ? 'bg-rose-400' : 'bg-zinc-500'
+                              }`}
+                            />
+                            <span className="group-hover:text-primary transition-colors truncate">{c.id}</span>
+                          </td>
+                          <td className="px-4">
+                            <span
+                              className={`px-2.5 py-0.5 text-micro font-bold uppercase rounded-full border shrink-0 ${
+                                isOnline
+                                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                  : isFaulted
+                                  ? 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                                  : 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20'
+                              }`}
+                            >
+                              {c.status || 'Offline'}
+                            </span>
+                          </td>
+                          <td className="px-4 text-on-surface-variant font-body truncate">
+                            {c.vendor || 'Generic'} {c.model || ''}
+                          </td>
+                          <td className="px-4 text-on-surface-variant truncate">{c.site || 'Newcastle'}</td>
+                          <td className="px-4 text-right font-bold text-on-surface">
+                            {c.max_power_kw ? `${c.max_power_kw} kW` : '150 kW'}
+                          </td>
+                          <td className="px-4 text-right text-on-surface-variant">
+                            £{c.tariff_kwh || '0.42'}/kWh
+                          </td>
+                          <td className="px-4 text-on-surface-variant">
+                            {formatTimestamp(c.last_heartbeat || c.updated_at)}
+                          </td>
+                          <td className="px-5 text-center" onClick={(e) => e.stopPropagation()}>
+                            <div className="flex items-center justify-center gap-1.5">
+                              <button
+                                onClick={() => setSelectedCharger(c)}
+                                className="px-2.5 py-1 bg-surface-container-highest/80 hover:bg-primary hover:text-on-primary text-on-surface text-sm rounded-lg font-bold transition-all cursor-pointer"
+                              >
+                                Inspect
+                              </button>
+                              <button
+                                onClick={() => remoteCommandMutation.mutate({ cpId: c.id, action: 'reset', params: { reset_type: 'Soft' } })}
+                                title="Soft Reboot"
+                                className="p-1.5 text-on-surface-variant hover:text-rose-400 hover:bg-surface-container-highest rounded-lg transition-all cursor-pointer"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
+        </div>
                       >
                         <td className="px-5 font-bold text-on-surface flex items-center gap-2.5 h-11">
                           <span
