@@ -179,10 +179,10 @@
         </div>
         <p class="cert-hint" id="copy-hint" style="text-align:center;">Click the password to copy</p>
 
-        <a class="cert-btn cert-btn-download" id="cert-download-link" href="#" style="display:none;">
+        <a class="cert-btn cert-btn-download" id="cert-download-link" href="/app/api/cert-setup/download" style="display:none;">
           <span class="material-symbols-outlined" style="font-size:18px;">download</span> Download certificate
         </a>
-        <a class="cert-btn cert-btn-download" id="cert-mobileconfig-link" href="#" style="display:none;">
+        <a class="cert-btn cert-btn-download" id="cert-mobileconfig-link" href="/app/api/cert-setup/download" style="display:none;">
           <span class="material-symbols-outlined" style="font-size:18px;">install_mobile</span> Install via profile (iOS)
         </a>
 
@@ -330,7 +330,7 @@ function rootCaDownloaded() {
 async function issueCert() {
   const btn = document.getElementById('btn-issue');
   btn.disabled = true;
-  btn.textContent = '⏳ Working...';
+  btn.textContent = 'Working...';
 
   try {
     const resp = await fetch('/app/api/cert-setup/issue?token=' + encodeURIComponent(TOKEN), {
@@ -341,7 +341,7 @@ async function issueCert() {
       const err = await resp.json().catch(() => ({}));
       alert(err.detail || 'Something went wrong. Please try again.');
       btn.disabled = false;
-      btn.textContent = '🔑 Generate certificate';
+      btn.textContent = 'Generate certificate';
       return;
     }
 
@@ -373,7 +373,7 @@ async function issueCert() {
   } catch (e) {
     alert('Network error: ' + e.message);
     btn.disabled = false;
-    btn.textContent = '🔑 Generate certificate';
+    btn.textContent = 'Generate certificate';
   }
 }
 
@@ -381,7 +381,7 @@ async function issueCert() {
 function copyPassword() {
   if (!certPassword) return;
   navigator.clipboard.writeText(certPassword).then(() => {
-    document.getElementById('copy-hint').textContent = '✅ Copied!';
+    document.getElementById('copy-hint').textContent = 'Copied!';
     setTimeout(() => {
       document.getElementById('copy-hint').textContent = 'Click the password to copy';
     }, 2000);
@@ -392,7 +392,7 @@ function copyPassword() {
 async function verifyCert() {
   const btn = document.getElementById('btn-verify');
   btn.disabled = true;
-  btn.textContent = '⏳ Checking...';
+  btn.textContent = 'Checking...';
 
   document.getElementById('verify-success').style.display = 'none';
   document.getElementById('verify-fail').style.display = 'none';
@@ -410,12 +410,12 @@ async function verifyCert() {
     } else {
       document.getElementById('verify-fail').style.display = 'block';
       btn.disabled = false;
-      btn.textContent = '🔍 Try again';
+      btn.textContent = 'Try again';
     }
   } catch (e) {
     document.getElementById('verify-fail').style.display = 'block';
     btn.disabled = false;
-    btn.textContent = '🔍 Try again';
+    btn.textContent = 'Try again';
   }
 }
 

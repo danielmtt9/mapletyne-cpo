@@ -74,7 +74,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {};
   e.waitUntil(self.registration.showNotification(
-    data.title || '⚡ Charging Update',
+    data.title || 'Charging Update',
     {
       body: data.body || 'Charging session update available',
       icon: '/app/static/icon-192.png',

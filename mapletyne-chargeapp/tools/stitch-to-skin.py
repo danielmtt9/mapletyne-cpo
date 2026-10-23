@@ -1369,7 +1369,7 @@ def process_stitch_export(input_path: str, skin_name: str, output_dir: str):
             import shutil
             shutil.copy2(png, os.path.join(previews_dir, f'{screen_name}.png'))
 
-    print(f"\n✅ Skin '{skin_name}' created at {skin_dir}/")
+    print(f"\n[OK] Skin '{skin_name}' created at {skin_dir}/")
     print(f"   skin.json: {os.path.join(skin_dir, 'skin.json')}")
     print(f"   style.css: {os.path.join(static_dir, 'style.css')} ({len(style_css)} bytes)")
     print(f"   previews:  {len(os.listdir(previews_dir))} screen(s)")

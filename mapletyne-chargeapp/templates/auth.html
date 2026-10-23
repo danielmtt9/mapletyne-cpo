@@ -70,7 +70,7 @@
         {{ t.send_code | default('Send code') }} <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
       </button>
       <div style="margin-top:24px;text-align:center;">
-        <a href="#" class="text-muted" style="font-size:13px;" onclick="showEmailForm(); return false;">{{ t.use_email | default('Use email') }}</a>
+        <a href="/app/login" class="text-muted" style="font-size:13px;" onclick="showEmailForm(); return false;">{{ t.use_email | default('Use email') }}</a>
       </div>
     </div>
 
@@ -135,7 +135,7 @@
         {{ t.continue_to_payment | default('Continue to payment') }} <span class="material-symbols-outlined" style="font-size:16px;">arrow_forward</span>
       </button>
       <div style="margin-top:16px;text-align:center;">
-        <a href="#" class="text-muted" style="font-size:13px;" onclick="showPhoneForm(); return false;">{{ t.use_phone | default('<span class="material-symbols-outlined" style="font-size:14px;">arrow_back</span> Use phone number') }}</a>
+        <a href="/app/login" class="text-muted" style="font-size:13px;" onclick="showPhoneForm(); return false;">{{ t.use_phone | default('<span class="material-symbols-outlined" style="font-size:14px;">arrow_back</span> Use phone number') }}</a>
       </div>
     </div>
 
