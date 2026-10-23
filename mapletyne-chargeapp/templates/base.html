@@ -68,7 +68,7 @@
     :root {
       {% if branding is defined and branding %}
         {% if branding.primary_color %}--primary: {{ branding.primary_color }}; --accent: {{ branding.primary_color }};{% endif %}
-        {% if branding.bg_color %}--bg: {{ branding.bg_color }}; --bg-deep: {{ branding.bg_color }};{% endif %}
+        {% if branding.is_custom %}{% if branding.bg_color %}--bg: {{ branding.bg_color }}; --bg-deep: {{ branding.bg_color }};{% endif %}{% endif %}
         {% if branding.card_color %}--card: {{ branding.card_color }}; --card-bg: {{ branding.card_color }};{% endif %}
         {% if branding.secondary_color %}--bg2: {{ branding.secondary_color }};{% endif %}
         {% if branding.accent_color %}--electric-blue: {{ branding.accent_color }};{% endif %}
@@ -87,7 +87,7 @@
     <span class="material-symbols-outlined" style="font-size:18px;color:var(--text,#fff);">install_mobile</span>
     <span style="font-size:13px;font-weight:600;color:var(--text,#fff);">Install {{ (branding.company_name if branding is defined and branding.company_name else 'MTT Charge') }}</span>
     <button id="pwa-install-btn" style="background:var(--accent,#10B981);color:#0b1a10;border:none;border-radius:12px;padding:4px 10px;font-size:12px;font-weight:700;cursor:pointer;">Install</button>
-    <button id="pwa-dismiss-btn" style="background:none;border:none;color:var(--text3,#64748b);font-size:14px;cursor:pointer;padding:0 2px;">✕</button>
+    <button id="pwa-dismiss-btn" style="background:none;border:none;color:var(--text3,#64748b);font-size:14px;cursor:pointer;padding:0 2px;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;"><span class="material-symbols-outlined" style="font-size:18px;">close</span></button>
   </div>
 
   <div id="app">
@@ -151,6 +151,69 @@
       document.getElementById('pwa-install-banner').style.display = 'none';
       sessionStorage.setItem('pwa_dismissed', '1');
     });
+  </script>
+
+  <!-- Persistent Footer with Legal Links -->
+  <div id="legal-footer" style="position:fixed;bottom:70px;left:0;right:0;z-index:999;text-align:center;padding:6px 12px;background:rgba(10,25,41,0.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,0.06);font-size:11px;color:var(--text3,#64748b);display:flex;justify-content:center;gap:12px;flex-wrap:wrap;">
+    <a href="/app/privacy" style="color:var(--text3,#64748b);text-decoration:none;">Privacy Policy</a>
+    <span style="color:rgba(255,255,255,0.15);">|</span>
+    <a href="/app/terms" style="color:var(--text3,#64748b);text-decoration:none;">Terms of Service</a>
+    <span style="color:rgba(255,255,255,0.15);">|</span>
+    <a href="/app/setup/cert" style="color:var(--text3,#64748b);text-decoration:none;">Plug & Charge Certificate</a>
+  </div>
+
+  <!-- M3 Cookie Consent Banner -->
+  <div id="cookie-consent-banner" style="display:none;position:fixed;bottom:120px;left:50%;transform:translateX(-50%);z-index:1300;width:min(92vw,480px);background:var(--bg,#0a1929);border:1px solid var(--border,#1e3a5f);border-radius:16px;padding:20px;box-shadow:0 12px 40px rgba(0,0,0,0.5);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);color:var(--text,#f1f5f9);font-size:14px;line-height:1.6;">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px;">
+      <h3 style="margin:0;font-size:16px;font-weight:700;color:var(--text,#f1f5f9);">Cookie Consent</h3>
+      <button id="cookie-close-btn" style="background:none;border:none;color:var(--text3,#64748b);font-size:20px;cursor:pointer;padding:4px;line-height:1;">&times;</button>
+    </div>
+    <p style="margin:0 0 16px;color:var(--text2,#94a3b8);">We use essential cookies to make this service work. You may accept all or reject non-essential cookies.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="cookie-accept-all" style="flex:1;min-height:44px;padding:12px 16px;border:none;border-radius:10px;background:var(--accent,#10B981);color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Accept All</button>
+      <button id="cookie-essential-only" style="flex:1;min-height:44px;padding:12px 16px;border:1px solid var(--border,#1e3a5f);border-radius:10px;background:transparent;color:var(--text2,#94a3b8);font-size:14px;font-weight:600;cursor:pointer;">Essential Only</button>
+    </div>
+    <p style="margin:12px 0 0;font-size:12px;color:var(--text3,#64748b);"><a href="/app/privacy" style="color:var(--accent,#10B981);text-decoration:underline;">Read our Privacy Policy</a></p>
+  </div>
+
+  <script>
+    (function() {
+      var banner = document.getElementById('cookie-consent-banner');
+      if (!banner) return;
+      var consent = localStorage.getItem('opencpo_cookie_consent');
+      var telemetry = localStorage.getItem('opencpo_telemetry_opt_in');
+      // Show banner only if no consent has been given yet
+      if (consent === 'accepted' || consent === 'rejected') {
+        return;
+      }
+      // Respect Global Privacy Control
+      if (navigator.globalPrivacyControl === true) {
+        localStorage.setItem('opencpo_cookie_consent', 'rejected');
+        localStorage.setItem('opencpo_telemetry_opt_in', 'false');
+        return;
+      }
+      banner.style.display = 'block';
+
+      function hideBanner() {
+        banner.style.display = 'none';
+      }
+
+      document.getElementById('cookie-close-btn')?.addEventListener('click', function() {
+        hideBanner();
+      });
+
+      document.getElementById('cookie-accept-all')?.addEventListener('click', function() {
+        localStorage.setItem('opencpo_cookie_consent', 'accepted');
+        localStorage.setItem('opencpo_telemetry_opt_in', 'true');
+        hideBanner();
+      });
+
+      document.getElementById('cookie-essential-only')?.addEventListener('click', function() {
+        localStorage.setItem('opencpo_cookie_consent', 'rejected');
+        localStorage.setItem('opencpo_telemetry_opt_in', 'false');
+        hideBanner();
+      });
+    })();
   </script>
 </body>
 </html>

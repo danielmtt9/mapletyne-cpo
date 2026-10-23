@@ -58,6 +58,11 @@ async def dynamic_skin_static(request: Request, filename: str):
     if default_file.is_file():
         media_type = "text/css" if filename.endswith(".css") else None
         return FileResponse(default_file, media_type=media_type)
+    # 3. Fallback to base static directory
+    static_file = Path("static") / filename
+    if static_file.is_file():
+        media_type = "text/css" if filename.endswith(".css") else None
+        return FileResponse(static_file, media_type=media_type)
     return HTMLResponse("Skin asset not found", status_code=404)
 
 # Base static always available at /static (home.js, htmx, logos, fallback CSS)

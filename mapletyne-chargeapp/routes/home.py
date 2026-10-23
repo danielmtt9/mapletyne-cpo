@@ -27,6 +27,15 @@ async def privacy_page(request: Request):
     })
 
 
+@router.get("/terms", response_class=HTMLResponse)
+async def terms_page(request: Request):
+    templates = request.app.state.templates
+    return templates.TemplateResponse(request, "terms.html", {
+        "t": getattr(request.state, "t", {}),
+        "lang": getattr(request.state, "lang", "en"),
+    })
+
+
 @router.get("/api/chargers/nearby")
 async def nearby_chargers(lat: float, lng: float, radius: float = 200):
     return await api_get(f"/api/v1/public/chargers/nearby?lat={lat}&lng={lng}&radius={radius}")
