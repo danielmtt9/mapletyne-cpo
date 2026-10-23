@@ -34,14 +34,14 @@
           padding:12px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;
           background:{% if lang == 'nl' or not lang %}var(--accent,#48e260);color:#0b1326{% else %}rgba(255,255,255,0.04);color:var(--text2,#94a3b8);border:1px solid rgba(255,255,255,0.08){% endif %};
         ">
-          🇳🇱 Nederlands
+          <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">language</span> Nederlands (NL)
         </a>
         <a href="?lang=en" style="
           flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
           padding:12px;border-radius:12px;text-decoration:none;font-size:14px;font-weight:600;
           background:{% if lang == 'en' %}var(--accent,#48e260);color:#0b1326{% else %}rgba(255,255,255,0.04);color:var(--text2,#94a3b8);border:1px solid rgba(255,255,255,0.08){% endif %};
         ">
-          🇬🇧 English
+          <span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">language</span> English (GB)
         </a>
       </div>
     </div>
@@ -57,7 +57,7 @@
         <!-- Logged in -->
         <a href="/app/account/profile" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;color:var(--text1,#fff);">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);color:var(--electric-blue,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:18px;">👤</div>
+            <span class="material-symbols-outlined" style="font-size:20px;color:var(--electric-blue,#38bdf8);">person</span>
             <div>
               <div style="font-size:15px;font-weight:600;">{{ t.profile | default('My Profile') }}</div>
               <div style="font-size:12px;color:var(--text3,#64748b);">{{ account.get('email', 'Logged in') }}</div>
@@ -67,7 +67,7 @@
         </a>
         <a href="/app/account/history" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;text-decoration:none;color:var(--text1,#fff);">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(72,226,96,0.12);color:var(--accent,#48e260);display:flex;align-items:center;justify-content:center;font-size:18px;">⚡</div>
+            <span class="material-symbols-outlined" style="font-size:20px;color:var(--accent,#48e260);">bolt</span>
             <div>
               <div style="font-size:15px;font-weight:600;">{{ t.history | default('Charging History') }}</div>
               <div style="font-size:12px;color:var(--text3,#64748b);">View past sessions & receipts</div>
@@ -79,7 +79,7 @@
         <!-- Not logged in -->
         <a href="/app/account/login" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;color:var(--text1,#fff);">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);color:var(--electric-blue,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:18px;">🔑</div>
+            <span class="material-symbols-outlined" style="font-size:20px;color:var(--electric-blue,#38bdf8);">key</span>
             <div>
               <div style="font-size:15px;font-weight:600;">{{ t.login | default('Log in') }}</div>
               <div style="font-size:12px;color:var(--text3,#64748b);">Access saved cards & live sessions</div>
@@ -89,7 +89,7 @@
         </a>
         <a href="/app/account/register" style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;text-decoration:none;color:var(--text1,#fff);">
           <div style="display:flex;align-items:center;gap:12px;">
-            <div style="width:36px;height:36px;border-radius:10px;background:rgba(72,226,96,0.12);color:var(--accent,#48e260);display:flex;align-items:center;justify-content:center;font-size:18px;">✨</div>
+            <span class="material-symbols-outlined" style="font-size:20px;color:var(--accent,#48e260);">auto_awesome</span>
             <div>
               <div style="font-size:15px;font-weight:600;">{{ t.register | default('Create an Account') }}</div>
               <div style="font-size:12px;color:var(--text3,#64748b);">Fast checkout & driver perks</div>
@@ -123,6 +123,13 @@
           <span style="color:var(--text3,#64748b);font-family:monospace;">v2.4.0 (Production)</span>
         </div>
       </div>
+    </div>
+
+    <!-- Legal Links -->
+    <div style="text-align:center;padding:16px 0 8px;font-size:12px;color:var(--text3,#64748b);">
+      <a href="/app/privacy" style="color:var(--text2,#94a3b8);text-decoration:none;margin:0 8px;">Privacy Policy</a>
+      <span style="margin:0 4px;">·</span>
+      <a href="/app/terms" style="color:var(--text2,#94a3b8);text-decoration:none;margin:0 8px;">Terms of Service</a>
     </div>
   </div>
 </div>
