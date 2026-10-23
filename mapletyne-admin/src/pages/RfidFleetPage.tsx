@@ -376,7 +376,7 @@ export const RfidFleetPage: React.FC = () => {
               <span className="font-mono text-xs text-on-surface-variant">{tokens.length} total tokens</span>
             </div>
 
-            <div className="overflow-x-auto w-full">
+            <div ref={tableContainerRef} className="overflow-x-auto w-full" style={{ height: '600px' }}>
               <table className="w-full text-left font-body text-xs">
                 <thead>
                   <tr className="border-b border-outline bg-surface-container-lowest/40 text-xs font-mono text-on-surface-variant uppercase tracking-wider h-11">
@@ -388,7 +388,13 @@ export const RfidFleetPage: React.FC = () => {
                     <th className="px-4 min-w-[160px] text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/5 font-mono text-xs">
+                <tbody
+                  ref={rowVirtualizer.measureElement}
+                  data-rendered-virtualizer-id="tokens"
+                  style={{
+                    transform: `translateY(${rowVirtualizer.getTotalSize() - rowVirtualizer.options.overscan * rowVirtualizer.options.estimateSize()}px)`,
+                  }}
+                >
                   {tokens.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="p-8 text-center text-on-surface-variant">
@@ -396,12 +402,25 @@ export const RfidFleetPage: React.FC = () => {
                       </td>
                     </tr>
                   ) : (
-                    tokens.map((t) => {
+                    rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const t = tokens[virtualRow.index];
                       const isBlocked = t.status?.toLowerCase() === 'blocked';
                       const isRevoked = t.status?.toLowerCase() === 'revoked';
 
                       return (
-                        <tr key={t.id || t.uid} className="hover:bg-surface-container-high/40 transition-colors h-11">
+                        <tr
+                          key={t.id || t.uid}
+                          data-index={virtualRow.index}
+                          ref={rowVirtualizer.measureElement}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                          className="hover:bg-surface-container-high/40 transition-colors h-11"
+                        >
                           <td className="px-4 py-3">
                             <div className="font-bold text-on-surface truncate">{t.uid}</div>
                             {t.card_number && (

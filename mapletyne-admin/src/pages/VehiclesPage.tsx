@@ -358,7 +358,7 @@ export const VehiclesPage: React.FC = () => {
           </div>
 
           {/* Vehicles Table */}
-          <div className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-md">
+          <div ref={tableContainerRef} className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-md" style={{ height: '600px' }}>
             <div className="overflow-x-auto w-full">
               <table className="w-full text-left text-xs border-collapse">
                 <thead className="bg-surface-container-high uppercase text-xs tracking-wider text-on-surface border-b border-outline">
@@ -373,7 +373,13 @@ export const VehiclesPage: React.FC = () => {
                     <th className="py-3.5 px-4 font-semibold text-right min-w-[130px] whitespace-nowrap">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline text-on-surface font-sans">
+                <tbody
+                  ref={rowVirtualizer.measureElement}
+                  data-rendered-virtualizer-id="vehicles"
+                  style={{
+                    transform: `translateY(${rowVirtualizer.getTotalSize() - rowVirtualizer.options.overscan * rowVirtualizer.options.estimateSize()}px)`,
+                  }}
+                >
                   {isVehiclesLoading ? (
                     <tr>
                       <td colSpan={8} className="py-12 text-center text-on-surface-variant">
@@ -388,10 +394,23 @@ export const VehiclesPage: React.FC = () => {
                       </td>
                     </tr>
                   ) : (
-                    vehicles.map((v) => {
+                    rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                      const v = vehicles[virtualRow.index];
                       const soc = v.current_soc_pct ?? 50;
                       return (
-                        <tr key={v.id} className="hover:bg-surface-container-high/50 transition-colors">
+                        <tr
+                          key={v.id}
+                          data-index={virtualRow.index}
+                          ref={rowVirtualizer.measureElement}
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            transform: `translateY(${virtualRow.start}px)`,
+                          }}
+                          className="hover:bg-surface-container-high/50 transition-colors"
+                        >
                           {/* Indestructible License Plate & Unit Badge */}
                           <td className="py-3.5 px-4 whitespace-nowrap">
                             <div className="inline-flex items-center gap-1.5 whitespace-nowrap">
