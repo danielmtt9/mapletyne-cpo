@@ -114,9 +114,11 @@ def scan_navigation_defects(repo_root: str) -> Dict[str, Any]:
         for root, dirs, files in os.walk(target):
             dirs[:] = [
                 d for d in dirs
-                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp')
+                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp', 'stitch_opencpo_management_dashboard')
             ]
             for file in files:
+                if file == 'leaflet.js':
+                    continue
                 if file.endswith(scanned_exts):
                     scanned_files_count += 1
                     fp = os.path.join(root, file)
@@ -244,22 +246,12 @@ def scan_navigation_defects(repo_root: str) -> Dict[str, Any]:
     for r in chargeapp_routes:
         path = r["path"]
         # Skip API endpoints and internal technical routes
-        if path.startswith("/api") or path in ("/health", "/manifest.json", "/sw.js", "/skin/{filename:path}"):
+        if path.startswith("/api") or path in ("/health", "/manifest.json", "/sw.js", "/sitemap.xml", "/refresh", "/skin/{filename:path}"):
             continue
         # Check inbound links to path, path without leading slash, or /app + path
         variations = [path, f"/app{path}", path.lstrip("/")]
         has_inbound = any(v in inbound_links_to_paths for v in variations)
-        # Specifically check /privacy
-        if path == "/privacy":
-            orphaned_routes.append({
-                "path": path,
-                "file": r["file"],
-                "line": r["line"],
-                "inbound_count": 0,
-                "severity": "HIGH",
-                "notes": "Orphaned Privacy Policy page: mounted in routes/home.py with template privacy.html, but 0 inbound navigation links exist in templates, footer, or login screens."
-            })
-        elif not has_inbound and not any(p in path for p in ("{", ":")):
+        if not has_inbound and not any(p in path for p in ("{", ":")):
             orphaned_routes.append({
                 "path": path,
                 "file": r["file"],

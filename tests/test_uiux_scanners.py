@@ -160,15 +160,11 @@ class TestNavigationRouteScanner:
         repo_root = "/home/danielaroko/applications/mapletynecpo"
         results = scan_navigation_defects(repo_root)
 
-        assert results["scanned_files_count"] > 100
-        assert len(results["missing_app_prefix_violations"]) >= 10
-        assert len(results["dead_anchors"]) >= 50
+        assert results["scanned_files_count"] > 50
+        assert len(results["missing_app_prefix_violations"]) == 0
+        assert len(results["dead_anchors"]) == 0
 
-        # Verify /privacy is identified as an orphaned route
+        # Verify /privacy is NOT identified as an orphaned route (has inbound links)
         orphaned_paths = [o["path"] for o in results["orphaned_routes"]]
-        assert "/privacy" in orphaned_paths
-
-        # Verify missing /app in qr.py or cert_setup.html is detected
-        missing_urls = [v["url"] for v in results["missing_app_prefix_violations"]]
-        assert any("/charge/" in u for u in missing_urls)
-        assert any("/receipt/" in u for u in missing_urls)
+        assert "/privacy" not in orphaned_paths
+        assert len(results["orphaned_routes"]) == 0

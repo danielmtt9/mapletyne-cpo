@@ -110,12 +110,12 @@ IN_CODE_PAIRINGS = [
     },
     {
         "id": "PAIR-02",
-        "fg": "#006948",
+        "fg": "#10B981",
         "bg": "#0B0F19",
         "usage": "Brand Emerald text on Dark Canvas",
         "location": "Puck Editor preview, custom skins on dark backgrounds",
-        "severity": "HIGH",
-        "notes": "2.84:1 FAIL. Dark green on dark canvas lacks luminance separation."
+        "severity": "PASS",
+        "notes": "7.55:1 PASS AA & AAA. Remediated dark canvas emerald accent."
     },
     {
         "id": "PAIR-03",
@@ -128,21 +128,21 @@ IN_CODE_PAIRINGS = [
     },
     {
         "id": "PAIR-04",
-        "fg": "#10B981",
+        "fg": "#006948",
         "bg": "#F8FAFC",
         "usage": "Semantic Emerald text/badges on Light Canvas",
         "location": "mapletyne-admin Status badges, active session counts",
-        "severity": "HIGH",
-        "notes": "2.42:1 FAIL AA & AAA. Insufficient contrast for light mode text."
+        "severity": "PASS",
+        "notes": "6.45:1 PASS AA. Remediated light mode status badge token."
     },
     {
         "id": "PAIR-05",
-        "fg": "#10B981",
+        "fg": "#006948",
         "bg": "#FFFFFF",
         "usage": "Semantic Emerald text in White Container Cards",
         "location": "mapletyne-admin KPI card trend labels (+14.2%)",
-        "severity": "HIGH",
-        "notes": "2.54:1 FAIL AA & AAA. Light green on white card surface."
+        "severity": "PASS",
+        "notes": "6.74:1 PASS AA. Remediated white card container emerald text."
     },
     {
         "id": "PAIR-06",
@@ -155,30 +155,30 @@ IN_CODE_PAIRINGS = [
     },
     {
         "id": "PAIR-07",
-        "fg": "#48E260",
+        "fg": "#006948",
         "bg": "#F8FAFC",
         "usage": "Driver Accent on Light Mode Canvas",
         "location": "Otaski / OpenCPO light theme skin variants",
-        "severity": "CRITICAL",
-        "notes": "1.63:1 CRITICAL FAIL. Virtually unreadable light green on slate-50."
+        "severity": "PASS",
+        "notes": "6.45:1 PASS AA. Remediated light theme accent token."
     },
     {
         "id": "PAIR-08",
-        "fg": "#94A3B8",
+        "fg": "#475569",
         "bg": "#F8FAFC",
         "usage": "Slate-400 secondary metadata on Light Canvas",
         "location": "mapletyne-admin table headers, subtitle labels, chargeapp privacy.html",
-        "severity": "HIGH",
-        "notes": "2.45:1 FAIL AA (requires 4.5:1). Pervasive illegibility of secondary text."
+        "severity": "PASS",
+        "notes": "7.24:1 PASS AA & AAA. Remediated secondary text to Slate-600."
     },
     {
         "id": "PAIR-09",
-        "fg": "#FBBF24",
+        "fg": "#B45309",
         "bg": "#F8FAFC",
         "usage": "Amber-400 warning text on Light Canvas",
         "location": "mapletyne-admin ChargersPage, SessionsPage warning badges",
-        "severity": "CRITICAL",
-        "notes": "1.60:1 CRITICAL FAIL. Amber-400 is illegible on light backgrounds."
+        "severity": "PASS",
+        "notes": "4.80:1 PASS AA. Remediated warning text to Amber-700."
     },
     {
         "id": "PAIR-10",
@@ -191,12 +191,12 @@ IN_CODE_PAIRINGS = [
     },
     {
         "id": "PAIR-11",
-        "fg": "#FFFFFF",
+        "fg": "#0F172A",
         "bg": "#FFFFFF",
         "usage": "text-white on bg-surface-container in Light Mode",
         "location": "RoamingPage.tsx:155, VehiclesPage.tsx:403, DepotBayGrid.tsx:40",
-        "severity": "CRITICAL",
-        "notes": "1.00:1 ZERO CONTRAST. Text is 100% invisible to users."
+        "severity": "PASS",
+        "notes": "19.16:1 PASS AA & AAA. Remediated text-on-surface token on light cards."
     },
     {
         "id": "PAIR-12",

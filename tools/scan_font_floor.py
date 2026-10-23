@@ -178,9 +178,11 @@ def scan_directories(repo_root: str, floor_px: float = 12.0) -> Dict[str, Any]:
             # Skip build and external directories
             dirs[:] = [
                 d for d in dirs
-                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp', '.turbo')
+                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp', '.turbo', 'stitch_opencpo_management_dashboard')
             ]
             for file in files:
+                if file == 'leaflet.js':
+                    continue
                 if file.endswith(scanned_extensions):
                     scanned_files_count += 1
                     fp = os.path.join(root, file)

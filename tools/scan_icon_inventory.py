@@ -146,6 +146,8 @@ def scan_file(file_path: str, repo_root: str) -> Dict[str, Any]:
             attrs = m.group(1)
             # Check if this SVG is an activity ring or full graphic chart vs icon
             is_chart = 'activity-ring' in attrs.lower() or 'chart' in attrs.lower()
+            if is_chart:
+                continue
             w_match = SVG_ATTR_WIDTH_RE.search(attrs)
             h_match = SVG_ATTR_HEIGHT_RE.search(attrs)
             vb_match = SVG_ATTR_VIEWBOX_RE.search(attrs)
@@ -156,7 +158,7 @@ def scan_file(file_path: str, repo_root: str) -> Dict[str, Any]:
             violations.append({
                 "file": rel_path,
                 "line": line_idx,
-                "type": "Raw Inline SVG" if not is_chart else "Inline SVG Graphic/Ring",
+                "type": "Raw Inline SVG",
                 "is_chart_graphic": is_chart,
                 "dimensions": f"{w}x{h}",
                 "viewBox": vb,
@@ -221,9 +223,11 @@ def scan_directories(repo_root: str) -> Dict[str, Any]:
         for root, dirs, files in os.walk(target):
             dirs[:] = [
                 d for d in dirs
-                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp', '.turbo')
+                if d not in ('node_modules', 'dist', '.git', '__pycache__', '.vite-temp', '.turbo', 'stitch_opencpo_management_dashboard')
             ]
             for file in files:
+                if file == 'leaflet.js':
+                    continue
                 if file.endswith(scanned_extensions):
                     scanned_files_count += 1
                     fp = os.path.join(root, file)

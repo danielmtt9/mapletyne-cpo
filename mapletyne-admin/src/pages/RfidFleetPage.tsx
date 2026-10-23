@@ -392,7 +392,7 @@ export const RfidFleetPage: React.FC = () => {
                   ref={rowVirtualizer.measureElement}
                   data-rendered-virtualizer-id="tokens"
                   style={{
-                    transform: `translateY(${rowVirtualizer.getTotalSize() - rowVirtualizer.options.overscan * rowVirtualizer.options.estimateSize()}px)`,
+                    transform: `translateY(${rowVirtualizer.getTotalSize() - rowVirtualizer.options.overscan * rowVirtualizer.options.estimateSize(0)}px)`,
                   }}
                 >
                   {tokens.length === 0 ? (

@@ -71,7 +71,7 @@
           <span class="step-icon"><span class="material-symbols-outlined" style="font-size:24px;">{% if conn_status == 'Preparing' %}check_circle{% else %}cable{% endif %}</span></span>
           <div>
             <div class="step-title">
-              {% if conn_status == 'Preparing' %}{{ t.step1_connected | default('Step 1: Cable connected ✓') }}{% else %}{{ t.step1_connect | default('Step 1: Connect the cable') }}{% endif %}
+              {% if conn_status == "Preparing" %}{{ t.step1_connected | default("Step 1: Cable connected") }}{% else %}{{ t.step1_connect | default("Step 1: Connect the cable") }}{% endif %}
             </div>
             <div class="step-desc">{{ t.step1_desc | default('Connect the charging cable to your car') }}</div>
           </div>
