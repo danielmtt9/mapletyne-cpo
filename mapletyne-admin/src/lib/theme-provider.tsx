@@ -155,6 +155,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (cfg.accent_color) {
       root.style.setProperty('--tertiary', cfg.accent_color);
     }
+    if (cfg.secondary_color) {
+      root.style.setProperty('--secondary', cfg.secondary_color);
+    }
+    if (cfg.bg_color) {
+      root.style.setProperty('--background', cfg.bg_color);
+    }
+    if (cfg.card_color) {
+      root.style.setProperty('--card', cfg.card_color);
+    }
     const displayTitle = cfg.app_title || cfg.company_name || 'Mapletyne EMS';
     const displayTagline = cfg.portal_tagline || 'Executive SaaS EV Charging Management';
     document.title = cfg.company_name ? `${cfg.company_name} — ${displayTitle}` : `${displayTitle} — ${displayTagline}`;

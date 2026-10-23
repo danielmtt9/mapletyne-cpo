@@ -108,7 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             onClick={onToggleCollapse}
             title="Collapse Sidebar"
             aria-label="Collapse Sidebar"
-            className="w-10 h-10 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
+            className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-lg text-slate-400 hover:text-white hover:bg-white/10 flex items-center justify-center transition-colors cursor-pointer shrink-0"
           >
             <span className="material-symbols-outlined text-xl" aria-hidden="true">
               chevron_left
@@ -235,7 +235,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={logout}
               title="Sign Out"
               aria-label="Sign Out"
-              className="w-10 h-10 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg flex items-center justify-center transition-colors cursor-pointer shrink-0"
+              className="w-11 h-11 min-w-[44px] min-h-[44px] text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg flex items-center justify-center transition-colors cursor-pointer shrink-0"
             >
               <span className="material-symbols-outlined text-xl" aria-hidden="true">
                 logout

@@ -168,7 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Dark / Light Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="w-10 h-10 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer shadow-sm"
+          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors cursor-pointer shadow-sm"
           title={`Switch to ${resolvedTheme === 'dark' ? 'Light' : 'Dark'} Mode (Current: ${theme})`}
           aria-label="Toggle theme"
         >
@@ -179,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Notification Bell */}
         <button
-          className="w-10 h-10 rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors relative cursor-pointer shadow-sm"
+          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-xl bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface-variant hover:text-on-surface flex items-center justify-center transition-colors relative cursor-pointer shadow-sm"
           title="Notifications & Alerts"
         >
           <span className="material-symbols-outlined text-xl" aria-hidden="true">

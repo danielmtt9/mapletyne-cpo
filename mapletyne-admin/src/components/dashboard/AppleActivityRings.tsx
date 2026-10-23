@@ -78,7 +78,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
       {/* Header */}
       <div className="flex items-center justify-between border-b border-white/5 pb-3">
         <div>
-          <h3 className="text-sm font-semibold text-white">System Utilization</h3>
+          <h3 className="text-sm font-semibold text-on-surface">System Utilization</h3>
           <p className="text-xs text-slate-400 font-mono">Multi-Vector Activity</p>
         </div>
         <span className="text-xs font-mono font-bold bg-white/10 px-2 py-0.5 rounded-full text-slate-300 uppercase">
@@ -92,7 +92,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
         <div className="w-full h-36 relative flex items-center justify-center">
           <BaseEChart option={chartOption} />
           <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-            <span className="text-lg font-bold text-white tabular-nums tracking-tight">
+            <span className="text-lg font-bold text-on-surface tabular-nums tracking-tight">
               {currentLoadKw.toFixed(1)}
             </span>
             <span className="text-xs font-mono text-slate-400 uppercase">
@@ -109,7 +109,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
               <span className="w-2.5 h-2.5 rounded-full bg-[#FF3B30]" />
               <span className="text-slate-300 font-medium">Power Load</span>
             </div>
-            <span className="font-mono font-bold text-white tabular-nums">
+            <span className="font-mono font-bold text-on-surface tabular-nums">
               {Math.round(powerPct)}%
             </span>
           </div>
@@ -120,7 +120,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
               <span className="w-2.5 h-2.5 rounded-full bg-[#34C759]" />
               <span className="text-slate-300 font-medium">Occupancy</span>
             </div>
-            <span className="font-mono font-bold text-white tabular-nums">
+            <span className="font-mono font-bold text-on-surface tabular-nums">
               {Math.round(occupancyPct)}%
             </span>
           </div>
@@ -131,7 +131,7 @@ export const AppleActivityRings: React.FC<AppleActivityRingsProps> = ({
               <span className="w-2.5 h-2.5 rounded-full bg-[#007AFF]" />
               <span className="text-slate-300 font-medium">Headroom</span>
             </div>
-            <span className="font-mono font-bold text-white tabular-nums">
+            <span className="font-mono font-bold text-on-surface tabular-nums">
               {Math.round(headroomPct)}%
             </span>
           </div>

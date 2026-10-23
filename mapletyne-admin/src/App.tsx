@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { CookieConsentBanner } from './components/common/CookieConsentBanner';
 
 const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const token = localStorage.getItem('mapletyne_admin_jwt') || localStorage.getItem('opencpo_admin_jwt');
@@ -28,6 +29,7 @@ import { LoginPage } from './pages/LoginPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { OnboardingPage } from './pages/OnboardingPage';
 import { TermsPage } from './pages/TermsPage';
+import { PrivacyPage } from './pages/PrivacyPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ReactPuckEditor } from './pages/ReactPuckEditor';
 import { ReactPostsPage, ReactPostDetailPage } from './pages/ReactPostsPages';
@@ -50,6 +52,7 @@ export const App: React.FC = () => {
           <AuthProvider>
             <SiteProvider>
               <BrowserRouter>
+                <CookieConsentBanner />
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
                   <Route
@@ -77,6 +80,7 @@ export const App: React.FC = () => {
                     <Route path="profile" element={<ProfilePage />} />
                     <Route path="onboarding" element={<OnboardingPage />} />
                     <Route path="terms" element={<TermsPage />} />
+                    <Route path="privacy" element={<PrivacyPage />} />
                     <Route path="posts" element={<ReactPostsPage />} />
                     <Route path="posts/:slug" element={<ReactPostDetailPage />} />
                   </Route>

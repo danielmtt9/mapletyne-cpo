@@ -37,7 +37,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
     return (
       <div className="p-8 text-center tabler-card bg-slate-900/90 border border-slate-700/80 rounded-2xl text-slate-300">
         <span className="material-symbols-outlined text-[36px] text-slate-500 mb-2">garage</span>
-        <p className="text-sm font-semibold text-white">No Charging Bays Configured for this Depot</p>
+        <p className="text-sm font-semibold text-on-surface">No Charging Bays Configured for this Depot</p>
         <p className="text-xs text-slate-400 mt-1">Configure charging bays to assign vehicles and visualize power distribution.</p>
       </div>
     );
@@ -94,7 +94,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="font-mono font-bold text-sm text-white bg-slate-950 px-2 py-0.5 rounded border border-slate-700">
+                  <span className="font-mono font-bold text-sm text-on-surface bg-slate-950 px-2 py-0.5 rounded border border-slate-700">
                     {bay.bay_number}
                   </span>
                   <span className="text-xs font-mono text-slate-300 font-medium">
@@ -106,7 +106,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
 
               {/* Charger Mapping */}
               <div className="text-xs text-slate-300 flex items-center justify-between pb-2 border-b border-slate-800 mb-3">
-                <span className="flex items-center gap-1.5 font-mono text-white font-semibold">
+                <span className="flex items-center gap-1.5 font-mono text-on-surface font-semibold">
                   <span className="material-symbols-outlined text-[15px] text-primary">ev_charger</span>
                   {bay.charge_point_id} (P{bay.connector_id})
                 </span>
@@ -127,7 +127,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                             {bay.unit_number}
                           </span>
                         )}
-                        <span className="px-2 py-0.5 bg-slate-950 border border-slate-700 text-white font-mono font-bold text-xs tracking-wider rounded uppercase">
+                        <span className="px-2 py-0.5 bg-slate-950 border border-slate-700 text-on-surface font-mono font-bold text-xs tracking-wider rounded uppercase">
                           {bay.license_plate}
                         </span>
                       </div>
@@ -149,7 +149,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                         <span className="material-symbols-outlined text-[14px] text-primary">battery_charging_full</span>
                         Live SOC
                       </span>
-                      <span className="font-mono font-bold text-white">{soc}%</span>
+                      <span className="font-mono font-bold text-on-surface">{soc}%</span>
                     </div>
                     <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
                       <div
