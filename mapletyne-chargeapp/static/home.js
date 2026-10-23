@@ -39,12 +39,7 @@ window.addEventListener('hashchange', checkHashTab);
 
 // ── Pin SVG ─────────────────────────────────────────────────────
 function pinSVG(color) {
-  return '<svg width="32" height="40" viewBox="0 0 32 40" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-    '<path d="M16 0C7.163 0 0 7.163 0 16c0 10.667 16 24 16 24S32 26.667 32 16C32 7.163 24.837 0 16 0z" fill="' + color + '" fill-opacity="0.92"/>' +
-    '<circle cx="16" cy="16" r="9" fill="rgba(255,255,255,0.15)"/>' +
-    '<circle cx="16" cy="16" r="6" fill="white" fill-opacity="0.9"/>' +
-    '<circle cx="16" cy="16" r="3.5" fill="' + color + '"/>' +
-    '</svg>';
+  return '<div style="width:32px;height:32px;border-radius:50%;background:' + color + ';color:#0b0f19;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4);"><span class="material-symbols-outlined" style="font-size:18px;">ev_station</span></div>';
 }
 
 function statusColor(status) {
@@ -194,7 +189,7 @@ function renderChargers(data) {
 
   var badge = document.getElementById('charger-badge');
   var I18N = window.I18N || {};
-  badge.textContent = '⚡ ' + chargers.length + ' ' + (chargers.length === 1 ? (I18N.charger_singular || 'charger') : (I18N.chargers_badge || 'chargers'));
+  badge.innerHTML = '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">ev_station</span> ' + chargers.length + ' ' + (chargers.length === 1 ? (I18N.charger_singular || 'charger') : (I18N.chargers_badge || 'chargers'));
   badge.style.opacity = '1';
   setTimeout(function () { badge.style.opacity = '0'; }, 5000);
 }
@@ -260,9 +255,9 @@ function openSheet(cp) {
       var label = c.status || (I18N.unknown_status || 'Available');
       var cid = c.connector_id || c.id || 1;
       var type = c.type || c.connector_type || (powerKw >= 50 ? 'CCS2 Fast' : 'Type 2 AC');
-      var startBtn = '<a href="/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
+      var startBtn = '<a href="/app/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
         'style="padding:6px 14px;background:var(--accent);color:#0C2340;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin-left:8px;display:inline-flex;align-items:center;gap:4px;">' +
-        '⚡ Start →</a>';
+        '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">play_arrow</span> Start →</a>';
       
       connHTML += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);">' +
         '<div>' +
@@ -279,7 +274,7 @@ function openSheet(cp) {
     // Default connector action card if station has single/auto connector
     var defaultBtn = '<a href="/app/charge/' + encodeURIComponent(cpId) + '/1" ' +
       'style="padding:10px 16px;background:var(--accent);color:#0C2340;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;display:block;text-align:center;margin-top:12px;">' +
-      '⚡ Start Charging →</a>';
+      '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">play_arrow</span> Start Charging →</a>';
     connHTML = '<div style="padding:8px 0;">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--text2);">' +
       '<span>Standard Connector (CCS2 / Type 2)</span>' +
@@ -294,22 +289,22 @@ function openSheet(cp) {
 
   var badgesHTML = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;">' +
     '<div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--accent);">' +
-    '⚡ ' + powerKw + ' kW' +
+    '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">ev_station</span> ' + powerKw + ' kW' +
     '</div>' +
     '<div style="background:var(--card);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;color:var(--text);">' +
-    '💳 £' + Number(tariffKwh).toFixed(2) + ' / kWh' +
+    '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">payments</span> £' + Number(tariffKwh).toFixed(2) + ' / kWh' +
     '</div>' +
     '</div>';
 
   var navBtn = (lat && lng)
     ? '<a href="https://www.google.com/maps/dir/?api=1&destination=' + lat + ',' + lng +
       '" target="_blank" rel="noopener" class="sheet-btn sheet-btn-nav" style="display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;padding:8px 16px;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text2);font-size:13px;font-weight:600;margin-top:10px;width:100%;">' +
-      '🧭 ' + (I18N.navigate || 'Get Directions') + '</a>'
+      '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">navigation</span> ' + (I18N.navigate || 'Get Directions') + '</a>'
     : '';
 
   document.getElementById('sheet-content').innerHTML =
     '<div class="sheet-charger-name" style="font-size:18px;font-weight:700;color:var(--text);">' + name + '</div>' +
-    (addr ? '<div class="sheet-charger-addr" style="font-size:13px;color:var(--text2);margin-top:2px;">📍 ' + addr + '</div>' : '') +
+    (addr ? '<div class="sheet-charger-addr" style="font-size:13px;color:var(--text2);margin-top:2px;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">place</span> ' + addr + '</div>' : '') +
     (dist ? '<div class="map-popup-dist" style="font-size:12px;color:var(--text3);margin-top:2px;">' + dist + ' ' + (I18N.distance_from_you || 'from you') + '</div>' : '') +
     badgesHTML +
     '<div class="sheet-connector-list">' + connHTML + '</div>' +
@@ -477,7 +472,7 @@ function performSearch(query) {
   }
 
   if (matchedStations.length > 0) {
-    html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--accent,#48e260);text-transform:uppercase;letter-spacing:0.05em;">⚡ Charging Stations</div>';
+    html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--accent,#48e260);text-transform:uppercase;letter-spacing:0.05em;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">ev_station</span> Charging Stations</div>';
     matchedStations.slice(0, 5).forEach(function (cp) {
       var name = cp.name || cp.display_name || cp.id;
       var loc = cp.address || cp.city ? ((cp.address || '') + (cp.city ? ', ' + cp.city : '')) : 'Network Station';
@@ -488,7 +483,7 @@ function performSearch(query) {
       html += '<div class="search-result-item" data-type="station" data-lat="' + lat + '" data-lng="' + lng + '" data-id="' + cp.id + '" style="padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--border,#1e3a5f);display:flex;align-items:center;justify-content:space-between;transition:background 0.15s;" onmouseover="this.style.background=\'var(--card-hover,rgba(255,255,255,0.06))\'" onmouseout="this.style.background=\'none\'">' +
         '<div style="min-width:0;padding-right:10px;">' +
         '<div style="font-size:14px;font-weight:600;color:var(--text,#f1f5f9);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + name + '</div>' +
-        '<div style="font-size:12px;color:var(--text2,#94a3b8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">📍 ' + loc + '</div>' +
+        '<div style="font-size:12px;color:var(--text2,#94a3b8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">place</span> ' + loc + '</div>' +
         '</div>' +
         '<div style="flex-shrink:0;font-size:12px;font-weight:700;color:var(--accent,#48e260);background:rgba(72,226,96,0.15);padding:3px 8px;border-radius:12px;">' + kw + ' kW</div>' +
         '</div>';
@@ -500,7 +495,7 @@ function performSearch(query) {
     .then(function (r) { return r.json(); })
     .then(function (places) {
       if (places && places.length > 0) {
-        html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.05em;border-top:1px solid var(--border,#1e3a5f);">📍 Cities & Places</div>';
+        html += '<div style="padding:8px 14px 4px;font-size:12px;font-weight:700;color:var(--text3,#64748b);text-transform:uppercase;letter-spacing:0.05em;border-top:1px solid var(--border,#1e3a5f);"><span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">place</span> Cities & Places</div>';
         places.forEach(function (p) {
           var label = p.display_name;
           var lat = parseFloat(p.lat);
