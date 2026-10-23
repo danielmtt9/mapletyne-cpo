@@ -9,7 +9,7 @@
     </a>
   </div>
   <div class="page-content">
-    <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;">⚡ {{ t.my_sessions | default('My Charging Sessions') }}</h2>
+    <h2 style="font-size:20px;font-weight:700;margin-bottom:16px;"><span class="material-symbols-outlined" style="vertical-align:middle;">bolt</span> {{ t.my_sessions | default('My Charging Sessions') }}</h2>
     <div id="history-loading" style="text-align:center;padding:40px 0;color:var(--text3);">{{ t.loading | default('Loading...') }}</div>
     <div id="history-content" style="display:none;"></div>
   </div>

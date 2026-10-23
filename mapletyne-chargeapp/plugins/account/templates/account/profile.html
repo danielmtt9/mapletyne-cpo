@@ -5,7 +5,7 @@
   <!-- Header Bar -->
   <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
     <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>{{ t.map | default('Map') }}</span>
     </a>
     <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
@@ -28,7 +28,7 @@
             {{ (profile.name[0] if profile.name else (profile.email[0] if profile.email else 'D')) }}
           </div>
           <div style="position:absolute; bottom:0; right:0; background:#48e260; color:#0b1326; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; border:2px solid #0b1326;" title="Active OIDC Session">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <span class="material-symbols-outlined">verified</span>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
         <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
           <span style="color:#94a3b8; font-size:14px;">Authentication</span>
           <span style="color:#48e260; font-weight:600; font-size:12px; display:inline-flex; align-items:center; gap:4px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span class="material-symbols-outlined">lock</span>
             Keycloak IAM (OIDC)
           </span>
         </div>
@@ -69,12 +69,12 @@
       <!-- Action Buttons -->
       <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
         <button onclick="showEdit()" style="width:100%; height:46px; border-radius:14px; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.12); color:#ffffff; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          <span class="material-symbols-outlined">history</span>
           <span>{{ t.edit_profile | default('Edit Profile') }}</span>
         </button>
 
         <a href="/app/account/history" style="text-decoration:none; width:100%; box-sizing:border-box; height:46px; border-radius:14px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.25); color:#48e260; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span class="material-symbols-outlined">star</span>
           <span>{{ t.my_sessions | default('Charging History & Receipts') }}</span>
         </a>
 

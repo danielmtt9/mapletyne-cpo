@@ -5,7 +5,7 @@
   <!-- Header Bar -->
   <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
     <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>{{ t.back | default('Back') }}</span>
     </a>
     <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
@@ -26,9 +26,7 @@
     <!-- Header -->
     <div style="text-align:center; margin-bottom:28px;">
       <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:16px; background:rgba(250, 204, 21, 0.12); border:1px solid rgba(250, 204, 21, 0.3); color:#facc15; margin-bottom:16px; box-shadow:0 8px 24px rgba(250, 204, 21, 0.15);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-        </svg>
+        <span class="material-symbols-outlined">star</span>
       </div>
       <h1 style="font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#ffffff; margin:0 0 6px 0;">{{ t.favorites | default('Favorites') }}</h1>
       <p style="font-size:14px; color:#94a3b8; margin:0; line-height:1.4;">{{ t.favorites_subtitle | default('Your saved charging stations for quick access.') }}</p>
@@ -80,7 +78,7 @@ async function loadFavorites() {
           html += '<div style="font-size:12px; color:#48e260; margin-top:4px;">' + fav.available_connectors + ' connectors available</div>';
         }
         html += '</div>';
-        html += '<button onclick="removeFavorite(\'' + (fav.cp_id || fav.id) + '\')" style="background:none; border:none; color:#facc15; cursor:pointer; padding:8px; font-size:20px;" title="' + (I18N.remove | default('Remove from favorites')) + '">★</button>';
+        html += '<button onclick="removeFavorite(\'' + (fav.cp_id || fav.id) + '\')" style="background:none; border:none; color:#facc15; cursor:pointer; padding:8px; font-size:20px;" title="' + (I18N.remove | default('Remove from favorites')) + '"><span class="material-symbols-outlined">star</span></button>';
         html += '</div></div>';
       });
       contentEl.innerHTML = html;
@@ -106,7 +104,7 @@ async function removeFavorite(cpId) {
     });
 
     if (r.ok) {
-      successEl.textContent = '✓ ' + (I18N.removed | default('Removed from favorites'));
+      successEl.textContent = (I18N.removed | default('Removed from favorites'));
       successEl.style.display = 'block';
       setTimeout(function() { loadFavorites(); }, 500);
     } else {

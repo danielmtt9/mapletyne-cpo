@@ -5,7 +5,7 @@
   <!-- Header Bar -->
   <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:rgba(10, 19, 30, 0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-bottom:1px solid rgba(255, 255, 255, 0.08); position:sticky; top:0; z-index:800;">
     <a href="/app/" style="color:#94a3b8; text-decoration:none; font-size:18px; display:inline-flex; align-items:center; gap:6px; font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>{{ t.back | default('Back') }}</span>
     </a>
     <a href="/app/" style="display:flex; align-items:center; text-decoration:none;">
@@ -23,11 +23,7 @@
     
     <div style="text-align:center; margin-bottom:28px;">
       <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:16px; background:rgba(72, 226, 96, 0.12); border:1px solid rgba(72, 226, 96, 0.3); color:#48e260; margin-bottom:16px; box-shadow:0 8px 24px rgba(72, 226, 96, 0.15);">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-          <polyline points="10 17 15 12 10 7"/>
-          <line x1="15" y1="12" x2="3" y2="12"/>
-        </svg>
+        <span class="material-symbols-outlined">bolt</span>
       </div>
       <h1 style="font-size:24px; font-weight:700; letter-spacing:-0.5px; color:#ffffff; margin:0 0 6px 0; font-family:-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;">
         {{ t.welcome_back | default('Welcome Back') }}
@@ -41,7 +37,7 @@
     <div style="background:rgba(23, 35, 53, 0.75); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255, 255, 255, 0.1); border-radius:24px; padding:24px; box-shadow:0 20px 40px rgba(0, 0, 0, 0.45);">
       
       <div id="login-error" style="display:none; margin-bottom:18px; padding:12px 14px; border-radius:12px; background:rgba(239, 68, 68, 0.12); border:1px solid rgba(239, 68, 68, 0.3); color:#fca5a5; font-size:13px; line-height:1.4; align-items:center; gap:8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span class="material-symbols-outlined">error</span>
         <span id="login-error-text"></span>
       </div>
 
@@ -83,9 +79,7 @@
             type="button" 
             onclick="togglePasswordVisibility()" 
             style="position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:#94a3b8; cursor:pointer; padding:4px; display:flex; align-items:center; justify-content:center;">
-            <svg id="eye-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-            </svg>
+            <span id="eye-icon" class="material-symbols-outlined" style="font-size:18px;">visibility</span>
           </button>
         </div>
       </div>
@@ -95,12 +89,12 @@
         onclick="doLogin()" 
         style="width:100%; height:50px; border-radius:14px; background:linear-gradient(135deg, #48e260 0%, #22c55e 100%); border:none; color:#0b1a10; font-size:16px; font-weight:700; letter-spacing:0.3px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 8px 20px rgba(72, 226, 96, 0.3); transition:all 0.2s ease;">
         <span>{{ t.login | default('Sign In') }}</span>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        <span class="material-symbols-outlined">arrow_forward</span>
       </button>
 
       <!-- Keycloak Security Badge -->
       <div style="margin-top:20px; display:flex; align-items:center; justify-content:center; gap:6px; color:#64748b; font-size:12px;">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span class="material-symbols-outlined">lock</span>
         <span>Secured with Keycloak IAM & OIDC Direct Grant</span>
       </div>
 
@@ -185,12 +179,12 @@ async function doLogin() {
       err.style.display = 'flex';
       btn.disabled = false;
       btn.style.opacity = '1';
-      btn.innerHTML = '<span>' + (I18N.login || 'Sign In') + '</span> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+      btn.innerHTML = '<span>' + (I18N.login || 'Sign In') + '</span> <span class="material-symbols-outlined">arrow_forward</span>';
       return;
     }
 
     // Success redirect
-    btn.innerHTML = '<span>✓ Authenticated</span>';
+    btn.innerHTML = '<span><span class="material-symbols-outlined" style="font-size:18px;vertical-align:middle;">check_circle</span> Authenticated</span>';
     btn.style.background = '#48e260';
     setTimeout(function() {
       window.location.href = '/app/account/profile';
