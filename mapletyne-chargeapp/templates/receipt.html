@@ -4,7 +4,7 @@
 <div class="screen active" style="background:radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%);min-height:100vh;">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(16,28,51,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:800;">
     <a href="/app/" style="color:#94a3b8;text-decoration:none;font-size:18px;display:inline-flex;align-items:center;gap:6px;font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>{{ t.map | default('Map') }}</span>
     </a>
     <a href="/app/" style="display:flex;align-items:center;text-decoration:none;">
@@ -14,7 +14,7 @@
         <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
       {% endif %}
     </a>
-    <div style="width:50px;"></div>
+    <div style="width:48px;"></div>
   </div>
 
   <div class="page-content">
@@ -86,7 +86,7 @@ async function loadReceipt() {
     if (session.payment_status === 'cancelled' || session.payment_status === 'charger_offline' || (!session.started_at && session.stopped_at)) {
       document.getElementById('receipt-content').innerHTML =
         '<div style="text-align:center;padding:40px 20px;">' +
-        '<div style="font-size:48px;margin-bottom:16px;">❌</div>' +
+        '<span class="material-symbols-outlined" style="font-size:48px;display:block;margin-bottom:16px;">cancel</span>' +
         '<h2 style="font-size:20px;font-weight:700;margin-bottom:8px;">' + (I18N.session_cancelled || 'Session cancelled') + '</h2>' +
         '<p style="color:var(--text3);margin-bottom:24px;">' + (I18N.session_cancelled_desc || 'No charging occurred. You will not be charged.') + '</p>' +
         '<a href="/app/" class="btn btn-primary" style="display:inline-block;text-decoration:none;">' + (I18N.back_home || 'Back to map') + '</a>' +
@@ -168,7 +168,7 @@ async function loadReceipt() {
         '<div class="receipt-row"><span class="label">' + (I18N.receipt_reg_number || 'Company Reg. No.') + '</span><span class="value" style="font-size:12px;">' + (session.company_registration || branding?.company_registration || '—') + '</span></div>' +
       '</div>' +
       '<a href="/app/api/sessions/' + SESSION_ID + '/pdf?lang=' + encodeURIComponent('{{ lang | default("en") }}') + '" target="_blank" rel="noopener noreferrer" class="btn btn-pdf" style="margin-top:16px;">' +
-        '📄 ' + (I18N.download_pdf || 'Download PDF') +
+        '<span class="material-symbols-outlined" style="font-size:18px;">description</span> ' + (I18N.download_pdf || 'Download PDF') +
       '</a>';
   } catch(e) {
     document.getElementById('receipt-content').innerHTML =

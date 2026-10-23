@@ -4,7 +4,7 @@
 <div class="screen active" style="background:radial-gradient(circle at 50% 0%, #172a3a 0%, #0a131e 100%);min-height:100vh;">
   <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:rgba(16,28,51,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;z-index:800;">
     <a href="/app/" style="color:#94a3b8;text-decoration:none;font-size:18px;display:inline-flex;align-items:center;gap:6px;font-weight:500;">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <span class="material-symbols-outlined">arrow_back</span>
       <span>{{ t.back | default('Back') }}</span>
     </a>
     <a href="/app/" style="display:flex;align-items:center;text-decoration:none;">
@@ -35,8 +35,9 @@
             background:none; border:none; cursor:pointer; padding:4px;
             font-size:22px; line-height:1; flex-shrink:0;
             color:#64748b; transition:color 0.15s, transform 0.15s;
+            min-width:44px;min-height:44px;display:inline-flex;align-items:center;justify-content:center;
           "
-        >♡</button>
+        ><span class="material-symbols-outlined" id="fav-icon">favorite_border</span></button>
         {% endif %}
       </div>
       <h2 class="charger-title"><span class="material-symbols-outlined" style="font-size:24px;">bolt</span> {{ t.connector | default('Connector') }} {{ connector }}</h2>
@@ -50,7 +51,7 @@
       {% elif conn_status == "Preparing" %}
         <div class="status-badge preparing"><span class="live-dot" style="background:var(--yellow);"></span> {{ t.preparing | default('Cable connected') }}</div>
       {% elif conn_status in ["Charging", "SuspendedEV", "SuspendedEVSE", "Finishing"] %}
-        <div class="status-badge occupied">🔵 {{ t.occupied_in_use | default('In use') }}</div>
+        <div class="status-badge occupied"><span class="material-symbols-outlined" style="font-size:16px;">circle</span> {{ t.occupied_in_use | default('In use') }}</div>
       {% else %}
         <div class="status-badge available">● {{ t.available | default('Available') }}</div>
       {% endif %}
@@ -99,7 +100,7 @@
            data-tariff="{{ tariff_kwh_raw }}"
            data-power="{{ charger_power_kw }}"
            style="margin:20px 0; padding:16px; background:var(--card2, rgba(255,255,255,0.05)); border:1px solid var(--accent, #48e260); border-radius:16px;">
-        <div style="font-size:14px; font-weight:600; color:var(--accent,#48e260); margin-bottom:12px;">🔢 {{ t.estimator_title | default('Cost estimate') }}</div>
+        <div style="font-size:14px; font-weight:600; color:var(--accent,#48e260); margin-bottom:12px;"><span class="material-symbols-outlined" style="font-size:18px;">calculate</span> {{ t.estimator_title | default('Cost estimate') }}</div>
         <label for="kwh-slider" style="font-size:13px; color:var(--text2,#c0d0e0); display:block; margin-bottom:8px;">
           {{ t.estimator_slider_label | default('How much do you want to charge?') }}
         </label>
@@ -200,9 +201,7 @@
   <div id="cable-insertion-modal" class="cable-modal-backdrop" style="display:none;">
     <div class="cable-modal-box">
       <div class="cable-pulse-anim">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#48e260" stroke-width="2">
-          <path d="M12 2v6m0 4v10M8 8h8M6 2v4M18 2v4"/>
-        </svg>
+        <span class="material-symbols-outlined" style="font-size:48px;color:#48e260;">bolt</span>
       </div>
       <h3 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;">Plug Cable into Vehicle</h3>
       <p style="font-size:13px;color:var(--text2);margin-bottom:16px;">
@@ -270,12 +269,12 @@
       } else {
         alert(data.error || 'Could not start session');
         btn.disabled = false;
-        btn.textContent = '⚡ Start charging now →';
+        btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;">bolt</span> Start charging now →';
       }
     } catch(e) {
       alert('Connection error');
       btn.disabled = false;
-      btn.textContent = '⚡ Start charging now →';
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;">bolt</span> Start charging now →';
     }
   }
 
@@ -336,7 +335,7 @@
     var btn = document.getElementById('direct-start-btn');
     if (btn) {
       btn.disabled = false;
-      btn.textContent = '⚡ Start charging now →';
+      btn.innerHTML = '<span class="material-symbols-outlined" style="font-size:18px;">bolt</span> Start charging now →';
     }
   }
   </script>
@@ -369,7 +368,7 @@
   function updateBtn(saved) {
     var btn = document.getElementById('fav-btn');
     if (!btn) return;
-    btn.textContent = saved ? '♥' : '♡';
+    document.getElementById('fav-icon').textContent = saved ? 'favorite' : 'favorite_border';
     btn.style.color = saved ? '#ef4444' : '#64748b';
     btn.style.transform = saved ? 'scale(1.15)' : 'scale(1)';
     btn.title = saved
