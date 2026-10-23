@@ -142,7 +142,7 @@ async function doSave() {
       errEl.style.display = 'block';
       return;
     }
-    successEl.textContent = '✓ ' + (I18N.saved || 'Profile updated successfully');
+    successEl.textContent = (I18N.saved || 'Profile updated successfully');
     successEl.style.display = 'block';
     hideEdit();
     setTimeout(function() { window.location.reload(); }, 600);
