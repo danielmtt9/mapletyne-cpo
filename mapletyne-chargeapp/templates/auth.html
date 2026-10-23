@@ -344,7 +344,13 @@ async function verifyOtp() {
 async function submitPhoneWithEmail(skip) {
   if (_submitPending) return;
   var email = skip ? null : (document.getElementById('email-receipt-input').value.trim() || null);
+  // driver_phone is set in verifyOtp() after successful OTP verification
   var phone = localStorage.getItem('driver_phone');
+  if (!phone) {
+    errEl.innerHTML = '<div class="error-card">' + (I18N.err_session || 'Session not initialized. Please restart.') + '</div>';
+    _submitPending = false;
+    return;
+  }
   var errEl = document.getElementById('email-receipt-error');
   errEl.innerHTML = '';
   _submitPending = true;
@@ -354,7 +360,8 @@ async function submitPhoneWithEmail(skip) {
   if (continueBtn) { continueBtn.disabled = true; }
   if (skipBtn) { skipBtn.disabled = true; }
   // Use the connector stored in sessionStorage (may differ from CONNECTOR if redirected with wrong URL)
-  var connectorToUse = parseInt(sessionStorage.getItem('auth_connector') || CONNECTOR, 10);
+  var storedConnector = sessionStorage.getItem('auth_connector');
+  var connectorToUse = storedConnector ? parseInt(storedConnector, 10) : (typeof CONNECTOR === 'number' ? CONNECTOR : parseInt(CONNECTOR, 10));
   try {
     var apiPrefix = window.location.pathname.startsWith('/app') ? '/app' : '';
     var r = await fetch(apiPrefix + '/api/sessions/create', {
