@@ -34,21 +34,26 @@ async function tryRefreshToken(): Promise<string | null> {
     const newToken = data.access_token || data.token;
     if (newToken) {
       localStorage.setItem('opencpo_admin_jwt', newToken);
+      localStorage.setItem('mapletyne_admin_jwt', newToken);
       if (data.refresh_token) {
         localStorage.setItem('opencpo_refresh_token', data.refresh_token);
+        localStorage.setItem('mapletyne_refresh_token', data.refresh_token);
       }
       return newToken;
     }
   } catch {
     localStorage.removeItem('opencpo_admin_jwt');
+    localStorage.removeItem('mapletyne_admin_jwt');
     localStorage.removeItem('opencpo_refresh_token');
+    localStorage.removeItem('mapletyne_refresh_token');
     localStorage.removeItem('opencpo_user');
+    localStorage.removeItem('mapletyne_user');
   }
   return null;
 }
 
 export async function request<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-  const token = localStorage.getItem('opencpo_admin_jwt');
+  const token = localStorage.getItem('opencpo_admin_jwt') || localStorage.getItem('mapletyne_admin_jwt');
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...(options.headers as Record<string, string>),

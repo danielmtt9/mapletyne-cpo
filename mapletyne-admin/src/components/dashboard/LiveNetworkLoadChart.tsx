@@ -159,7 +159,7 @@ export const LiveNetworkLoadChart: React.FC<LiveNetworkLoadChartProps> = ({
         splitLine: {
           show: true,
           lineStyle: {
-            color: 'rgba(255, 255, 255, 0.04)',
+            color: 'rgba(148, 163, 184, 0.2)',
             type: 'dashed',
           },
         },
@@ -227,12 +227,12 @@ export const LiveNetworkLoadChart: React.FC<LiveNetworkLoadChartProps> = ({
   return (
     <div className="relative w-full h-full flex flex-col">
       <div className="absolute top-1 right-2 z-10 flex items-center gap-2">
-        <div className="text-xs font-mono text-blue-400 font-bold bg-slate-900/80 px-2.5 py-1 border border-blue-500/20 rounded-lg flex items-center gap-1.5 shadow-apple-sm">
-          <span className={`w-2 h-2 rounded-full ${currentLoadKw > 0 ? 'bg-blue-400 animate-pulse' : 'bg-emerald-400'}`} />
+        <div className="text-xs font-mono text-blue-600 dark:text-blue-400 font-bold bg-surface-container-high px-2.5 py-1 border border-outline rounded-lg flex items-center gap-1.5 shadow-sm">
+          <span className={`w-2 h-2 rounded-full ${currentLoadKw > 0 ? 'bg-blue-500 animate-pulse' : 'bg-emerald-500'}`} />
           <span>Live: {currentLoadKw > 0 ? `${currentLoadKw.toFixed(1)} kW` : '0.0 kW'}</span>
         </div>
         {activeSessions > 0 && (
-          <div className="text-xs font-mono text-slate-300 font-medium bg-slate-900/80 px-2.5 py-1 border border-white/10 rounded-lg hidden sm:flex items-center gap-1 shadow-apple-sm">
+          <div className="text-xs font-mono text-on-surface-variant font-medium bg-surface-container-high px-2.5 py-1 border border-outline rounded-lg hidden sm:flex items-center gap-1 shadow-sm">
             <span>{activeSessions} {activeSessions === 1 ? 'Session' : 'Sessions'}</span>
           </div>
         )}

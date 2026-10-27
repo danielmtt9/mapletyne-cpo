@@ -70,6 +70,17 @@ function getSystemTheme(): ResolvedTheme {
   return 'light';
 }
 
+function isLightColor(color?: string): boolean {
+  if (!color || !color.startsWith('#')) return false;
+  const hex = color.replace('#', '');
+  if (hex.length !== 6 && hex.length !== 3) return false;
+  const r = parseInt(hex.length === 3 ? hex[0] + hex[0] : hex.substring(0, 2), 16);
+  const g = parseInt(hex.length === 3 ? hex[1] + hex[1] : hex.substring(2, 4), 16);
+  const b = parseInt(hex.length === 3 ? hex[2] + hex[2] : hex.substring(4, 6), 16);
+  const luma = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+  return luma >= 0.70;
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     const saved = localStorage.getItem('mapletyne_theme') as ThemeMode;
@@ -100,13 +111,100 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   }, []);
 
+  const updateFavicon = (iconUrl: string) => {
+    if (!iconUrl) return;
+    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.href = iconUrl;
+  };
+
+  const applyTokens = useCallback((cfg: BrandingConfig, resolved: ResolvedTheme) => {
+    const root = document.documentElement;
+
+    const isCustomPrimary = !!cfg.primary_color && cfg.primary_color.toLowerCase() !== defaultBranding.primary_color?.toLowerCase();
+    const isCustomAccent = !!cfg.accent_color && cfg.accent_color.toLowerCase() !== defaultBranding.accent_color?.toLowerCase();
+    const isCustomBg = !!cfg.bg_color && cfg.bg_color.toLowerCase() !== defaultBranding.bg_color?.toLowerCase();
+    const isCustomSecondary = !!cfg.secondary_color && cfg.secondary_color.toLowerCase() !== defaultBranding.secondary_color?.toLowerCase();
+    const isCustomCard = !!cfg.card_color && cfg.card_color.toLowerCase() !== defaultBranding.card_color?.toLowerCase();
+
+    // Primary & Status: If custom, apply to root unless contrast would be broken.
+    if (isCustomPrimary) {
+      if (resolved === 'light' && isLightColor(cfg.primary_color)) {
+        // Enforce M3 Forest Emerald #006948 in light mode for AA contrast against white text
+        root.style.removeProperty('--primary');
+        root.style.removeProperty('--status-online');
+      } else {
+        root.style.setProperty('--primary', cfg.primary_color!);
+        root.style.setProperty('--status-online', cfg.primary_color!);
+      }
+    } else {
+      root.style.removeProperty('--primary');
+      root.style.removeProperty('--status-online');
+    }
+
+    // Accent / Tertiary
+    if (isCustomAccent) {
+      root.style.setProperty('--tertiary', cfg.accent_color!);
+    } else {
+      root.style.removeProperty('--tertiary');
+    }
+
+    // Background, secondary, and card properties
+    if (resolved === 'dark') {
+      // In dark mode, clear inline styles so .dark in globals.css can take effect without collision
+      root.style.removeProperty('--background');
+      root.style.removeProperty('--secondary');
+      root.style.removeProperty('--card');
+      root.style.removeProperty('--sidebar-bg');
+    } else {
+      // In light mode: only set background / card if custom AND genuinely light.
+      // NEVER set dark colors (like #0b1326 or #171f33) on light mode background or card.
+      if (isCustomBg && isLightColor(cfg.bg_color)) {
+        root.style.setProperty('--background', cfg.bg_color!);
+      } else {
+        root.style.removeProperty('--background');
+      }
+
+      if (isCustomSecondary) {
+        root.style.setProperty('--secondary', cfg.secondary_color!);
+      } else {
+        root.style.removeProperty('--secondary');
+      }
+
+      if (isCustomCard && isLightColor(cfg.card_color)) {
+        root.style.setProperty('--card', cfg.card_color!);
+      } else {
+        root.style.removeProperty('--card');
+      }
+    }
+
+    const displayTitle = cfg.app_title || cfg.company_name || 'Mapletyne EMS';
+    const displayTagline = cfg.portal_tagline || 'Executive SaaS EV Charging Management';
+    document.title = cfg.company_name ? `${cfg.company_name} — ${displayTitle}` : `${displayTitle} — ${displayTagline}`;
+    
+    const dynamicIcon = cfg.favicon_url || cfg.logo_data_uri || cfg.logo_url;
+    if (dynamicIcon) {
+      updateFavicon(dynamicIcon);
+    }
+  }, []);
+
   const setTheme = useCallback((newTheme: ThemeMode) => {
     setThemeState(newTheme);
     localStorage.setItem('mapletyne_theme', newTheme);
     const resolved = newTheme === 'system' ? getSystemTheme() : newTheme;
     setResolvedTheme(resolved);
     applyThemeClass(resolved);
-  }, [applyThemeClass]);
+    applyTokens(branding, resolved);
+    
+    // Notify external listeners
+    window.dispatchEvent(new CustomEvent('mapletyne-theme-changed', { 
+      detail: { theme: newTheme, resolvedTheme: resolved } 
+    }));
+  }, [applyThemeClass, applyTokens, branding]);
 
   const toggleTheme = useCallback(() => {
     const nextTheme: ThemeMode = resolvedTheme === 'dark' ? 'light' : 'dark';
@@ -122,57 +220,24 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         const sys = getSystemTheme();
         setResolvedTheme(sys);
         applyThemeClass(sys);
+        applyTokens(branding, sys);
+        
+        window.dispatchEvent(new CustomEvent('mapletyne-theme-changed', { 
+          detail: { theme: 'system', resolvedTheme: sys } 
+        }));
       }
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, applyThemeClass]);
+  }, [theme, applyThemeClass, applyTokens, branding]);
 
   // Initial application of theme on mount
   useEffect(() => {
     const resolved = theme === 'system' ? getSystemTheme() : theme;
     setResolvedTheme(resolved);
     applyThemeClass(resolved);
-  }, [theme, applyThemeClass]);
-
-  const updateFavicon = (iconUrl: string) => {
-    if (!iconUrl) return;
-    let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement;
-    if (!link) {
-      link = document.createElement('link');
-      link.rel = 'icon';
-      document.head.appendChild(link);
-    }
-    link.href = iconUrl;
-  };
-
-  const applyTokens = useCallback((cfg: BrandingConfig) => {
-    const root = document.documentElement;
-    if (cfg.primary_color) {
-      root.style.setProperty('--primary', cfg.primary_color);
-      root.style.setProperty('--status-online', cfg.primary_color);
-    }
-    if (cfg.accent_color) {
-      root.style.setProperty('--tertiary', cfg.accent_color);
-    }
-    if (cfg.secondary_color) {
-      root.style.setProperty('--secondary', cfg.secondary_color);
-    }
-    if (cfg.bg_color) {
-      root.style.setProperty('--background', cfg.bg_color);
-    }
-    if (cfg.card_color) {
-      root.style.setProperty('--card', cfg.card_color);
-    }
-    const displayTitle = cfg.app_title || cfg.company_name || 'Mapletyne EMS';
-    const displayTagline = cfg.portal_tagline || 'Executive SaaS EV Charging Management';
-    document.title = cfg.company_name ? `${cfg.company_name} — ${displayTitle}` : `${displayTitle} — ${displayTagline}`;
-    
-    const dynamicIcon = cfg.favicon_url || cfg.logo_data_uri || cfg.logo_url;
-    if (dynamicIcon) {
-      updateFavicon(dynamicIcon);
-    }
-  }, []);
+    applyTokens(branding, resolved);
+  }, [theme, applyThemeClass, applyTokens, branding]);
 
   const refreshBranding = async () => {
     try {
@@ -197,16 +262,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       };
       setBranding(updated);
       localStorage.setItem('opencpo_branding', JSON.stringify(updated));
-      applyTokens(updated);
+      applyTokens(updated, resolvedTheme);
     } catch {
       // Offline fallback
     }
   };
 
   useEffect(() => {
-    applyTokens(branding);
     refreshBranding();
-  }, [applyTokens]);
+  }, []);
 
   const currencySymbol = branding.currency_symbol || (branding.currency === 'EUR' ? '€' : branding.currency === 'GBP' ? '£' : '$');
 

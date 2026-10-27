@@ -109,6 +109,18 @@ async def create_keycloak_user(
         if not user_id:
             raise ValueError("Created user in Keycloak but failed to resolve user ID")
 
+        # Explicitly ensure password credentials are activated and non-temporary
+        try:
+            reset_pwd_url = f"{ADMIN_USERS_URL}/{user_id}/reset-password"
+            pwd_payload = {
+                "type": "password",
+                "value": password,
+                "temporary": False,
+            }
+            await client.put(reset_pwd_url, json=pwd_payload, headers=headers)
+        except Exception as pwd_err:
+            logger.warning(f"Keycloak explicit reset-password warning: {pwd_err}")
+
         # 3. Resolve role and assign
         role_resp = await client.get(f"{ADMIN_ROLES_URL}/{role}", headers=headers)
         if role_resp.status_code == 200:

@@ -39,7 +39,7 @@ window.addEventListener('hashchange', checkHashTab);
 
 // ── Pin SVG ─────────────────────────────────────────────────────
 function pinSVG(color) {
-  return '<div style="width:32px;height:32px;border-radius:50%;background:' + color + ';color:#0b0f19;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4);"><span class="material-symbols-outlined" style="font-size:18px;">ev_station</span></div>';
+  return '<div style="width:32px;height:32px;border-radius:50%;background:' + color + ';color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.4);"><span class="material-symbols-outlined" style="font-size:18px;">ev_station</span></div>';
 }
 
 function statusColor(status) {
@@ -56,13 +56,63 @@ var map, userMarker, chargerLayer, tileLayer;
 var chargerCache = { data: null, ts: 0 };
 var CACHE_TTL = 30000;
 var fetchDebounce = null;
-var isDark = true;
 
-var TILE_DARK  = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-var TILE_LIGHT = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-var TILE_ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+var TILE_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+var TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+var TILE_ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+function getStoredTheme() {
+  try {
+    var saved = localStorage.getItem('chargeapp_theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+  } catch (e) {}
+  return 'dark'; // ADR-004 default for driver mobile PWA
+}
+
+function applyTheme(theme) {
+  var isDarkTheme = theme === 'dark';
+  var root = document.documentElement;
+  var body = document.body;
+  var icon = document.getElementById('theme-toggle-icon');
+
+  if (isDarkTheme) {
+    root.classList.remove('light');
+    root.classList.add('dark');
+    root.style.colorScheme = 'dark';
+    if (body) {
+      body.classList.remove('light');
+      body.classList.add('dark');
+    }
+    if (icon) icon.textContent = 'light_mode';
+  } else {
+    root.classList.remove('dark');
+    root.classList.add('light');
+    root.style.colorScheme = 'light';
+    if (body) {
+      body.classList.remove('dark');
+      body.classList.add('light');
+    }
+    if (icon) icon.textContent = 'dark_mode';
+  }
+
+  if (tileLayer) {
+    tileLayer.setUrl(isDarkTheme ? TILE_DARK : TILE_LIGHT);
+  }
+  try {
+    localStorage.setItem('chargeapp_theme', theme);
+  } catch (e) {}
+}
+
+function toggleTheme() {
+  var current = getStoredTheme();
+  var next = current === 'dark' ? 'light' : 'dark';
+  applyTheme(next);
+}
 
 function initMap() {
+  var initialTheme = getStoredTheme();
+  var isDarkTheme = initialTheme === 'dark';
+
   map = L.map('charger-map', {
     center: [52.3942, 4.8666],
     zoom: 14,
@@ -70,9 +120,15 @@ function initMap() {
     attributionControl: true,
   });
 
-  tileLayer = L.tileLayer(TILE_DARK, { attribution: TILE_ATTR, maxZoom: 19 });
+  tileLayer = L.tileLayer(isDarkTheme ? TILE_DARK : TILE_LIGHT, { 
+    attribution: TILE_ATTR, 
+    subdomains: 'abcd',
+    maxZoom: 19 
+  });
   tileLayer.addTo(map);
   chargerLayer = L.layerGroup().addTo(map);
+
+  applyTheme(initialTheme);
 
   map.on('moveend', scheduleFetch);
   map.on('zoomend', scheduleFetch);
@@ -100,11 +156,6 @@ function initMap() {
   // Show locate banner, let user trigger location manually
   document.getElementById('locate-banner').classList.remove('hidden');
   fetchNearby();
-}
-
-function toggleTheme() {
-  isDark = !isDark;
-  tileLayer.setUrl(isDark ? TILE_DARK : TILE_LIGHT);
 }
 
 function scheduleFetch() {

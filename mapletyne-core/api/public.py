@@ -9,12 +9,13 @@ import logging
 import os
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, HTTPException, Request, Response
+from fastapi import APIRouter, HTTPException, Request, Response, Depends
 from typing import Optional
 
 from state.postgres import db
 from state import charger_registry
 from state.redis import redis_state
+from api.api_key_auth import management_auth, require_site_operator
 
 logger = logging.getLogger(__name__)
 
@@ -47,11 +48,11 @@ async def get_public_branding():
         "logo_url": logo_url,
         "logo_data_uri": logo_data_uri,
         "favicon_url": favicon_url,
-        "primary_color": branding.get("primary_color", "#4edea3"),
-        "secondary_color": branding.get("secondary_color", "#1e293b"),
-        "accent_color": branding.get("accent_color", "#3b82f6"),
-        "bg_color": branding.get("bg_color", "#0b1326"),
-        "card_color": branding.get("card_color", "#171f33"),
+        "primary_color": branding.get("primary_color", "#006948"),
+        "secondary_color": branding.get("secondary_color", "#0f172a"),
+        "accent_color": branding.get("accent_color", "#0284c7"),
+        "bg_color": branding.get("bg_color", "#f8fafc"),
+        "card_color": branding.get("card_color", "#ffffff"),
         "support_email": branding.get("support_email", "") or org.get("invoicing_email", ""),
         "legal_entity": branding.get("legal_entity", "") or org.get("legal_entity", ""),
         "vat_number": branding.get("vat_number", "") or org.get("tax_vat_id", ""),
@@ -183,9 +184,14 @@ async def get_public_charger(cp_id: str):
     }
 
 
-@router.post("/chargers/{cp_id}/connectors/{connector_id}/unlock")
+@router.post(
+    "/chargers/{cp_id}/connectors/{connector_id}/unlock",
+    dependencies=[Depends(require_site_operator)],
+)
 async def unlock_charger_connector(cp_id: str, connector_id: int):
-    """Emergency or manual unlock for a charger connector."""
+    """Emergency or manual unlock for a charger connector.
+    Restricted to Site Operators / CPO Admins.
+    """
     from state.charger_registry import send_unlock, is_connected
     if not is_connected(cp_id):
         logger.warning("UnlockConnector requested for disconnected charger %s", cp_id)
@@ -199,7 +205,7 @@ async def unlock_charger_connector(cp_id: str, connector_id: int):
 # Operators plug in their own payment provider. This stub handles the common
 # flow: update payment_status, trigger RemoteStartTransaction on success.
 
-@webhook_router.post("/api/payments/webhook")
+@webhook_router.post("/api/payments/webhook", dependencies=[Depends(management_auth)])
 async def payment_webhook(request: Request):
     """
     Generic payment webhook handler.

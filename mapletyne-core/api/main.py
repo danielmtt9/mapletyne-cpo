@@ -19,11 +19,11 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
-# CORS (GAP-SEC-14 Strict CORS allowlist without wildcard *)
+# CORS (GAP-SEC-14 Strict CORS allowlist without insecure public tunnel wildcards)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=config.api.cors_origins,
-    allow_origin_regex=r"^https?://([a-zA-Z0-9-]+\.)*(mapletyne\.com|trycloudflare\.com)(:\d+)?$",
+    allow_origin_regex=r"^https?://([a-zA-Z0-9-]+\.)*(mapletyne\.com|otaskies\.com|localhost|127\.0\.0\.1)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,8 +34,11 @@ app.add_middleware(
     RateLimitMiddleware,
     limits={
         "/ocpi": 60,
-        "/api/public": 60,
-        "/api/payments": 60,
+        "/api/v1/public/auth/send-otp": int(os.getenv("RATE_LIMIT_OTP", "10")),
+        "/api/v1/public/account/register": int(os.getenv("RATE_LIMIT_REGISTER", "15")),
+        "/api/v1/public/account/login": int(os.getenv("RATE_LIMIT_LOGIN", "20")),
+        "/api/v1/public/payments": 60,
+        "/api/v1/public": 60,
         "/api/v1/admin/auth": int(os.getenv("RATE_LIMIT_AUTH", "300")),
     },
     default_limit=int(os.getenv("RATE_LIMIT_DEFAULT", "120")),

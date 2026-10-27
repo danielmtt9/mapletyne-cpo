@@ -17,7 +17,7 @@ from typing import AsyncGenerator
 import jwt
 from datetime import timedelta
 from fastapi import APIRouter, Depends, Query, Request, HTTPException
-from api.api_key_auth import management_auth
+from api.api_key_auth import management_auth, require_site_operator, require_admin
 from api.admin_auth import JWT_SECRET, JWT_ALGO
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
@@ -150,7 +150,7 @@ async def event_stream(
 
 # ── Event History ────────────────────────────────────────────────────────
 
-@router.get("/history")
+@router.get("/history", dependencies=[Depends(require_site_operator)])
 async def event_history(
     since: str = Query("-", description="Start (Redis stream ID or '-')"),
     until: str = Query("+", description="End (Redis stream ID or '+')"),
@@ -191,7 +191,7 @@ async def event_history(
 
 # ── Stream Info ──────────────────────────────────────────────────────────
 
-@router.get("/info")
+@router.get("/info", dependencies=[Depends(require_site_operator)])
 async def stream_info():
     """Event bus health — stream length, consumer groups, lag."""
     bus = get_event_bus()
@@ -200,7 +200,7 @@ async def stream_info():
 
 # ── Single Resource Live Streams ─────────────────────────────────────────
 
-@router.get("/chargers/{cp_id}/live")
+@router.get("/chargers/{cp_id}/live", dependencies=[Depends(require_site_operator)])
 async def charger_live(cp_id: str, request: Request):
     """Live SSE stream for a single charger — only new events, no history replay."""
     async def generate():
@@ -276,7 +276,7 @@ class WebhookResponse(BaseModel):
     created_at: str
 
 
-@router.post("/webhooks")
+@router.post("/webhooks", dependencies=[Depends(require_admin)])
 async def create_webhook(webhook: WebhookCreate):
     """Register a webhook endpoint for event delivery."""
     async with db.write() as conn:
@@ -296,7 +296,7 @@ async def create_webhook(webhook: WebhookCreate):
     }
 
 
-@router.delete("/webhooks/{webhook_id}")
+@router.delete("/webhooks/{webhook_id}", dependencies=[Depends(require_admin)])
 async def delete_webhook(webhook_id: str):
     """Remove a webhook."""
     async with db.write() as conn:

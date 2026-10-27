@@ -316,7 +316,7 @@ async function pollSession() {
 function initSSE() {
   if (!('EventSource' in window)) return;
   try {
-    _eventSource = new EventSource('/api/v1/events/stream?session_id=' + SESSION_ID);
+    _eventSource = new EventSource('/api/v1/events/sessions/' + encodeURIComponent(SESSION_ID) + '/live');
     _eventSource.onmessage = function(event) {
       try {
         var data = JSON.parse(event.data);

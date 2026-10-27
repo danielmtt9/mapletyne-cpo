@@ -38,6 +38,42 @@
   --font-mono: 'Roboto Mono', monospace;
 }
 
+.light, html.light, body.light {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --bg-deep: #e2e8f0;
+  --card: #ffffff;
+  --card2: rgba(0, 0, 0, 0.04);
+  --card-hover: #f1f5f9;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --accent: #006948;
+  --accent2: #0284c7;
+  --electric-blue: #0284c7;
+  --on-accent: #ffffff;
+  --green: #059669;
+  --green-bright: #059669;
+  --red: #dc2626;
+  --yellow: #d97706;
+  --text: #0f172a;
+  --text1: #0f172a;
+  --text2: #475569;
+  --text3: #64748b;
+}
+
+.light .card, html.light .card, body.light .card {
+  background: var(--card);
+  border-color: var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light #app-nav, html.light #app-nav, body.light #app-nav {
+  background: var(--bg2);
+  border-top-color: var(--border);
+}
+
 html, body {
   height: 100%;
   background: var(--bg);

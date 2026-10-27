@@ -1,6 +1,8 @@
 # Environment & Secrets
 .env
 *.env.update-bak
+.env.local
+*.env.local
 .agent/
 .agents/
 _bmad/

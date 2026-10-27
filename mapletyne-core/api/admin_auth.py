@@ -383,16 +383,17 @@ async def register_verify(body: RegisterVerifyRequest):
     # 2. Synchronize user record in PostgreSQL ocpp.users
     user_id = 1
     role_name = "admin" if role == "cpo-admin" else ("operator" if role == "site-operator" else ("fleet" if role == "fleet-manager" else "driver"))
+    password_hash = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
     try:
         async with db.write() as conn:
             row = await conn.fetchrow(
                 """
                 INSERT INTO ocpp.users (email, name, role, password_hash)
-                VALUES ($1, $2, $3, '')
-                ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name, role = EXCLUDED.role
+                VALUES ($1, $2, $3, $4)
+                ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name, role = EXCLUDED.role, password_hash = EXCLUDED.password_hash
                 RETURNING id
                 """,
-                email, name, role_name
+                email, name, role_name, password_hash
             )
             if row:
                 user_id = row["id"]

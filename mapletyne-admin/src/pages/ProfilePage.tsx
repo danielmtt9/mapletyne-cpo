@@ -6,7 +6,7 @@ import { api } from '@/lib/api-client';
 
 export const ProfilePage: React.FC = () => {
   const { user } = useAuth();
-  const { branding } = useTheme();
+  const { branding, theme, resolvedTheme, setTheme } = useTheme();
   const queryClient = useQueryClient();
 
   const [email, setEmail] = useState(user?.email || 'elena.vance@mapletyne.com');
@@ -124,6 +124,63 @@ export const ProfilePage: React.FC = () => {
                 <span className="text-on-surface-variant">Last Dispatch IP</span>
                 <span className="font-mono text-sm text-on-surface">192.168.1.104</span>
               </div>
+            </div>
+          </div>
+
+          {/* Theme & Workspace Appearance Section */}
+          <div className="space-y-4 pt-4 border-t border-outline/30">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xl font-headline font-bold text-on-surface flex items-center gap-2">
+                <span className="material-symbols-outlined text-xl text-primary" aria-hidden="true">palette</span>
+                Workspace Appearance
+              </h3>
+              <span className="text-xs font-mono px-2 py-0.5 rounded bg-surface-container-high border border-outline text-on-surface-variant">
+                Active: {resolvedTheme}
+              </span>
+            </div>
+            <p className="text-xs text-on-surface-variant font-body">
+              Select your operator interface theme mode or synchronize with your operating system settings.
+            </p>
+            <div className="grid grid-cols-3 gap-2 p-1 bg-surface-container-high/60 border border-outline rounded-xl">
+              <button
+                type="button"
+                onClick={() => setTheme('light')}
+                className={`flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg text-xs font-semibold transition-all min-h-[44px] cursor-pointer ${
+                  theme === 'light'
+                    ? 'bg-surface-container text-primary shadow-sm border border-outline font-bold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50'
+                }`}
+                title="Switch to Light Theme"
+              >
+                <span className="material-symbols-outlined text-xl" aria-hidden="true">light_mode</span>
+                <span>Light</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setTheme('dark')}
+                className={`flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg text-xs font-semibold transition-all min-h-[44px] cursor-pointer ${
+                  theme === 'dark'
+                    ? 'bg-surface-container text-primary shadow-sm border border-outline font-bold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50'
+                }`}
+                title="Switch to Dark Theme"
+              >
+                <span className="material-symbols-outlined text-xl" aria-hidden="true">dark_mode</span>
+                <span>Dark</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setTheme('system')}
+                className={`flex flex-col items-center justify-center gap-1.5 py-3 px-2 rounded-lg text-xs font-semibold transition-all min-h-[44px] cursor-pointer ${
+                  theme === 'system'
+                    ? 'bg-surface-container text-primary shadow-sm border border-outline font-bold'
+                    : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container/50'
+                }`}
+                title="Synchronize with OS Theme"
+              >
+                <span className="material-symbols-outlined text-xl" aria-hidden="true">settings_brightness</span>
+                <span>System</span>
+              </button>
             </div>
           </div>
         </div>

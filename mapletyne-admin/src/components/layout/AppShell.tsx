@@ -9,7 +9,7 @@ export const AppShell: React.FC = () => {
   const { isConnected } = useLiveEvents();
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isCommandOpen, setIsCommandOpen] = useState(false);
-  const token = localStorage.getItem('opencpo_admin_jwt');
+  const token = localStorage.getItem('opencpo_admin_jwt') || localStorage.getItem('mapletyne_admin_jwt');
 
   if (!token) {
     return <Navigate to="/login" replace />;

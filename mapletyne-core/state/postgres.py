@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 # Multi-tenant and RBAC Session Context (GAP-SEC-10)
 DEFAULT_TENANT_ID = "00000000-0000-0000-0000-000000000001"
 current_tenant_id: ContextVar[str] = ContextVar("current_tenant_id", default=DEFAULT_TENANT_ID)
-current_user_role: ContextVar[str] = ContextVar("current_user_role", default="cpo-admin")
+current_user_role: ContextVar[str] = ContextVar("current_user_role", default="anonymous")
 current_user_id: ContextVar[str] = ContextVar("current_user_id", default="")
 
 
@@ -95,7 +95,17 @@ class Database:
                 )
             except Exception as e:
                 logger.debug(f"Could not inject session context: {e}")
-            yield conn
+            try:
+                yield conn
+            finally:
+                try:
+                    await conn.execute(
+                        "RESET app.current_tenant_id; "
+                        "RESET app.current_user_role; "
+                        "RESET app.current_user_id;"
+                    )
+                except Exception:
+                    pass
 
     @asynccontextmanager
     async def read(self) -> AsyncIterator[asyncpg.Connection]:
@@ -112,7 +122,17 @@ class Database:
                 )
             except Exception as e:
                 logger.debug(f"Could not inject session context: {e}")
-            yield conn
+            try:
+                yield conn
+            finally:
+                try:
+                    await conn.execute(
+                        "RESET app.current_tenant_id; "
+                        "RESET app.current_user_role; "
+                        "RESET app.current_user_id;"
+                    )
+                except Exception:
+                    pass
 
     @asynccontextmanager
     async def transaction(self) -> AsyncIterator[asyncpg.Connection]:

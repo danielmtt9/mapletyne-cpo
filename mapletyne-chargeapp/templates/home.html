@@ -71,26 +71,26 @@
     </div>
 
     <!-- Theme toggle -->
-    <button class="theme-toggle" id="theme-toggle" title="{{ t.theme_toggle | default('Toggle theme') }}" style="background:rgba(23,35,53,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 4px 16px rgba(0,0,0,0.4);">
-      <span class="material-symbols-outlined">light_mode</span>
+    <button class="theme-toggle" id="theme-toggle" title="{{ t.theme_toggle | default('Toggle theme') }}" style="background:var(--panel-bg);backdrop-filter:blur(16px);border:1px solid var(--panel-border);box-shadow:var(--panel-shadow);color:var(--text);">
+      <span class="material-symbols-outlined" id="theme-toggle-icon">light_mode</span>
     </button>
 
     <!-- Zoom controls -->
     <div class="map-zoom-controls">
-      <button class="map-zoom-btn" id="zoom-in" style="background:rgba(23,35,53,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);">+</button>
-      <button class="map-zoom-btn" id="zoom-out" style="background:rgba(23,35,53,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);">−</button>
+      <button class="map-zoom-btn" id="zoom-in" style="background:var(--panel-bg);backdrop-filter:blur(16px);border:1px solid var(--panel-border);color:var(--text);">+</button>
+      <button class="map-zoom-btn" id="zoom-out" style="background:var(--panel-bg);backdrop-filter:blur(16px);border:1px solid var(--panel-border);color:var(--text);">−</button>
     </div>
 
     <!-- Locate me button -->
-    <button class="map-geo-btn" id="geo-btn" title="{{ t.my_location | default('My location') }}" style="background:rgba(23,35,53,0.85);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.12);box-shadow:0 4px 16px rgba(0,0,0,0.4);">
+    <button class="map-geo-btn" id="geo-btn" title="{{ t.my_location | default('My location') }}" style="background:var(--panel-bg);backdrop-filter:blur(16px);border:1px solid var(--panel-border);box-shadow:var(--panel-shadow);color:var(--text);">
       <span class="material-symbols-outlined">my_location</span>
     </button>
 
     <!-- Charger count badge -->
     <div id="charger-badge" style="
       position:absolute; top:12px; left:12px; z-index:1100;
-      background:rgba(23,35,53,0.85); border:1px solid rgba(255,255,255,0.12);
-      border-radius:20px; padding:6px 14px; box-shadow:0 4px 16px rgba(0,0,0,0.4);
+      background:var(--panel-bg); border:1px solid var(--panel-border);
+      border-radius:20px; padding:6px 14px; box-shadow:var(--panel-shadow);
       backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
       font-size:12px; font-weight:600; color:var(--accent,#48e260);
       opacity:0; transition:opacity 0.5s; pointer-events:none;

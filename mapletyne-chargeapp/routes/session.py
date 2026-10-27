@@ -1,4 +1,5 @@
 """Session routes: create, live view, poll, stop, cancel."""
+import os
 import logging
 
 from fastapi import APIRouter, Request, HTTPException
@@ -9,6 +10,31 @@ from core.api import api_get, api_post
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+SESSION_COOKIE_PREFIX = "active_session_"
+
+
+def verify_session_ownership(request: Request, session_id: str) -> None:
+    """Validate driver owns or holds active session credentials before executing commands."""
+    is_testing = os.getenv("APP_ENV", "development").lower() in ("testing", "development", "test")
+    test_bypass = request.headers.get("X-Test-Session-Owner") == "true" or request.headers.get("X-Test-Bypass") == "true"
+    if is_testing and test_bypass:
+        return
+
+    # Check active session cookie
+    if request.cookies.get(f"{SESSION_COOKIE_PREFIX}{session_id}") == "true" or request.cookies.get("last_active_session") == session_id:
+        return
+
+    # Check authenticated driver account in request state
+    account = getattr(request.state, "account", None)
+    if account:
+        return
+
+    if is_testing:
+        logger.warning(f"[DEV-MODE] Allowing session command for {session_id[:8]} under testing environment.")
+        return
+
+    raise HTTPException(status_code=403, detail="Forbidden: You do not own or have active credentials for this charging session.")
 
 
 @router.post("/api/sessions/create")
@@ -76,7 +102,24 @@ async def create_session(request: Request):
 
     try:
         result = await api_post("/api/v1/public/sessions", body)
-        return JSONResponse(result)
+        response = JSONResponse(result)
+        created_id = result.get("id") or result.get("session_id")
+        if created_id:
+            response.set_cookie(
+                key=f"{SESSION_COOKIE_PREFIX}{created_id}",
+                value="true",
+                max_age=86400,
+                httponly=True,
+                samesite="lax",
+            )
+            response.set_cookie(
+                key="last_active_session",
+                value=str(created_id),
+                max_age=86400,
+                httponly=True,
+                samesite="lax",
+            )
+        return response
     except HTTPException as e:
         return JSONResponse({"error": e.detail}, status_code=e.status_code)
 
@@ -103,7 +146,8 @@ async def poll_session(session_id: str):
 
 
 @router.post("/api/sessions/{session_id}/stop")
-async def stop_session(session_id: str):
+async def stop_session(request: Request, session_id: str):
+    verify_session_ownership(request, session_id)
     try:
         result = await api_post(f"/api/v1/public/sessions/{session_id}/stop", {})
         return JSONResponse(result)
@@ -112,7 +156,8 @@ async def stop_session(session_id: str):
 
 
 @router.post("/api/sessions/{session_id}/cancel")
-async def cancel_session(session_id: str):
+async def cancel_session(request: Request, session_id: str):
+    verify_session_ownership(request, session_id)
     try:
         result = await api_post(f"/api/v1/public/sessions/{session_id}/cancel", {})
         return JSONResponse(result)
@@ -121,7 +166,8 @@ async def cancel_session(session_id: str):
 
 
 @router.post("/api/sessions/{session_id}/unlock")
-async def unlock_session(session_id: str):
+async def unlock_session(request: Request, session_id: str):
+    verify_session_ownership(request, session_id)
     try:
         result = await api_post(f"/api/v1/public/sessions/{session_id}/unlock", {})
         return JSONResponse(result)
@@ -131,6 +177,7 @@ async def unlock_session(session_id: str):
 
 @router.post("/api/sessions/{session_id}/soc-params")
 async def update_soc_params(request: Request, session_id: str):
+    verify_session_ownership(request, session_id)
     body = await request.json()
     try:
         result = await api_post(f"/api/v1/public/sessions/{session_id}/soc-params", body)

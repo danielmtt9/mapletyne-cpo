@@ -127,16 +127,16 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                             {bay.unit_number}
                           </span>
                         )}
-                        <span className="px-2 py-0.5 bg-slate-950 border border-slate-700 text-on-surface font-mono font-bold text-xs tracking-wider rounded uppercase">
+                        <span className="px-2 py-0.5 bg-surface-container-high border border-outline text-on-surface font-mono font-bold text-xs tracking-wider rounded uppercase">
                           {bay.license_plate}
                         </span>
                       </div>
-                      <div className="text-xs text-slate-300 truncate font-medium">
+                      <div className="text-xs text-on-surface-variant truncate font-medium">
                         {bay.vehicle_make} {bay.vehicle_model}
                       </div>
                     </div>
                     {bay.priority_tier && (
-                      <span className="text-xs px-2 py-0.5 bg-slate-950 font-mono border border-slate-700 text-amber-300 font-bold rounded shrink-0">
+                      <span className="text-xs px-2 py-0.5 bg-surface-container-high font-mono border border-outline text-amber-500 dark:text-amber-300 font-bold rounded shrink-0">
                         Tier {bay.priority_tier}
                       </span>
                     )}
@@ -145,16 +145,16 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                   {/* Battery State Bar */}
                   <div className="space-y-1">
                     <div className="flex justify-between text-xs">
-                      <span className="text-slate-300 flex items-center gap-1 font-medium">
+                      <span className="text-on-surface-variant flex items-center gap-1 font-medium">
                         <span className="material-symbols-outlined text-[14px] text-primary">battery_charging_full</span>
                         Live SOC
                       </span>
                       <span className="font-mono font-bold text-on-surface">{soc}%</span>
                     </div>
-                    <div className="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                    <div className="w-full bg-surface-container-highest h-2 rounded-full overflow-hidden border border-outline">
                       <div
                         className={`h-full transition-all duration-500 ${
-                          soc > 70 ? 'bg-emerald-400' : soc > 30 ? 'bg-blue-400' : 'bg-red-400'
+                          soc > 70 ? 'bg-emerald-500' : soc > 30 ? 'bg-blue-500' : 'bg-red-500'
                         }`}
                         style={{ width: `${Math.min(100, soc)}%` }}
                       ></div>
@@ -162,19 +162,19 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                   </div>
                 </div>
               ) : (
-                <div className="py-4 text-center border border-dashed border-slate-750 bg-slate-950/50 rounded-xl text-xs text-slate-400">
-                  <span className="material-symbols-outlined text-[22px] text-slate-500 block mb-1">directions_car</span>
+                <div className="py-4 text-center border border-dashed border-outline bg-surface-container-high/50 rounded-xl text-xs text-on-surface-variant">
+                  <span className="material-symbols-outlined text-[22px] text-on-surface-variant block mb-1">directions_car</span>
                   No Vehicle Docked
                 </div>
               )}
             </div>
 
             {/* Footer Actions */}
-            <div className="flex items-center justify-between pt-3 border-t border-slate-800 mt-3 text-xs">
+            <div className="flex items-center justify-between pt-3 border-t border-outline mt-3 text-xs">
               <button
                 type="button"
                 onClick={() => onSelectBay?.(bay)}
-                className="text-primary hover:text-primary-container flex items-center gap-1 font-bold transition-colors"
+                className="text-primary hover:text-primary-container flex items-center gap-1 font-bold transition-colors cursor-pointer"
               >
                 <span className="material-symbols-outlined text-[15px]">edit</span> Bay Setup
               </button>
@@ -183,7 +183,7 @@ export const DepotBayGrid: React.FC<DepotBayGridProps> = ({
                 <button
                   type="button"
                   onClick={() => onDispatchProfile(bay)}
-                  className="px-2.5 py-1 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-100 font-semibold text-xs rounded-lg transition-colors flex items-center gap-1"
+                  className="px-2.5 py-1 bg-surface-container-high hover:bg-surface-container-highest border border-outline text-on-surface font-semibold text-xs rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
                 >
                   <span className="material-symbols-outlined text-[14px] text-primary">tune</span> Smart Limit
                 </button>

@@ -50,11 +50,11 @@ export const SettingsPage: React.FC = () => {
   // Tab 2: Brand Studio State
   const [appTitle, setAppTitle] = useState(branding.app_title || 'Charge Station Management System');
   const [portalTagline, setPortalTagline] = useState(branding.portal_tagline || 'Enterprise EV Charging Management (CSMS)');
-  const [primaryColor, setPrimaryColor] = useState(branding.primary_color || '#4edea3');
-  const [secondaryColor, setSecondaryColor] = useState(branding.secondary_color || '#1e293b');
-  const [accentColor, setAccentColor] = useState(branding.accent_color || '#3b82f6');
-  const [bgColor, setBgColor] = useState(branding.bg_color || '#0b1326');
-  const [cardColor, setCardColor] = useState(branding.card_color || '#171f33');
+  const [primaryColor, setPrimaryColor] = useState(branding.primary_color || '#006948');
+  const [secondaryColor, setSecondaryColor] = useState(branding.secondary_color || '#0f172a');
+  const [accentColor, setAccentColor] = useState(branding.accent_color || '#0284c7');
+  const [bgColor, setBgColor] = useState(branding.bg_color || '#f8fafc');
+  const [cardColor, setCardColor] = useState(branding.card_color || '#ffffff');
   const [logoUrl, setLogoUrl] = useState(branding.logo_url || '');
   const [logoDataUri, setLogoDataUri] = useState(branding.logo_data_uri || '');
   const [faviconUrl, setFaviconUrl] = useState(branding.favicon_url || '');

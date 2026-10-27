@@ -11,6 +11,8 @@ export function useLiveEvents() {
     let retryTimeout: NodeJS.Timeout;
 
     const connect = async () => {
+      const token = localStorage.getItem('opencpo_admin_jwt') || localStorage.getItem('mapletyne_admin_jwt');
+      if (!token) return;
       try {
         const { ticket } = await api.post<{ ticket: string }>('/events/ticket', {});
         sse = new EventSource(`/api/v1/events/stream?ticket=${encodeURIComponent(ticket)}`);

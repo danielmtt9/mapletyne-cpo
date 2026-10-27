@@ -11,7 +11,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel
 
-from api.api_key_auth import management_auth
+from api.api_key_auth import management_auth, require_superadmin
 from state.postgres import db
 from state.redis import redis_state
 
@@ -315,9 +315,17 @@ async def delete_charger(cp_id: str):
     return {"id": cp_id, "status": "deleted"}
 
 
-@router.delete("", dependencies=[Depends(management_auth)])
-async def bulk_delete_chargers(simulated: bool = Query(True)):
+@router.delete("", dependencies=[Depends(require_superadmin)])
+async def bulk_delete_chargers(
+    simulated: bool = Query(True),
+    confirm: Optional[str] = Query(None, description="Must be 'CONFIRM_DELETE_ALL' when simulated=False"),
+):
     """Bulk delete chargers. Default: only simulated/virtual ones."""
+    if not simulated and confirm != "CONFIRM_DELETE_ALL":
+        raise HTTPException(
+            status_code=400,
+            detail="Destructive bulk deletion of production chargers requires explicit confirmation. Set confirm='CONFIRM_DELETE_ALL'.",
+        )
     VIRTUAL_PREFIXES = ("STRESS-", "SIM-", "CHAOS-", "VAL-", "LOAD-", "FUZZ-", "FARM-", "PNC-")
 
     async with db.write() as conn:

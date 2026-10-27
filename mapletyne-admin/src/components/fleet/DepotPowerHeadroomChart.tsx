@@ -139,9 +139,9 @@ export const DepotPowerHeadroomChart: React.FC<DepotPowerHeadroomChartProps> = (
   };
 
   return (
-    <div className="h-[240px] w-full bg-slate-900/90 border border-slate-700/60 rounded-2xl p-4 flex flex-col shadow-inner">
+    <div className="h-[240px] w-full bg-surface-container border border-outline rounded-2xl p-4 flex flex-col shadow-inner">
       <div className="flex items-center justify-between mb-1">
-        <span className="text-xs font-semibold text-slate-100 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+        <span className="text-xs font-semibold text-on-surface uppercase tracking-wider flex items-center gap-1.5 font-mono">
           <span className="material-symbols-outlined text-primary text-[16px]">speed</span> Depot Power Stack & Headroom
         </span>
         <span

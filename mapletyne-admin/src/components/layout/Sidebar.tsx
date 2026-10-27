@@ -161,7 +161,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </nav>
 
       {/* Bottom Status & User Profile */}
-      <div className="mt-auto px-3 py-4 border-t border-white/10 space-y-3 bg-slate-950/80 shrink-0">
+      <div className="mt-auto px-3 py-4 border-t border-white/10 space-y-3 bg-black/20 shrink-0">
         {/* Expand button when collapsed */}
         {onToggleCollapse && isCollapsed && (
           <button

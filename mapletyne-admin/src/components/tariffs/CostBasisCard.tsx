@@ -101,14 +101,14 @@ export const CostBasisCard: React.FC<CostBasisCardProps> = ({
               return (
                 <div
                   key={c.key}
-                  className="flex items-center justify-between gap-4 bg-slate-900/90 p-3 rounded-xl border border-slate-700/70"
+                  className="flex items-center justify-between gap-4 bg-surface-container-high p-3 rounded-xl border border-outline"
                 >
                   <div className="flex-1">
-                    <div className="font-bold text-slate-100 text-xs uppercase tracking-wide">
+                    <div className="font-bold text-on-surface text-xs uppercase tracking-wide">
                       {label}
                     </div>
                     {c.description && (
-                      <div className="text-xs text-slate-400 mt-0.5">{c.description}</div>
+                      <div className="text-xs text-on-surface-variant mt-0.5">{c.description}</div>
                     )}
                   </div>
                   <div className="flex items-center gap-2">
@@ -118,9 +118,9 @@ export const CostBasisCard: React.FC<CostBasisCardProps> = ({
                       min="0"
                       value={formValues[c.key] ?? c.value}
                       onChange={(e) => handleChange(c.key, e.target.value)}
-                      className="w-24 bg-slate-950 border border-slate-700 rounded-lg h-8 px-2 text-right text-slate-100 font-mono text-xs font-bold focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40"
+                      className="w-24 bg-surface-container border border-outline rounded-lg h-8 px-2 text-right text-on-surface font-mono text-xs font-bold focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/40"
                     />
-                    <span className="text-slate-300 text-xs w-12 font-mono">
+                    <span className="text-on-surface-variant text-xs w-12 font-mono">
                       {isTax ? '(rate)' : '£/kWh'}
                     </span>
                   </div>

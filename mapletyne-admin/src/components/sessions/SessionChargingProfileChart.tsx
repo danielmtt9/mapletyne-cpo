@@ -170,7 +170,7 @@ export const SessionChargingProfileChart: React.FC<SessionChargingProfileChartPr
   }, [energyKwh, peakPowerKw, durationMinutes, meterValues]);
 
   return (
-    <div className="w-full h-44 bg-slate-950/90 border border-slate-700/60 rounded-xl p-2 shadow-inner">
+    <div className="w-full h-44 bg-surface-container border border-outline rounded-xl p-2 shadow-inner">
       <BaseEChart option={chartOption} />
     </div>
   );

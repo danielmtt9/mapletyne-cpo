@@ -547,7 +547,7 @@ export const VehiclesPage: React.FC = () => {
               <span className="text-xs font-semibold text-on-surface-variant uppercase tracking-wider block">
                 Total Depot Bays
               </span>
-              <div className="text-2xl font-bold font-mono text-white mt-1">
+              <div className="text-2xl font-bold font-mono text-on-surface mt-1">
                 {depotSummary.total_bays}
               </div>
               <span className="text-xs text-primary font-medium">
@@ -583,7 +583,7 @@ export const VehiclesPage: React.FC = () => {
               </span>
               <div
                 className={`text-base font-bold font-mono mt-1 ${
-                  depotSummary.ems_mode === 'EXTERNAL_OVERRIDE' ? 'text-red-400' : 'text-white'
+                  depotSummary.ems_mode === 'EXTERNAL_OVERRIDE' ? 'text-red-400' : 'text-on-surface'
                 }`}
               >
                 {depotSummary.ems_mode}
@@ -606,7 +606,7 @@ export const VehiclesPage: React.FC = () => {
           {/* Bays Section Header */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-              <h3 className="font-headline text-base font-bold text-white flex items-center gap-2">
+              <h3 className="font-headline text-base font-bold text-on-surface flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary text-[20px]">ev_station</span>
                 Charging Bay Matrix
               </h3>
@@ -652,7 +652,7 @@ export const VehiclesPage: React.FC = () => {
           {/* Schedules Table */}
           <div className="tabler-card bg-surface-container border border-outline rounded-2xl overflow-hidden shadow-md">
             <div className="p-4 border-b border-outline flex items-center justify-between">
-              <h3 className="font-headline text-sm font-bold text-white">
+              <h3 className="font-headline text-sm font-bold text-on-surface">
                 Scheduled Vehicle Shift Departures
               </h3>
             </div>
@@ -670,7 +670,7 @@ export const VehiclesPage: React.FC = () => {
                 <tbody className="divide-y divide-outline text-on-surface font-sans">
                   {schedules.map((s) => (
                     <tr key={s.id} className="hover:bg-surface-container-high/50 transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-white whitespace-nowrap">
+                      <td className="py-3 px-4 font-mono font-bold text-on-surface whitespace-nowrap">
                         <span className="px-2 py-1 bg-surface-container-high border border-outline rounded text-xs">
                           {s.unit_number ? `${s.unit_number} (${s.license_plate})` : s.license_plate}
                         </span>
