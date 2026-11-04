@@ -85,7 +85,7 @@ export const SettingsPage: React.FC = () => {
   const [ocpiPartyId, setOcpiPartyId] = useState('CPO');
   const [ocpiRole, setOcpiRole] = useState('CPO');
   const [ocpiOperatorName, setOcpiOperatorName] = useState(branding.company_name || '');
-  const [ocpiBaseUrl, setOcpiBaseUrl] = useState('http://localhost:8000');
+  const [ocpiBaseUrl, setOcpiBaseUrl] = useState(typeof window !== 'undefined' ? window.location.origin : '');
   const [ocpiVersionsPath, setOcpiVersionsPath] = useState('/ocpi/versions');
 
   // Tab 6: Payouts & Backups State

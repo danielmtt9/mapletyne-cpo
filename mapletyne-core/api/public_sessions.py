@@ -215,7 +215,7 @@ async def create_session(req: SessionCreate):
     }
 
 
-@router.post("/sessions/{session_id}/cancel")
+@router.post("/sessions/{session_id}/cancel", dependencies=[Depends(management_auth)])
 async def cancel_session(session_id: str):
     """Cancel a session that hasn't started yet (started_at IS NULL)."""
     async with db.read() as conn:
@@ -312,7 +312,7 @@ async def get_session(session_id: str):
     return result
 
 
-@router.post("/sessions/{session_id}/unlock")
+@router.post("/sessions/{session_id}/unlock", dependencies=[Depends(management_auth)])
 async def unlock_session_cable(session_id: str):
     """Trigger UnlockConnector for the active or finished session connector."""
     from state.charger_registry import send_unlock
@@ -350,7 +350,7 @@ class SocParamsUpdate(BaseModel):
     battery_capacity_kwh: Optional[float] = None
 
 
-@router.post("/sessions/{session_id}/soc-params")
+@router.post("/sessions/{session_id}/soc-params", dependencies=[Depends(management_auth)])
 async def update_session_soc_params(session_id: str, req: SocParamsUpdate):
     """Update driver battery parameters for SoC estimation."""
     async with db.write() as conn:

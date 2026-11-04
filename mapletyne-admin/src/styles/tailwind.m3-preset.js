@@ -2,7 +2,7 @@
  * Tailwind CSS Preset for Material 3 Design System
  * Drop-in preset for Tremor, Horizon UI, Next.js, and Vite
  */
-module.exports = {
+export default {
   darkMode: 'class',
   theme: {
     extend: {

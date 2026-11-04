@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 import { useSiteContext } from '@/context/SiteContext';
 import { useAuth } from '@/context/AuthContext';
 import { LiveNetworkLoadChart } from '@/components/dashboard/LiveNetworkLoadChart';
+import { DashboardSkeleton } from '@/components/common/DashboardSkeleton';
 
 export const DashboardPage: React.FC = () => {
   const { selectedSite, setSelectedSite, availableSites } = useSiteContext();
@@ -15,12 +16,12 @@ export const DashboardPage: React.FC = () => {
     ? `/sessions/stats/today?site=${encodeURIComponent(selectedSite)}` 
     : '/sessions/stats/today';
 
-  const { data: stats } = useQuery({
+  const { data: stats, isLoading: isLoadingStats } = useQuery({
     queryKey: ['sessions', 'stats', 'today', selectedSite],
     queryFn: () => api.get<any>(statsUrl),
   });
 
-  const { data: rawChargers } = useQuery({
+  const { data: rawChargers, isLoading: isLoadingChargers } = useQuery({
     queryKey: ['chargers'],
     queryFn: () => api.get<any>('/chargers'),
   });
@@ -61,6 +62,10 @@ export const DashboardPage: React.FC = () => {
   const solarGenKw = emsLive?.solar_kw || 118.4;
   const batterySoc = emsLive?.battery_soc !== undefined ? emsLive.battery_soc : 78;
   const batteryKw = emsLive?.battery_kw || 45.0;
+
+  if (isLoadingStats && isLoadingChargers && !rawChargers) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">

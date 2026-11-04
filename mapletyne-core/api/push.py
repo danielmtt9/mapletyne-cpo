@@ -8,10 +8,11 @@ import logging
 import os
 from typing import Optional
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
 from state.postgres import db
+from api.api_key_auth import management_auth
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +70,7 @@ async def get_vapid_key():
     return {"publicKey": VAPID_PUBLIC_KEY}
 
 
-@router.post("/subscribe")
+@router.post("/subscribe", dependencies=[Depends(management_auth)])
 async def subscribe(body: PushSubscribeRequest):
     """Store a push subscription for a session."""
     await ensure_table()
@@ -91,7 +92,7 @@ async def subscribe(body: PushSubscribeRequest):
     return {"ok": True}
 
 
-@router.post("/unsubscribe")
+@router.post("/unsubscribe", dependencies=[Depends(management_auth)])
 async def unsubscribe(body: PushUnsubscribeRequest):
     """Remove push subscription for a session."""
     await ensure_table()

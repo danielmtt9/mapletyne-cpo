@@ -1,5 +1,8 @@
+import m3Preset from './src/styles/tailwind.m3-preset.js';
+
 /** @type {import('tailwindcss').Config} */
 export default {
+  presets: [m3Preset],
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {

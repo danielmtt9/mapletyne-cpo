@@ -187,7 +187,15 @@ async def update_soc_params(request: Request, session_id: str):
 
 
 @router.post("/api/chargers/{cp_id}/connectors/{connector_id}/unlock")
-async def unlock_connector_direct(cp_id: str, connector_id: int):
+async def unlock_connector_direct(request: Request, cp_id: str, connector_id: int):
+    # Only allow unlock if caller owns an active session or holds valid session credentials
+    last_session = request.cookies.get("last_active_session")
+    if last_session:
+        verify_session_ownership(request, last_session)
+    else:
+        account = getattr(request.state, "account", None)
+        if not account:
+            raise HTTPException(status_code=403, detail="Forbidden: Active session ownership required to unlock connector.")
     try:
         result = await api_post(f"/api/v1/public/chargers/{cp_id}/connectors/{connector_id}/unlock", {})
         return JSONResponse(result)

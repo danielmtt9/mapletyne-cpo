@@ -25,7 +25,7 @@ import os
 from datetime import datetime, timezone
 
 import bcrypt
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
@@ -59,6 +59,32 @@ async def _admin_exists() -> bool:
             "SELECT COUNT(*) FROM ocpp.users WHERE password_hash IS NOT NULL"
         )
     return count > 0
+
+
+async def _is_setup_complete() -> bool:
+    """Check if all setup steps are finished or skipped."""
+    if not await _admin_exists():
+        return False
+    for name in STEPS:
+        val = await _get_step_flag(f"setup.step.{name}")
+        if val not in ("done", "skipped"):
+            return False
+    return True
+
+
+async def _verify_setup_access(request: Request):
+    """Guard setup endpoints:
+    - If setup is already complete, reject with 403.
+    - If no admin exists yet, reject step modification until admin is created.
+    - When an admin user exists, require valid admin credentials.
+    """
+    if await _is_setup_complete():
+        raise HTTPException(status_code=403, detail="Setup wizard has already been completed")
+    if not await _admin_exists():
+        raise HTTPException(status_code=403, detail="Create the admin account first")
+
+    from auth.rbac import require_admin
+    await require_admin(request)
 
 
 async def _get_step_flag(key: str) -> Optional[str]:
@@ -177,8 +203,8 @@ async def get_setup_status():
 @router.post("/step/admin")
 async def setup_admin(body: StepAdminRequest):
     """Create the first admin user."""
-    if await _admin_exists():
-        raise HTTPException(status_code=400, detail="An admin user already exists")
+    if await _admin_exists() or await _is_setup_complete():
+        raise HTTPException(status_code=400, detail="An admin user already exists or setup is complete")
 
     email = body.email.strip().lower()
     if len(body.password) < 8:
@@ -208,10 +234,9 @@ async def setup_admin(body: StepAdminRequest):
 
 
 @router.post("/step/tailscale")
-async def setup_tailscale(body: StepTailscaleRequest):
+async def setup_tailscale(body: StepTailscaleRequest, request: Request):
     """Save Tailscale configuration preferences."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     await _save_setting("tailscale.enable_admin", str(body.enable_admin).lower())
     await _save_setting("tailscale.enable_api", str(body.enable_api).lower())
@@ -226,10 +251,9 @@ async def setup_tailscale(body: StepTailscaleRequest):
 
 
 @router.post("/step/org")
-async def setup_org(body: StepOrgRequest):
+async def setup_org(body: StepOrgRequest, request: Request):
     """Store organization settings."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     branding = await get_setting("branding")
     branding["company_name"] = body.name
@@ -242,10 +266,9 @@ async def setup_org(body: StepOrgRequest):
 
 
 @router.post("/step/branding")
-async def setup_branding(body: StepBrandingRequest):
+async def setup_branding(body: StepBrandingRequest, request: Request):
     """Save branding and skin preferences."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     branding = await get_setting("branding")
     branding["accent_color"] = body.accent_color
@@ -259,10 +282,9 @@ async def setup_branding(body: StepBrandingRequest):
 
 
 @router.post("/step/smtp")
-async def setup_smtp(body: StepSmtpRequest):
+async def setup_smtp(body: StepSmtpRequest, request: Request):
     """Save SMTP credentials for the comms module."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     await put_setting("smtp", {
         "host": body.host,
@@ -280,10 +302,9 @@ async def setup_smtp(body: StepSmtpRequest):
 
 
 @router.post("/step/pki")
-async def setup_pki(body: StepPkiRequest):
+async def setup_pki(body: StepPkiRequest, request: Request):
     """Initialize the PKI (Root CA + User CA)."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     from pki.ca import ca
     try:
@@ -297,10 +318,9 @@ async def setup_pki(body: StepPkiRequest):
 
 
 @router.post("/step/pricing")
-async def setup_pricing(body: StepPricingRequest):
+async def setup_pricing(body: StepPricingRequest, request: Request):
     """Create a default tariff and pricing tier."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     async with db.transaction() as conn:
         config_entries = [
@@ -339,10 +359,9 @@ async def setup_pricing(body: StepPricingRequest):
 
 
 @router.post("/step/features")
-async def setup_features(body: StepFeaturesRequest):
+async def setup_features(body: StepFeaturesRequest, request: Request):
     """Toggle feature flags."""
-    if not await _admin_exists():
-        raise HTTPException(status_code=403, detail="Create the admin account first")
+    await _verify_setup_access(request)
 
     flags = {
         "ocpi": body.ocpi,
@@ -368,7 +387,7 @@ async def setup_features(body: StepFeaturesRequest):
 
 
 @router.post("/skip/{step}")
-async def skip_step(step: str):
+async def skip_step(step: str, request: Request):
     """Mark a setup step as skipped (user will configure manually)."""
     if step not in STEPS:
         raise HTTPException(status_code=400, detail=f"Unknown step: {step}")
@@ -379,6 +398,8 @@ async def skip_step(step: str):
             status_code=400,
             detail="Cannot skip admin account — it is required to use the platform"
         )
+
+    await _verify_setup_access(request)
 
     await _set_step_flag(f"setup.step.{step}", "skipped")
     logger.info(f"Setup step skipped: {step}")
