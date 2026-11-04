@@ -9,30 +9,16 @@ export interface PayloadClientConfig {
   tenantId?: string | number
 }
 
-/**
- * Browser-safe environment variable accessor.
- * Prevents `ReferenceError: process is not defined` when this module is imported in the browser.
- */
-function getSafeEnv(key: string): string {
-  if (typeof import.meta !== 'undefined' && (import.meta as any).env?.[key]) {
-    return String((import.meta as any).env[key])
-  }
-  if (typeof process !== 'undefined' && process?.env?.[key]) {
-    return String(process.env[key])
-  }
-  return ''
-}
-
 export function createPayloadClient(config: PayloadClientConfig = {}) {
   const baseUrl = (
     config.baseUrl ||
-    getSafeEnv('PAYLOAD_SERVER_URL') ||
-    getSafeEnv('NEXT_PUBLIC_PAYLOAD_URL') ||
+    process.env.PAYLOAD_SERVER_URL ||
+    process.env.NEXT_PUBLIC_PAYLOAD_URL ||
     'https://payloadcms.mapletyne.com'
   ).replace(/\/+$/, '')
 
-  const apiKey = config.apiKey || getSafeEnv('PAYLOAD_API_KEY') || getSafeEnv('NEXT_PUBLIC_PAYLOAD_API_KEY') || getSafeEnv('VITE_PAYLOAD_API_KEY') || ''
-  const tenantId = config.tenantId || getSafeEnv('TENANT_ID') || getSafeEnv('NEXT_PUBLIC_TENANT_ID') || ''
+  const apiKey = config.apiKey || process.env.PAYLOAD_API_KEY || process.env.NEXT_PUBLIC_PAYLOAD_API_KEY || ''
+  const tenantId = config.tenantId || process.env.TENANT_ID || process.env.NEXT_PUBLIC_TENANT_ID || ''
 
   const getHeaders = (extra: Record<string, string> = {}) => {
     const headers: Record<string, string> = { ...extra }

@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom'
 import { Render } from '@measured/puck'
 import { puckConfig } from '../puck.config'
 import { payloadClient } from '../lib/payload'
-import { synthesizePuckDataFromDoc } from '../lib/puckSync'
 
 export const ReactLivePage: React.FC = () => {
   const params = useParams<{ slug?: string }>()
@@ -39,9 +38,7 @@ export const ReactLivePage: React.FC = () => {
     )
   }
 
-  const puckData = page.puckData && Array.isArray(page.puckData.content) && page.puckData.content.length > 0
-    ? page.puckData
-    : synthesizePuckDataFromDoc(page)
+  const puckData = page.puckData || { content: [], root: {} }
 
   return (
     <main style={{ minHeight: '100vh' }}>

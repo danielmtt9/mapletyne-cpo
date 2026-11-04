@@ -10,30 +10,11 @@ import { PuckDropZone } from './puck-dropzone'
 import { WHITELIST_FONTS } from './puck-constants'
 
 const Arrow = () => (
-  <span aria-hidden="true" style={{ display: 'inline-block', marginLeft: '4px' }}><span className="material-symbols-outlined">arrow_forward</span></span>
+  <span aria-hidden="true" style={{ display: 'inline-block', marginLeft: '4px' }}>→</span>
 )
 
-/** Sanitize CSS color values to prevent XSS via dangerouslySetInnerHTML. */
-function sanitizeCssColor(val: string, fallback = '#006948'): string {
-  if (!val || typeof val !== 'string') return fallback
-  const s = val.replace(/[;{}<>]/g, '')
-  if (/^#([0-9a-fA-F]{3,8})$/.test(s)) return s
-  if (/^(rgb|hsl)a?\(/.test(s)) return s
-  if (/^var\(/.test(s)) return s
-  return fallback
-}
-
-/** Sanitize font family values: allow alphanumeric, spaces, hyphens, commas, and quoted names. */
-function sanitizeFontFamily(val: string, fallback = 'sans-serif'): string {
-  if (!val || typeof val !== 'string') return fallback
-  // Allow safe characters: letters, digits, spaces, hyphens, commas, single/double quotes, parentheses
-  const sanitized = val.replace(/[;{}<>]/g, '')
-  if (/^[\w\s\-',()"]+$/.test(sanitized)) return sanitized
-  return fallback
-}
-
 const Eyebrow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <span style={{ display: 'inline-block', fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--primary, #006948)', marginBottom: '8px' }}>
+  <span style={{ display: 'inline-block', fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--primary, #0284c7)', marginBottom: '8px' }}>
     {children}
   </span>
 )
@@ -416,8 +397,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
           options: [
             { label: 'White Surface (#ffffff)', value: '#ffffff' },
             { label: 'Subtle Paper (#f8fafc)', value: '#f8fafc' },
-            { label: 'Accent Tint (12%)', value: 'rgba(16, 185, 129, 0.12)' },
-            { label: 'Dark Carbon (#0f172a)', value: '#0f172a' },
+            { label: 'Electric Lime Tint (12%)', value: 'rgba(183, 255, 56, 0.12)' },
+            { label: 'Dark Carbon (#090c0b)', value: '#090c0b' },
           ],
         },
         padding: {
@@ -554,8 +535,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                           style={{
                             width: '36px',
                             height: '36px',
-                            backgroundColor: 'var(--accent, #10B981)',
-                            color: 'var(--ink, #0f172a)',
+                            backgroundColor: 'var(--lime, #b7ff38)',
+                            color: 'var(--ink, #090c0b)',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -565,7 +546,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                         </div>
                       )}
                     </div>
-                    <div style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--ink, #0f172a)', fontFamily: 'var(--font-barlow, sans-serif)', lineHeight: 1.1, marginBottom: '0.5rem' }}>
+                    <div style={{ fontSize: '2.25rem', fontWeight: 800, color: 'var(--ink, #090c0b)', fontFamily: 'var(--font-barlow, sans-serif)', lineHeight: 1.1, marginBottom: '0.5rem' }}>
                       {item.value}
                     </div>
                     {item.change && (
@@ -666,8 +647,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     style={{
                       width: '44px',
                       height: '44px',
-                      backgroundColor: 'var(--accent, #10B981)',
-                      color: 'var(--ink, #0f172a)',
+                      backgroundColor: 'var(--lime, #b7ff38)',
+                      color: 'var(--ink, #090c0b)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -806,8 +787,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                         style={{
                           width: '40px',
                           height: '40px',
-                          backgroundColor: 'var(--accent, #10B981)',
-                          color: 'var(--ink, #0f172a)',
+                          backgroundColor: 'var(--lime, #b7ff38)',
+                          color: 'var(--ink, #090c0b)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
@@ -820,9 +801,9 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                       {aud.badge && (
                         <span
                           style={{
-                            fontSize: '12px',
+                            fontSize: '11px',
                             fontWeight: 700,
-                            padding: '4px 8px',
+                            padding: '3px 8px',
                             border: '1px solid var(--rule, rgba(9,12,11,0.14))',
                             textTransform: 'uppercase',
                             letterSpacing: '0.05em',
@@ -931,7 +912,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
             { label: 'Card Title (Barlow 36px)', value: 'h3' },
             { label: 'Lead Paragraph (17px bold)', value: 'lead' },
             { label: 'Standard Body (Inter)', value: 'body' },
-            { label: 'Eyebrow Caption (12px tracked)', value: 'caption' },
+            { label: 'Eyebrow Caption (11px tracked)', value: 'caption' },
           ],
         },
         align: {
@@ -947,7 +928,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
           options: [
             { label: 'Default Ink (#090c0b)', value: 'default' },
             { label: 'Muted Slate (#6c766f)', value: 'muted' },
-            { label: 'Accent Green (#10B981)', value: 'accent' },
+            { label: 'Electric Lime (#b7ff38)', value: 'accent' },
           ],
         },
         fontFamily: {
@@ -964,7 +945,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
       },
       render: ({ text, variant = 'h2', align = 'left', color = 'default', fontFamily }) => {
         const textColor =
-          color === 'muted' ? 'var(--muted, #6c766f)' : color === 'accent' ? 'var(--accent, #10B981)' : 'var(--ink, #0f172a)'
+          color === 'muted' ? 'var(--muted, #6c766f)' : color === 'accent' ? 'var(--lime, #b7ff38)' : 'var(--ink, #090c0b)'
         const customFont = WHITELIST_FONTS.find((f: any) => f.name === fontFamily)?.family || 'var(--font-barlow, sans-serif)'
 
         const baseStyle: React.CSSProperties = {
@@ -1003,7 +984,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
         }
         if (variant === 'caption') {
           return (
-            <p style={{ ...baseStyle, fontSize: '12px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0.5rem 0' }}>
+            <p style={{ ...baseStyle, fontSize: '11px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', margin: '0.5rem 0' }}>
               {text}
             </p>
           )
@@ -1232,15 +1213,15 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <p style={{ fontStyle: 'italic', color: 'var(--ink, #0f172a)', lineHeight: 1.7, fontSize: '1.1rem', margin: '0 0 1.5rem 0' }}>
+                  <p style={{ fontStyle: 'italic', color: 'var(--ink, #090c0b)', lineHeight: 1.7, fontSize: '1.1rem', margin: '0 0 1.5rem 0' }}>
                     "{t.quote}"
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                    <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--accent, #10B981)', color: 'var(--ink, #0f172a)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1rem' }}>
+                    <div style={{ width: '40px', height: '40px', backgroundColor: 'var(--lime, #b7ff38)', color: 'var(--ink, #090c0b)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '1rem' }}>
                       {t.authorName ? t.authorName.charAt(0) : 'U'}
                     </div>
                     <div>
-                      <div style={{ fontWeight: 700, color: 'var(--ink, #0f172a)', fontSize: '0.95rem' }}>{t.authorName}</div>
+                      <div style={{ fontWeight: 700, color: 'var(--ink, #090c0b)', fontSize: '0.95rem' }}>{t.authorName}</div>
                       <div style={{ fontSize: '12px', color: 'var(--muted, #6c766f)' }}>
                         {[t.authorTitle, t.company].filter(Boolean).join(' • ')}
                       </div>
@@ -1337,7 +1318,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
     },
     defaultProps: {
       fontFamily: 'Barlow Condensed',
-      primaryColor: '#006948',
+      primaryColor: '#0284c7',
       showHeader: true,
       showFooter: true,
       metaDescription: '',
@@ -1346,7 +1327,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
     render: ({
       children,
       fontFamily = 'Barlow Condensed',
-      primaryColor = '#006948',
+      primaryColor = '#0284c7',
       showHeader = true,
       showFooter = true,
     }: any) => {
@@ -1364,11 +1345,11 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
           <style dangerouslySetInnerHTML={{
             __html: `
               :root {
-                --primary: ${sanitizeCssColor(primaryColor, '#006948')};
-                --lime: ${sanitizeCssColor(primaryColor, '#006948')};
+                --primary: ${primaryColor || '#0284c7'};
+                --lime: ${primaryColor || '#0284c7'};
                 --font-barlow: 'Barlow Condensed', sans-serif;
                 --font-inter: 'Inter', sans-serif;
-                --active-font: ${sanitizeFontFamily(activeFont, 'sans-serif')};
+                --active-font: ${activeFont};
               }
             `
           }} />
@@ -1434,7 +1415,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                       textDecoration: 'none',
                     }}
                   >
-                    Open Platform <span aria-hidden="true"><span className="material-symbols-outlined" style={{ fontSize: '16px' }}>open_in_new</span></span>
+                    Open Platform <span aria-hidden="true">↗</span>
                   </a>
                 </nav>
               </header>
@@ -1469,7 +1450,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
 
                   <div style={{ display: 'flex', gap: '50px', flexWrap: 'wrap', fontSize: '13px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>Operations</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Operations</span>
                       <a href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Live Dashboard</a>
                       <a href="/chargers" style={{ color: '#64748b', textDecoration: 'none' }}>Charger Farm</a>
                       <a href="/sessions" style={{ color: '#64748b', textDecoration: 'none' }}>Live Sessions</a>
@@ -1477,7 +1458,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>Management</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Management</span>
                       <a href="/fleet" style={{ color: '#64748b', textDecoration: 'none' }}>RFID &amp; Fleet</a>
                       <a href="/vehicles" style={{ color: '#64748b', textDecoration: 'none' }}>EV Models</a>
                       <a href="/pki-vault" style={{ color: '#64748b', textDecoration: 'none' }}>PKI Security Vault</a>
@@ -1485,7 +1466,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '12px', letterSpacing: '0.1em', color: '#0f172a' }}>System</span>
+                      <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>System</span>
                       <a href="/settings" style={{ color: '#64748b', textDecoration: 'none' }}>Settings &amp; Branding</a>
                       <a href="/terms" style={{ color: '#64748b', textDecoration: 'none' }}>Terms &amp; Policies</a>
                       <a href="/profile" style={{ color: '#64748b', textDecoration: 'none' }}>Operator Profile</a>
@@ -1508,7 +1489,7 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                   }}
                 >
                   <span>© {new Date().getFullYear()} Maple Tyne Technologies Ltd. All rights reserved.</span>
-                  <span>Maple Tyne MTT Charge CPO Platform</span>
+                  <span>OpenCPO v2.4 Enterprise Edition</span>
                 </div>
               </footer>
             )}
