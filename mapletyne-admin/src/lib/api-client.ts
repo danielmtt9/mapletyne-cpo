@@ -1,4 +1,4 @@
-const API_BASE = '/api/v1';
+const API_BASE = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin') ? '/admin/api/v1' : '/api/v1';
 
 export class ApiError extends Error {
   constructor(public status: number, message: string, public data?: unknown) {

@@ -45,13 +45,15 @@ const queryClient = new QueryClient({
 });
 
 export const App: React.FC = () => {
+  const basename = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin') ? '/admin' : '/';
+
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <AuthProvider>
             <SiteProvider>
-              <BrowserRouter>
+              <BrowserRouter basename={basename}>
                 <CookieConsentBanner />
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
