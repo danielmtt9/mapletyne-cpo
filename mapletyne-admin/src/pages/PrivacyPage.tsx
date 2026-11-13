@@ -15,7 +15,7 @@ export const PrivacyPage: React.FC = () => {
         <section className="mb-8 tabler-card p-6 rounded-2xl border border-outline">
           <h2 className="text-xl font-semibold text-on-surface mb-3">Data Controller</h2>
           <p className="text-base text-on-surface-variant leading-relaxed">
-            <strong>Mapletyne Technologies Ltd</strong> is the data controller for all personal data processed through the Mapletyne OpenCPO platform (OCPP CDRs, user accounts, telemetry, and related services).
+            <strong>The Platform Operator</strong> is the data controller for all personal data processed through the EV Charging Management Platform (OCPP CDRs, user accounts, telemetry, and related services).
           </p>
         </section>
 

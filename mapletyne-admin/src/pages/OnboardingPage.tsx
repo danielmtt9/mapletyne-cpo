@@ -35,7 +35,7 @@ export const OnboardingPage: React.FC = () => {
           Deploy New Charging Hub & Microgrid Node
         </h1>
         <p className="text-base text-on-surface-variant max-w-2xl mx-auto">
-          Connect physical charging dispensers, configure local grid interconnect limits, and link to Mapletyne EMS.
+          Connect physical charging dispensers, configure local grid interconnect limits, and link to the Admin Portal.
         </p>
       </div>
 

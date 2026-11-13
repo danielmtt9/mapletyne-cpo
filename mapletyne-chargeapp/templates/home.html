@@ -9,7 +9,7 @@
   <!-- ── Floating Logo ───────────────────────────────────────── -->
   <a href="/app/" id="floating-logo" style="position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:900;background:rgba(23,35,53,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.12);border-radius:24px;padding:6px 18px;box-shadow:0 8px 24px rgba(0,0,0,0.45);text-decoration:none;display:flex;align-items:center;gap:8px;">
     {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
-      <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:26px;max-width:160px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+      <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('EV Charging') }}" style="height:26px;max-width:160px;object-fit:contain;" onerror="this.style.display='none';" />
     {% else %}
       <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:26px;max-width:160px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
     {% endif %}

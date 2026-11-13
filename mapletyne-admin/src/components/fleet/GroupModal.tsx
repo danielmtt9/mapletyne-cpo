@@ -107,7 +107,7 @@ export const GroupModal: React.FC<GroupModalProps> = ({
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. DHL Express Logistics"
+              placeholder="e.g. Commercial Fleet Operations"
               className="w-full bg-surface-container border border-outline-variant/30 h-9 px-3 text-on-surface font-mono"
             />
           </div>

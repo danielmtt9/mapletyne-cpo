@@ -194,7 +194,7 @@ async def create_session(req: SessionCreate):
 
     # Fire-and-forget SMS with session link
     if req.driver_phone:
-        charge_app_url = os.getenv("CHARGE_APP_URL", "https://opencpo.mapletyne.com/app")
+        charge_app_url = os.getenv("CHARGE_APP_URL", "/app")
         operator_name = os.getenv("OPERATOR_NAME", "Your CPO")
         sms_msg = (
             f"{operator_name}: your charging session has been created. "

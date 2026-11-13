@@ -295,7 +295,7 @@ export const LoginPage: React.FC = () => {
           )}
           <div>
             <h1 className="font-headline text-4xl font-bold tracking-tight text-white">
-              {branding.app_title || branding.company_name || 'Mapletyne EMS'}
+              {branding.app_title || branding.company_name || 'Charge Station Admin Portal'}
             </h1>
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
               {branding.portal_tagline || 'Executive SaaS EV Charging Management'}

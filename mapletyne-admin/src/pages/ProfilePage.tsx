@@ -89,7 +89,7 @@ export const ProfilePage: React.FC = () => {
               {user.role || 'Director of Grid Operations & Microgrid Architecture'}
             </p>
             <p className="text-xs font-mono text-on-surface-variant mt-1">
-              {branding.company_name || 'Mapletyne Fleet Power LLC'}
+              {branding.company_name || 'Organization'}
             </p>
 
             <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
@@ -271,7 +271,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Issuer Authority</span>
-                <span className="font-semibold text-on-surface text-sm">Mapletyne Substation CA 01</span>
+                <span className="font-semibold text-on-surface text-sm">Primary Substation</span>
               </div>
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Expiration</span>

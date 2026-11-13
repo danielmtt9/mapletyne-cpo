@@ -22,7 +22,7 @@ router = APIRouter(prefix="/api/v1/public/payments", tags=["payments"])
 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "").strip()
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "").strip()
-PUBLIC_URL = os.getenv("CHARGE_APP_URL", "https://opencpo.mapletyne.com/app").rstrip("/")
+PUBLIC_URL = os.getenv("CHARGE_APP_URL", "/app").rstrip("/")
 
 
 def verify_stripe_signature(payload_bytes: bytes, sig_header: str, secret: str, tolerance: int = 300) -> bool:

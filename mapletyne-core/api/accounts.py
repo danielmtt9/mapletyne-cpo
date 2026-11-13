@@ -176,7 +176,7 @@ async def register_initiate(req: RegisterInitiateRequest):
     await redis_state.client.set(f"reg:driver:{email}", json.dumps(reg_payload), ex=600)
 
     # Dispatch branded verification email
-    body_text = f"Hello {name},\n\nYour MTT Charge verification code is: {code}\n\nValid for 10 minutes."
+    body_text = f"Hello {name},\n\nYour EV Charging verification code is: {code}\n\nValid for 10 minutes."
     body_html = f"""<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8">
@@ -189,7 +189,7 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-seri
 <body>
 <div class="card">
   <div style="text-align:center;margin-bottom:16px;">
-    <h2 style="color:#ffffff;margin:0;">⚡ MTT Charge</h2>
+    <h2 style="color:#ffffff;margin:0;">⚡ EV Charging</h2>
     <div style="font-size:12px;color:#94a3b8;margin-top:4px;">Driver Account Verification</div>
   </div>
   <p>Hello <strong>{name}</strong>,</p>
@@ -200,7 +200,7 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-seri
 </body>
 </html>"""
 
-    await send_email(to_email=email, subject="Your MTT Charge Verification Code", body_text=body_text, body_html=body_html)
+    await send_email(to_email=email, subject="Your EV Charging Verification Code", body_text=body_text, body_html=body_html)
     logger.info(f"Driver registration OTP initiated for {email}")
 
     return {
@@ -323,7 +323,7 @@ async def register_resend(req: RegisterResendRequest):
     await redis_state.client.set(f"reg:driver:{email}", json.dumps(pending), ex=600)
 
     name = pending.get("name", "Driver")
-    body_text = f"Hello {name},\n\nYour new MTT Charge verification code is: {code}\n\nValid for 10 minutes."
+    body_text = f"Hello {name},\n\nYour new EV Charging verification code is: {code}\n\nValid for 10 minutes."
     body_html = f"""<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8">
@@ -336,7 +336,7 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-seri
 <body>
 <div class="card">
   <div style="text-align:center;margin-bottom:16px;">
-    <h2 style="color:#ffffff;margin:0;">⚡ MTT Charge</h2>
+    <h2 style="color:#ffffff;margin:0;">⚡ EV Charging</h2>
     <div style="font-size:12px;color:#94a3b8;margin-top:4px;">Driver Account Verification</div>
   </div>
   <p>Hello <strong>{name}</strong>,</p>
@@ -347,7 +347,7 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-seri
 </body>
 </html>"""
 
-    await send_email(to_email=email, subject="Your New MTT Charge Verification Code", body_text=body_text, body_html=body_html)
+    await send_email(to_email=email, subject="Your New EV Charging Verification Code", body_text=body_text, body_html=body_html)
     return {"ok": True, "message": "Verification code resent"}
 
 
