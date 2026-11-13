@@ -470,7 +470,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
     try {
       const endpoints = [
         '/api/media?limit=50',
-        'https://payloadcms.mapletyne.com/api/media?limit=50',
+        '/api/cms/media?limit=50',
       ]
       let fetchedDocs: MediaDoc[] = []
 
@@ -717,7 +717,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
                   <div style={{ marginTop: '8px', fontSize: '0.78rem' }}>
                     Upload images in Payload CMS Admin at:
                     <a
-                      href="https://payloadcms.mapletyne.com/admin/collections/media"
+                      href="/admin/settings"
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: '#0284c7', marginLeft: '4px', textDecoration: 'underline' }}
@@ -772,7 +772,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
               }}
             >
               <a
-                href="https://payloadcms.mapletyne.com/admin/collections/media"
+                href="/admin/settings"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

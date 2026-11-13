@@ -9,12 +9,12 @@ export const ProfilePage: React.FC = () => {
   const { branding, theme, resolvedTheme, setTheme } = useTheme();
   const queryClient = useQueryClient();
 
-  const [email, setEmail] = useState(user?.email || 'elena.vance@mapletyne.com');
-  const [phone, setPhone] = useState('+44 20 7946 0921');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phone, setPhone] = useState('');
   const [timezone, setTimezone] = useState('Europe/London (UTC+0)');
   const [savedSuccess, setSavedSuccess] = useState(false);
 
-  const userEmail = user?.email || 'admin@mapletyne.com';
+  const userEmail = user?.email || '';
 
   const { data: userData } = useQuery({
     queryKey: ['users', userEmail],
@@ -89,7 +89,7 @@ export const ProfilePage: React.FC = () => {
               {user.role || 'Director of Grid Operations & Microgrid Architecture'}
             </p>
             <p className="text-xs font-mono text-on-surface-variant mt-1">
-              {branding.company_name || 'Mapletyne Fleet Power LLC'}
+              {branding.company_name || 'Organization'}
             </p>
 
             <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
@@ -263,7 +263,7 @@ export const ProfilePage: React.FC = () => {
             <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Subject Common Name (CN)</span>
-                <span className="font-mono font-semibold text-on-surface text-sm break-all">elena.vance.mapletyne.internal</span>
+                <span className="font-mono font-semibold text-on-surface text-sm break-all">admin.internal</span>
               </div>
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Certificate Serial</span>
@@ -271,7 +271,7 @@ export const ProfilePage: React.FC = () => {
               </div>
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Issuer Authority</span>
-                <span className="font-semibold text-on-surface text-sm">Mapletyne Substation CA 01</span>
+                <span className="font-semibold text-on-surface text-sm">Primary Substation</span>
               </div>
               <div className="p-4 bg-surface-container-high/50 rounded-xl border border-outline/30">
                 <span className="text-xs font-mono uppercase text-on-surface-variant block">Expiration</span>

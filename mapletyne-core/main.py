@@ -169,10 +169,9 @@ async def startup():
                     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
                 );
             """)
-            admin_users = [
-                ("daniel.a@mapletynetechnologies.com", "Daniel Aroko", "admin"),
-                ("daniel.a@otaskies.com", "Daniel Aroko", "admin"),
-            ]
+            _init_email = os.getenv("INITIAL_ADMIN_EMAIL", "").strip()
+            _init_name = os.getenv("INITIAL_ADMIN_NAME", "Administrator").strip()
+            admin_users = [(_init_email, _init_name, "admin")] if _init_email else []
             # No default passwords: identity is owned by Keycloak. A local fallback hash is
             # seeded only when INITIAL_ADMIN_PASSWORD is explicitly provided via environment.
             _init_pw = os.getenv("INITIAL_ADMIN_PASSWORD", "")

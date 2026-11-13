@@ -17,10 +17,10 @@ interface AuthContextType {
 }
 
 const DEFAULT_USER: AuthUser = {
-  name: 'Daniel Aroko',
-  email: 'daniel.a@mapletynetechnologies.com',
-  role: 'Super Admin',
-  initials: 'DA',
+  name: 'Administrator',
+  email: '',
+  role: 'Admin',
+  initials: 'AD',
 };
 
 const getInitials = (name: string, email?: string): string => {
@@ -93,7 +93,7 @@ const loadInitialUser = (): AuthUser => {
     if (storedUserStr) {
       const parsed = JSON.parse(storedUserStr);
       const name = parsed.name || (parsed.email ? parsed.email.split('@')[0].replace('.', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) : 'Daniel Aroko');
-      const email = parsed.email || 'daniel.a@mapletynetechnologies.com';
+      const email = parsed.email || '';
       const role = formatRole(parsed.role, parsed.roles);
       return {
         ...parsed,
@@ -108,7 +108,7 @@ const loadInitialUser = (): AuthUser => {
     if (token) {
       const claims = parseJwtPayload(token);
       if (claims) {
-        const email = claims.email || claims.preferred_username || 'daniel.a@mapletynetechnologies.com';
+        const email = claims.email || claims.preferred_username || '';
         const name = claims.name || (email ? email.split('@')[0].replace('.', ' ').replace(/\b\w/g, (l: string) => l.toUpperCase()) : 'Daniel Aroko');
         const role = formatRole(claims.role, claims.roles);
         return {

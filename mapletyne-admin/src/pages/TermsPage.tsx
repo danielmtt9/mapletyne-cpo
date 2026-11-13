@@ -94,10 +94,10 @@ export const TermsPage: React.FC = () => {
               1. Master Service & Microgrid Operations Terms
             </h2>
             <p className="text-base text-on-surface leading-relaxed">
-              This Enterprise Agreement governs the deployment, telemetry monitoring, and automated smart power dispatch across all charging stations and Battery Energy Storage Systems (BESS) orchestrated by the Mapletyne EMS platform.
+              This Enterprise Agreement governs the deployment, telemetry monitoring, and automated smart power dispatch across all charging stations and Battery Energy Storage Systems (BESS) orchestrated by the EV Charging & Energy Management platform.
             </p>
             <p className="text-base text-on-surface-variant leading-relaxed">
-              By authorizing connection of physical dispensers, the Operator grants Mapletyne continuous rights to balance electrical loads, negotiate ISO/RTO ancillary services, and optimize wholesale energy spot market tariffs.
+              By authorizing connection of physical dispensers, the Operator grants the Platform Operator continuous rights to balance electrical loads, negotiate ISO/RTO ancillary services, and optimize wholesale energy spot market tariffs.
             </p>
           </section>
 
@@ -112,7 +112,7 @@ export const TermsPage: React.FC = () => {
                 <span>Mandatory 5-Minute Demand Response Curtailment</span>
               </div>
               <p className="text-base leading-relaxed">
-                During utility grid stress events or substation transformer over-temperature alarms, Mapletyne EMS will automatically throttle non-critical charging dispensers to 50 kW per port within 300 seconds to avoid utility peak demand surcharges.
+                During utility grid stress events or substation transformer over-temperature alarms, the EMS will automatically throttle non-critical charging dispensers to 50 kW per port within 300 seconds to avoid utility peak demand surcharges.
               </p>
             </div>
             <p className="text-base text-on-surface leading-relaxed">
@@ -166,7 +166,7 @@ export const TermsPage: React.FC = () => {
                     className="w-5 h-5 rounded border-outline text-primary focus:ring-primary mt-1"
                   />
                   <span className="text-base font-medium text-on-surface">
-                    I acknowledge and agree to the Mapletyne Enterprise Service Agreement, ISO/RTO microgrid curtailment covenants, and NERC CIP data governance policies on behalf of the registered facility.
+                    I acknowledge and agree to the Enterprise Service Agreement, ISO/RTO microgrid curtailment covenants, and NERC CIP data governance policies on behalf of the registered facility.
                   </span>
                 </label>
 

@@ -10,7 +10,7 @@
       </a>
       <a href="/app/" style="display:flex;align-items:center;text-decoration:none;">
         {% if branding is defined and (branding.logo_data_uri or branding.logo_url) %}
-          <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('MTT Charge') }}" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.svg';" />
+          <img src="{{ branding.logo_data_uri or branding.logo_url }}" alt="{{ branding.company_name | default('EV Charging') }}" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.style.display='none';" />
         {% else %}
           <img src="/skin/logo.svg?v=5" alt="Brand Logo" style="height:24px;max-width:140px;object-fit:contain;" onerror="this.onerror=null;this.src='/skin/logo.png?v=5';" />
         {% endif %}

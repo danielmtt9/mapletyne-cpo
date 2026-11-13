@@ -38,7 +38,7 @@ export const LoginPage: React.FC = () => {
   const activeLogo = branding.logo_data_uri || branding.logo_url || '';
 
   // Sign In Form State
-  const [loginEmail, setLoginEmail] = useState('daniel.a@mapletynetechnologies.com');
+  const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -295,7 +295,7 @@ export const LoginPage: React.FC = () => {
           )}
           <div>
             <h1 className="font-headline text-4xl font-bold tracking-tight text-white">
-              {branding.app_title || branding.company_name || 'Mapletyne EMS'}
+              {branding.app_title || branding.company_name || 'Charge Station Admin Portal'}
             </h1>
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
               {branding.portal_tagline || 'Executive SaaS EV Charging Management'}

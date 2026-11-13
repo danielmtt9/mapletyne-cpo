@@ -14,7 +14,7 @@ export function createPayloadClient(config: PayloadClientConfig = {}) {
     config.baseUrl ||
     process.env.PAYLOAD_SERVER_URL ||
     process.env.NEXT_PUBLIC_PAYLOAD_URL ||
-    'https://payloadcms.mapletyne.com'
+    ''
   ).replace(/\/+$/, '')
 
   const apiKey = config.apiKey || process.env.PAYLOAD_API_KEY || process.env.NEXT_PUBLIC_PAYLOAD_API_KEY || ''

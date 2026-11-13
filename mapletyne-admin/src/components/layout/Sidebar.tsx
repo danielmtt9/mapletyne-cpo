@@ -17,7 +17,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const { branding } = useTheme();
   const { user, logout } = useAuth();
 
-  const companyName = branding.company_name || 'Mapletyne';
+  const companyName = branding.company_name || 'Admin Portal';
   const companyNameSizeClass =
     companyName.length > 22
       ? 'text-sm leading-snug'
@@ -69,8 +69,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* Brand Header (Dynamic height >= 64px, zero text truncation) */}
       <div className={`min-h-[64px] px-4 py-3 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between gap-2'} border-b border-white/10 shrink-0`}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
-            {branding.logo_data_uri || branding.logo_url ? (
+          {(branding.logo_data_uri || branding.logo_url) && (
+            <div className="w-10 h-10 rounded-lg bg-emerald-600/20 border border-emerald-500/30 text-emerald-400 flex items-center justify-center font-bold text-lg shadow-sm shrink-0">
               <img
                 src={branding.logo_data_uri || branding.logo_url}
                 alt={companyName}
@@ -79,12 +79,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   e.currentTarget.style.display = 'none';
                 }}
               />
-            ) : (
-              <span className="material-symbols-outlined text-2xl text-emerald-400" aria-hidden="true">
-                bolt
-              </span>
-            )}
-          </div>
+            </div>
+          )}
           {!isCollapsed && (
             <div className="flex flex-col">
               <div className="flex flex-wrap items-center gap-1.5">

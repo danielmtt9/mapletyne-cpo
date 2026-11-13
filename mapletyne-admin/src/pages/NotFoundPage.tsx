@@ -20,7 +20,7 @@ export const NotFoundPage: React.FC = () => {
             Substation View or Route Not Found
           </h1>
           <p className="text-base text-on-surface-variant max-w-md mx-auto">
-            The requested charging facility node, dispenser asset, or telemetry view does not exist in the active Mapletyne CSMS registry.
+            The requested charging facility node, dispenser asset, or telemetry view does not exist in the active CSMS registry.
           </p>
         </div>
 

@@ -46,7 +46,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 Microgrid Telemetry Dispatcher Unreachable
               </h1>
               <p className="text-base text-on-surface-variant max-w-lg mx-auto">
-                The Mapletyne EMS dashboard encountered an unexpected rendering exception while processing microgrid telemetry. Connected dispensers have defaulted to local autonomous power limits.
+                The Admin Portal encountered an unexpected rendering exception while processing microgrid telemetry. Connected dispensers have defaulted to local autonomous power limits.
               </p>
             </div>
 
