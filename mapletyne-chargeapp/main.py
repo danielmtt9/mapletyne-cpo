@@ -20,7 +20,7 @@ app = FastAPI(title=config.APP_TITLE, docs_url=None, redoc_url=None)
 # ── Health Check Endpoint ────────────────────────────────────────────────
 @app.get("/health")
 async def health_check():
-    return {"status": "ok", "service": "mapletyne-chargeapp", "title": config.APP_TITLE}
+    return {"status": "ok", "service": "cpo-chargeapp", "title": config.APP_TITLE}
 
 
 # ── PWA Manifest & Service Worker ──────────────────────────────────────────
@@ -89,7 +89,7 @@ app.state.templates = templates
 @app.get("/sitemap.xml", response_class=HTMLResponse)
 async def chargeapp_sitemap():
     """Public sitemap for driver PWA: map, privacy, terms."""
-    public_url = getattr(config, "PUBLIC_URL", "https://app.mapletyne.com")
+    public_url = getattr(config, "PUBLIC_URL", "")
     sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>

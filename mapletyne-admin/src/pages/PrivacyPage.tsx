@@ -158,11 +158,11 @@ export const PrivacyPage: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
             <a
-              href="mailto:privacy@mapletyne.com"
+              href="mailto:privacy@your-domain.com"
               className="inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-on-primary font-semibold rounded-xl hover:bg-primary-container transition-colors min-h-[44px]"
             >
               <span className="material-symbols-outlined">mail</span>
-              privacy@mapletyne.com
+              privacy@your-domain.com
             </a>
             <span className="text-sm text-on-surface-variant">
               We respond to all DSARs within 30 days.

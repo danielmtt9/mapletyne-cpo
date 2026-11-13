@@ -35,8 +35,8 @@ interface ThemeContextType {
 }
 
 const defaultBranding: BrandingConfig = {
-  company_name: 'Mapletyne',
-  app_title: 'Executive SaaS EV Charging Management',
+  company_name: '',
+  app_title: 'Charge Station Admin Portal',
   logo_url: '',
   logo_data_uri: '',
   favicon_url: '',
@@ -45,10 +45,10 @@ const defaultBranding: BrandingConfig = {
   accent_color: '#0284c7',
   bg_color: '#f8fafc',
   card_color: '#ffffff',
-  support_email: 'operations@mapletyne.com',
-  legal_entity: 'Mapletyne Energy Systems Ltd.',
+  support_email: '',
+  legal_entity: '',
   vat_number: '',
-  portal_tagline: 'Enterprise EV Charging & Microgrid EMS',
+  portal_tagline: 'EV Charging & Energy Management',
   currency: 'USD',
   currency_symbol: '$',
 };
@@ -182,9 +182,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       }
     }
 
-    const displayTitle = cfg.app_title || cfg.company_name || 'Mapletyne EMS';
-    const displayTagline = cfg.portal_tagline || 'Executive SaaS EV Charging Management';
-    document.title = cfg.company_name ? `${cfg.company_name} — ${displayTitle}` : `${displayTitle} — ${displayTagline}`;
+    const displayTitle = cfg.app_title || cfg.company_name || 'Charge Station Admin Portal';
+    document.title = cfg.company_name ? `${cfg.company_name} — ${displayTitle}` : displayTitle;
     
     const dynamicIcon = cfg.favicon_url || cfg.logo_data_uri || cfg.logo_url;
     if (dynamicIcon) {
@@ -243,8 +242,8 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       const b = await api.get<any>('/public/branding');
       const updated: BrandingConfig = {
-        company_name: b.company_name ?? 'Mapletyne',
-        app_title: b.app_title || 'Executive SaaS EV Charging Management',
+        company_name: b.company_name ?? '',
+        app_title: b.app_title || 'Charge Station Admin Portal',
         logo_url: b.logo_url ?? '',
         logo_data_uri: b.logo_data_uri ?? '',
         favicon_url: b.favicon_url ?? '',
@@ -253,10 +252,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         accent_color: b.accent_color || defaultBranding.accent_color,
         bg_color: b.bg_color || defaultBranding.bg_color,
         card_color: b.card_color || defaultBranding.card_color,
-        support_email: b.support_email ?? 'operations@mapletyne.com',
-        legal_entity: b.legal_entity ?? 'Mapletyne Energy Systems Ltd.',
+        support_email: b.support_email ?? '',
+        legal_entity: b.legal_entity ?? '',
         vat_number: b.vat_number ?? '',
-        portal_tagline: b.portal_tagline || 'Enterprise EV Charging & Microgrid EMS',
+        portal_tagline: b.portal_tagline || 'EV Charging & Energy Management',
         currency: b.currency || 'USD',
         currency_symbol: b.currency === 'EUR' ? '€' : b.currency === 'GBP' ? '£' : '$',
       };

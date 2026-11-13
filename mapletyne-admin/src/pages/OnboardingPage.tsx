@@ -6,7 +6,7 @@ export const OnboardingPage: React.FC = () => {
   const navigate = useNavigate();
   const [stationId, setStationId] = useState('US-NY-MR-001');
   const [selectedHardware, setSelectedHardware] = useState<'abb' | 'alpitronic'>('abb');
-  const [csmsUrl, setCsmsUrl] = useState('wss://csms.mapletyne.com:8443/ocpp201/US-NY-MR-001');
+  const [csmsUrl, setCsmsUrl] = useState('');
   const [securityProfile, setSecurityProfile] = useState('Profile 3 - Mutual TLS (mTLS) with Client Certificates');
   const [isPinging, setIsPinging] = useState(false);
   const [pingSuccess, setPingSuccess] = useState<boolean | null>(null);

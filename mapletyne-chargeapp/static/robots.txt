@@ -9,4 +9,4 @@ Allow: /
 Allow: /privacy
 Allow: /terms
 
-Sitemap: https://app.mapletyne.com/sitemap.xml
+Sitemap: /sitemap.xml

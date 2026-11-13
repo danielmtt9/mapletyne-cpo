@@ -38,7 +38,7 @@ export const LoginPage: React.FC = () => {
   const activeLogo = branding.logo_data_uri || branding.logo_url || '';
 
   // Sign In Form State
-  const [loginEmail, setLoginEmail] = useState('daniel.a@mapletynetechnologies.com');
+  const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
