@@ -35,6 +35,7 @@ RUN groupadd -g 10001 mapletyne && \
 
 COPY --from=builder /install /usr/local
 COPY --chown=10001:10001 . .
+RUN mkdir -p /app/data/pki /app/backups && chown -R 10001:10001 /app
 
 USER 10001:10001
 
