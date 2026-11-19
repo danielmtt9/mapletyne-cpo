@@ -31,8 +31,8 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { branding } = useTheme();
 
-  // Tab State
-  const [activeTab, setActiveTab] = useState<AuthTab>('login');
+  // Tab State (Invite-Only Sign In)
+  const [activeTab] = useState<AuthTab>('login');
 
   // Active logo for watermark and header
   const activeLogo = branding.logo_data_uri || branding.logo_url || '';
@@ -303,36 +303,9 @@ export const LoginPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex bg-[#070d19]/80 p-1 rounded-xl border border-white/5">
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab('login');
-              setLoginError(null);
-            }}
-            className={`flex-1 py-2 text-xs font-mono font-semibold rounded-lg transition-all ${
-              activeTab === 'login'
-                ? 'bg-primary text-[#070d19] shadow-md shadow-primary/20'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab('register');
-              setRegError(null);
-            }}
-            className={`flex-1 py-2 text-xs font-mono font-semibold rounded-lg transition-all ${
-              activeTab === 'register'
-                ? 'bg-primary text-[#070d19] shadow-md shadow-primary/20'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            Create Account
-          </button>
+        {/* Enterprise Invite-Only Access Notice */}
+        <div className="px-3 py-2 rounded-xl bg-[#070d19]/80 border border-white/5 text-center text-xs font-mono text-slate-400">
+          Authorized Operator Sign-In Only
         </div>
 
         {/* ── SIGN IN TAB ─────────────────────────────────────────────────── */}
