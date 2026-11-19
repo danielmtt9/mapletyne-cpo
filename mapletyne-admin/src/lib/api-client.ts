@@ -1,4 +1,6 @@
-const API_BASE = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin') ? '/admin/api/v1' : '/api/v1';
+import { getApiBasePath, withBasePath } from './base-path';
+
+const getApiBase = () => getApiBasePath();
 
 export class ApiError extends Error {
   constructor(public status: number, message: string, public data?: unknown) {
@@ -20,7 +22,7 @@ async function tryRefreshToken(): Promise<string | null> {
   if (!refreshToken) return null;
 
   try {
-    const response = await fetch(`${API_BASE}/admin/auth/refresh`, {
+    const response = await fetch(`${getApiBase()}/admin/auth/refresh`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ refresh_token: refreshToken }),
@@ -63,7 +65,7 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+  const url = endpoint.startsWith('http') ? endpoint : `${getApiBase()}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
   let response = await fetch(url, { ...options, headers });
 
   if (response.status === 401 && !window.location.pathname.includes('/login')) {
@@ -78,9 +80,12 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
         response = await fetch(url, { ...options, headers });
       } else {
         localStorage.removeItem('opencpo_admin_jwt');
+        localStorage.removeItem('mapletyne_admin_jwt');
         localStorage.removeItem('opencpo_refresh_token');
+        localStorage.removeItem('mapletyne_refresh_token');
         localStorage.removeItem('opencpo_user');
-        window.location.href = '/login';
+        localStorage.removeItem('mapletyne_user');
+        window.location.href = withBasePath('/login');
         throw new ApiError(401, 'Unauthorized');
       }
     } else {
@@ -122,14 +127,14 @@ export async function request<T>(endpoint: string, options: RequestInit = {}): P
 }
 
 export async function uploadRequest<T>(endpoint: string, formData: FormData): Promise<T> {
-  const token = localStorage.getItem('opencpo_admin_jwt');
+  const token = localStorage.getItem('opencpo_admin_jwt') || localStorage.getItem('mapletyne_admin_jwt');
   const headers: Record<string, string> = {};
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const url = endpoint.startsWith('http') ? endpoint : `${API_BASE}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
+  const url = endpoint.startsWith('http') ? endpoint : `${getApiBase()}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`;
   const response = await fetch(url, {
     method: 'POST',
     body: formData,
@@ -138,7 +143,8 @@ export async function uploadRequest<T>(endpoint: string, formData: FormData): Pr
 
   if (response.status === 401 && !window.location.pathname.includes('/login')) {
     localStorage.removeItem('opencpo_admin_jwt');
-    window.location.href = '/login';
+    localStorage.removeItem('mapletyne_admin_jwt');
+    window.location.href = withBasePath('/login');
     throw new ApiError(401, 'Unauthorized');
   }
 

@@ -25,6 +25,7 @@ async def health_check():
 
 # ── PWA Manifest & Service Worker ──────────────────────────────────────────
 @app.get("/manifest.json")
+@app.get("/app/manifest.json")
 async def pwa_manifest():
     return FileResponse(
         "static/manifest.json",
@@ -33,6 +34,7 @@ async def pwa_manifest():
     )
 
 @app.get("/sw.js")
+@app.get("/app/sw.js")
 async def pwa_service_worker():
     return FileResponse(
         "static/sw.js",
@@ -45,6 +47,7 @@ async def pwa_service_worker():
 
 # ── Dynamic Skin Static Assets ─────────────────────────────────────────────
 @app.get("/skin/{filename:path}")
+@app.get("/app/skin/{filename:path}")
 async def dynamic_skin_static(request: Request, filename: str):
     """Serve skin static asset dynamically based on resolved tenant skin."""
     skin_name = getattr(request.state, "skin", config.SKIN)
@@ -65,8 +68,9 @@ async def dynamic_skin_static(request: Request, filename: str):
         return FileResponse(static_file, media_type=media_type)
     return HTMLResponse("Skin asset not found", status_code=404)
 
-# Base static always available at /static (home.js, htmx, logos, fallback CSS)
+# Base static always available at /static and /app/static (home.js, htmx, logos, fallback CSS)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/app/static", StaticFiles(directory="static"), name="app_static")
 
 # ── Templates ─────────────────────────────────────────────────────────────
 # Resolution order: skin templates → plugin templates → base templates

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { withBasePath } from '@/lib/base-path';
 
 export interface AuthUser {
   id?: number | string;
@@ -154,7 +155,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('opencpo_refresh_token');
     localStorage.removeItem('mapletyne_user');
     localStorage.removeItem('opencpo_user');
-    window.location.href = '/login';
+    window.location.href = withBasePath('/login');
   };
 
   return (

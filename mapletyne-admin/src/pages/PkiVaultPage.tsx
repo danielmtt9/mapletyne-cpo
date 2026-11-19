@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
+import { getApiBasePath } from '@/lib/base-path';
 import { ensureArray, formatTimestamp } from '@/lib/utils';
 
 export const PkiVaultPage: React.FC = () => {
@@ -95,11 +96,11 @@ export const PkiVaultPage: React.FC = () => {
   });
 
   const handleDownloadCert = (serial: string) => {
-    window.open(`/api/v1/pki/certificates/${serial}/download`, '_blank');
+    window.open(`${getApiBasePath()}/pki/certificates/${serial}/download`, '_blank');
   };
 
   const handleDownloadCrl = () => {
-    window.open('/api/v1/pki/crl', '_blank');
+    window.open(`${getApiBasePath()}/pki/crl`, '_blank');
   };
 
   return (

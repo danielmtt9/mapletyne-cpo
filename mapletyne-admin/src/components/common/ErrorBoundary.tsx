@@ -1,4 +1,5 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
+import { withBasePath } from '@/lib/base-path';
 
 interface Props {
   children: ReactNode;
@@ -77,7 +78,8 @@ export class ErrorBoundary extends Component<Props, State> {
               <button
                 onClick={() => {
                   localStorage.removeItem('opencpo_admin_jwt');
-                  window.location.href = '/login';
+                  localStorage.removeItem('mapletyne_admin_jwt');
+                  window.location.href = withBasePath('/login');
                 }}
                 className="w-full sm:w-auto px-5 py-3 rounded-xl border border-outline bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-base transition-colors flex items-center justify-center gap-2 cursor-pointer"
               >

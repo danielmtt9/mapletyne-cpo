@@ -37,5 +37,6 @@ async def terms_page(request: Request):
 
 
 @router.get("/api/chargers/nearby")
+@router.get("/app/api/chargers/nearby")
 async def nearby_chargers(lat: float, lng: float, radius: float = 200):
     return await api_get(f"/api/v1/public/chargers/nearby?lat={lat}&lng={lng}&radius={radius}")

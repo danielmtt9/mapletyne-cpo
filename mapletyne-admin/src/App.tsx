@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CookieConsentBanner } from './components/common/CookieConsentBanner';
+import { getAppBasePath } from './lib/base-path';
 
 const AuthGuard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const token = localStorage.getItem('mapletyne_admin_jwt') || localStorage.getItem('opencpo_admin_jwt');
@@ -45,7 +46,7 @@ const queryClient = new QueryClient({
 });
 
 export const App: React.FC = () => {
-  const basename = typeof window !== 'undefined' && window.location.pathname.startsWith('/admin') ? '/admin' : '/';
+  const basename = getAppBasePath() || '/';
 
   return (
     <ErrorBoundary>

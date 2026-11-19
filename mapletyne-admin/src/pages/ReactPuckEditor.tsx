@@ -3,13 +3,14 @@ import { useParams } from 'react-router-dom'
 import { Puck, type Data } from '@measured/puck'
 import '@measured/puck/puck.css'
 import { puckConfig } from '../puck.config'
+import { getCmsApiBasePath } from '../lib/base-path'
 
 export interface ReactPuckEditorProps {
   cmsApiUrl?: string
 }
 
 export const ReactPuckEditor: React.FC<ReactPuckEditorProps> = ({
-  cmsApiUrl = '/api/cms',
+  cmsApiUrl = getCmsApiBasePath(),
 }) => {
   const { pageId } = useParams<{ pageId: string }>()
   const [data, setData] = useState<Data | null>(null)
@@ -20,7 +21,7 @@ export const ReactPuckEditor: React.FC<ReactPuckEditorProps> = ({
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     }
-    const token = localStorage.getItem('opencpo_admin_jwt')
+    const token = localStorage.getItem('opencpo_admin_jwt') || localStorage.getItem('mapletyne_admin_jwt')
     if (token) {
       headers['Authorization'] = `Bearer ${token}`
     }

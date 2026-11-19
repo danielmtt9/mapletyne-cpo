@@ -1,12 +1,14 @@
+var APP_BASE = window.location.pathname.startsWith('/app') ? '/app' : '';
+
 // ── Session Resumption ──────────────────────────────────────────
 (function () {
   var sid = localStorage.getItem('active_session_id');
   if (!sid) return;
-  fetch('/app/api/sessions/' + sid + '/poll')
+  fetch(APP_BASE + '/api/sessions/' + sid + '/poll')
     .then(function (r) { return r.json(); })
     .then(function (s) {
       if (s && (s.mollie_status === 'paid' || s.mollie_status === 'authorized') && !s.stopped_at) {
-        window.location.href = '/app/session/' + sid;
+        window.location.href = APP_BASE + '/session/' + sid;
       } else {
         localStorage.removeItem('active_session_id');
       }
@@ -56,6 +58,8 @@ var map, userMarker, chargerLayer, tileLayer;
 var chargerCache = { data: null, ts: 0 };
 var CACHE_TTL = 30000;
 var fetchDebounce = null;
+var hasInitialCentered = false;
+var lastRenderedKey = '';
 
 var TILE_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 var TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
@@ -130,9 +134,14 @@ function initMap() {
 
   applyTheme(initialTheme);
 
+  map.on('dragstart', function () { hasInitialCentered = true; });
+  map.on('zoomstart', function () { hasInitialCentered = true; });
   map.on('moveend', scheduleFetch);
   map.on('zoomend', scheduleFetch);
   map.on('click', closeSheet);
+
+  setTimeout(function () { if (map) map.invalidateSize(); }, 200);
+  window.addEventListener('resize', function () { if (map) map.invalidateSize(); });
 
   document.getElementById('zoom-in').addEventListener('click', function () { map.zoomIn(); });
   document.getElementById('zoom-out').addEventListener('click', function () { map.zoomOut(); });
@@ -176,21 +185,24 @@ function fetchNearby() {
 
   var now = Date.now();
   if (chargerCache.data && (now - chargerCache.ts) < CACHE_TTL) {
-    renderChargers(chargerCache.data);
+    var cacheKey = String(chargerCache.ts);
+    if (lastRenderedKey !== cacheKey) {
+      renderChargers(chargerCache.data, cacheKey);
+    }
     return;
   }
 
   var loading = document.getElementById('map-loading');
-  var apiBase = window.location.pathname.startsWith('/app') ? '/app' : '';
-  var url = apiBase + '/api/chargers/nearby?lat=' + center.lat + '&lng=' + center.lng + '&radius=' + radius;
+  var url = APP_BASE + '/api/chargers/nearby?lat=' + center.lat + '&lng=' + center.lng + '&radius=' + radius;
   fetch(url)
     .then(function (r) {
       if (!r.ok) throw new Error('API error ' + r.status);
       return r.json();
     })
     .then(function (data) {
-      chargerCache = { data: data, ts: Date.now() };
-      renderChargers(data);
+      var ts = Date.now();
+      chargerCache = { data: data, ts: ts };
+      renderChargers(data, String(ts));
     })
     .catch(function (e) {
       console.error('Charger fetch failed:', e);
@@ -200,19 +212,19 @@ function fetchNearby() {
     });
 }
 
-function renderChargers(data) {
+function renderChargers(data, cacheKey) {
+  if (cacheKey) lastRenderedKey = cacheKey;
   chargerLayer.clearLayers();
   var chargers = Array.isArray(data) ? data : (data.chargers || data.results || []);
 
-  var hasCentered = false;
   chargers.forEach(function (cp) {
     var lat = cp.lat || cp.latitude;
     var lng = cp.lng || cp.longitude;
     if (lat == null || lng == null) return;
 
-    if (!hasCentered && !userMarker) {
+    if (!hasInitialCentered && !userMarker) {
       map.setView([lat, lng], 14);
-      hasCentered = true;
+      hasInitialCentered = true;
     }
 
     var connectors = cp.connectors || [];
@@ -306,7 +318,7 @@ function openSheet(cp) {
       var label = c.status || (I18N.unknown_status || 'Available');
       var cid = c.connector_id || c.id || 1;
       var type = c.type || c.connector_type || (powerKw >= 50 ? 'CCS2 Fast' : 'Type 2 AC');
-      var startBtn = '<a href="/app/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
+      var startBtn = '<a href="' + APP_BASE + '/charge/' + encodeURIComponent(cpId) + '/' + encodeURIComponent(cid) + '" ' +
         'style="padding:6px 14px;background:var(--accent);color:#0C2340;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;margin-left:8px;display:inline-flex;align-items:center;gap:4px;">' +
         '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">play_arrow</span> Start →</a>';
       
@@ -323,7 +335,7 @@ function openSheet(cp) {
     });
   } else {
     // Default connector action card if station has single/auto connector
-    var defaultBtn = '<a href="/app/charge/' + encodeURIComponent(cpId) + '/1" ' +
+    var defaultBtn = '<a href="' + APP_BASE + '/charge/' + encodeURIComponent(cpId) + '/1" ' +
       'style="padding:10px 16px;background:var(--accent);color:#0C2340;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;display:block;text-align:center;margin-top:12px;">' +
       '<span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;">play_arrow</span> Start Charging →</a>';
     connHTML = '<div style="padding:8px 0;">' +
@@ -446,7 +458,7 @@ function navigateToCode(code) {
   // If the code is a URL containing /c/, extract just the code part
   var urlMatch = code.match(/\/c\/([^/?#\s]+)/);
   var finalCode = urlMatch ? urlMatch[1] : code;
-  window.location.href = '/app/c/' + encodeURIComponent(finalCode);
+  window.location.href = APP_BASE + '/c/' + encodeURIComponent(finalCode);
 }
 
 // ── Search & Autocomplete ───────────────────────────────────────

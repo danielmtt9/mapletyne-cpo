@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react'
 import { ALL_MATERIAL_SYMBOLS, POPULAR_MATERIAL_SYMBOLS } from './materialSymbolsList'
 import { WHITELIST_FONTS, M3_COLOR_PRESETS } from './puck-constants'
+import { getCmsApiBasePath, withBasePath } from './lib/base-path'
 
 // ==========================================
 // 1. MATERIAL SYMBOLS ICON PICKER
@@ -440,7 +441,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
       formData.append('file', file)
       formData.append('alt', file.name.replace(/\.[^/.]+$/, ''))
 
-      const res = await fetch('/api/media', {
+      const res = await fetch(`${getCmsApiBasePath()}/media`, {
         method: 'POST',
         body: formData,
       })
@@ -469,8 +470,8 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
     setError(null)
     try {
       const endpoints = [
+        `${getCmsApiBasePath()}/media?limit=50`,
         '/api/media?limit=50',
-        '/api/cms/media?limit=50',
       ]
       let fetchedDocs: MediaDoc[] = []
 
@@ -717,12 +718,12 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
                   <div style={{ marginTop: '8px', fontSize: '0.78rem' }}>
                     Upload images in Payload CMS Admin at:
                     <a
-                      href="/admin/settings"
+                      href={withBasePath('/settings')}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{ color: '#0284c7', marginLeft: '4px', textDecoration: 'underline' }}
                     >
-                      /admin/collections/media
+                      {withBasePath('/settings')}
                     </a>
                   </div>
                 </div>
@@ -772,7 +773,7 @@ export function MediaPicker({ value = '', onChange, label }: { value?: string; o
               }}
             >
               <a
-                href="/admin/settings"
+                href={withBasePath('/settings')}
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{

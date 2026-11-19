@@ -1,17 +1,18 @@
-const CACHE = 'otaski-charge-v5';
+const CACHE = 'chargeapp-v6';
 const PRECACHE = [
   '/app/',
-  '/app/static/style.css?v=4',
-  '/skin/style.css?v=4',
+  '/app/static/m3-tokens.css?v=5',
+  '/app/static/style.css?v=5',
+  '/app/skin/style.css?v=5',
   '/app/static/home.js?v=6',
   '/app/static/leaflet.js?v=2',
   '/app/static/leaflet.css?v=2',
   '/app/static/htmx.min.js?v=2',
-  '/app/static/icon-192.png?v=4',
-  '/app/static/icon-512.png?v=4',
-  '/app/manifest.json?v=4',
-  '/skin/logo.svg?v=4',
-  '/skin/favicon.svg?v=4'
+  '/app/static/icon-192.png?v=5',
+  '/app/static/icon-512.png?v=5',
+  '/app/manifest.json?v=5',
+  '/skin/logo.svg?v=5',
+  '/skin/favicon.svg?v=5'
 ];
 
 self.addEventListener('install', e => {

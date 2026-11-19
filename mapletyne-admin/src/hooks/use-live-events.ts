@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
+import { getApiBasePath } from '@/lib/base-path';
 
 export function useLiveEvents() {
   const queryClient = useQueryClient();
@@ -15,7 +16,7 @@ export function useLiveEvents() {
       if (!token) return;
       try {
         const { ticket } = await api.post<{ ticket: string }>('/events/ticket', {});
-        sse = new EventSource(`/api/v1/events/stream?ticket=${encodeURIComponent(ticket)}`);
+        sse = new EventSource(`${getApiBasePath()}/events/stream?ticket=${encodeURIComponent(ticket)}`);
 
         sse.onopen = () => {
           setIsConnected(true);

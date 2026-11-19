@@ -8,6 +8,7 @@ import {
 } from './puck-fields'
 import { PuckDropZone } from './puck-dropzone'
 import { WHITELIST_FONTS } from './puck-constants'
+import { withBasePath } from './lib/base-path'
 
 const Arrow = () => (
   <span aria-hidden="true" style={{ display: 'inline-block', marginLeft: '4px' }}>→</span>
@@ -1379,11 +1380,11 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                   borderBottom: '1px solid var(--rule, rgba(15, 23, 42, 0.08))',
                 }}
               >
-                <a className="wordmark" href="/" aria-label="Maple Tyne CPO home" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', gap: '10px' }}>
+                <a className="wordmark" href={withBasePath('/')} aria-label="Maple Tyne CPO home" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', gap: '10px' }}>
                   <img
                     alt="Maple Tyne CPO"
                     className="brand-logo"
-                    src="/favicon.svg"
+                    src={withBasePath('/favicon.svg')}
                     style={{ width: '36px', height: '36px', display: 'block' }}
                   />
                   <span style={{ fontWeight: 700, fontSize: '18px', color: 'var(--ink, #0f172a)', letterSpacing: '-0.02em' }}>
@@ -1392,15 +1393,15 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                 </a>
 
                 <nav className="desktop-nav" aria-label="Main navigation" style={{ display: 'flex', alignItems: 'center', gap: '24px', fontSize: '14px', fontWeight: 500 }}>
-                  <a href="/" style={{ color: 'var(--ink, #0f172a)', textDecoration: 'none' }}>Dashboard</a>
-                  <a href="/chargers" style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Chargers</a>
-                  <a href="/sessions" style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Sessions</a>
-                  <a href="/tariffs" style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Tariffs</a>
-                  <a href="/fleet" style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Fleet</a>
-                  <a href="/settings" style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Settings</a>
+                  <a href={withBasePath('/')} style={{ color: 'var(--ink, #0f172a)', textDecoration: 'none' }}>Dashboard</a>
+                  <a href={withBasePath('/chargers')} style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Chargers</a>
+                  <a href={withBasePath('/sessions')} style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Sessions</a>
+                  <a href={withBasePath('/tariffs')} style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Tariffs</a>
+                  <a href={withBasePath('/fleet')} style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Fleet</a>
+                  <a href={withBasePath('/settings')} style={{ color: 'var(--muted, #64748b)', textDecoration: 'none' }}>Settings</a>
                   <a
                     className="nav-cta button button-dark"
-                    href="/"
+                    href={withBasePath('/')}
                     style={{
                       padding: '8px 16px',
                       borderRadius: '8px',
@@ -1439,8 +1440,8 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
               >
                 <div style={{ width: 'var(--page, min(1320px, calc(100vw - 96px)))', margin: '0 auto', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '40px' }}>
                   <div style={{ maxWidth: '340px' }}>
-                    <a className="wordmark" href="/" style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', gap: '10px' }}>
-                      <img src="/favicon.svg" alt="Maple Tyne CPO" style={{ width: '32px', height: '32px' }} />
+                    <a className="wordmark" href={withBasePath('/')} style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none', gap: '10px' }}>
+                      <img src={withBasePath('/favicon.svg')} alt="Maple Tyne CPO" style={{ width: '32px', height: '32px' }} />
                       <span style={{ fontWeight: 700, fontSize: '16px', color: '#0f172a' }}>Maple Tyne CPO</span>
                     </a>
                     <p style={{ marginTop: '1rem', color: '#64748b', fontSize: '14px', lineHeight: 1.6 }}>
@@ -1451,25 +1452,25 @@ export const puckConfig: Config<CombinedProps, RootProps> = {
                   <div style={{ display: 'flex', gap: '50px', flexWrap: 'wrap', fontSize: '13px' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Operations</span>
-                      <a href="/" style={{ color: '#64748b', textDecoration: 'none' }}>Live Dashboard</a>
-                      <a href="/chargers" style={{ color: '#64748b', textDecoration: 'none' }}>Charger Farm</a>
-                      <a href="/sessions" style={{ color: '#64748b', textDecoration: 'none' }}>Live Sessions</a>
-                      <a href="/tariffs" style={{ color: '#64748b', textDecoration: 'none' }}>Tariff Engine</a>
+                      <a href={withBasePath('/')} style={{ color: '#64748b', textDecoration: 'none' }}>Live Dashboard</a>
+                      <a href={withBasePath('/chargers')} style={{ color: '#64748b', textDecoration: 'none' }}>Charger Farm</a>
+                      <a href={withBasePath('/sessions')} style={{ color: '#64748b', textDecoration: 'none' }}>Live Sessions</a>
+                      <a href={withBasePath('/tariffs')} style={{ color: '#64748b', textDecoration: 'none' }}>Tariff Engine</a>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>Management</span>
-                      <a href="/fleet" style={{ color: '#64748b', textDecoration: 'none' }}>RFID &amp; Fleet</a>
-                      <a href="/vehicles" style={{ color: '#64748b', textDecoration: 'none' }}>EV Models</a>
-                      <a href="/pki-vault" style={{ color: '#64748b', textDecoration: 'none' }}>PKI Security Vault</a>
-                      <a href="/roaming" style={{ color: '#64748b', textDecoration: 'none' }}>OCPI Roaming</a>
+                      <a href={withBasePath('/fleet')} style={{ color: '#64748b', textDecoration: 'none' }}>RFID &amp; Fleet</a>
+                      <a href={withBasePath('/vehicles')} style={{ color: '#64748b', textDecoration: 'none' }}>EV Models</a>
+                      <a href={withBasePath('/pki-vault')} style={{ color: '#64748b', textDecoration: 'none' }}>PKI Security Vault</a>
+                      <a href={withBasePath('/roaming')} style={{ color: '#64748b', textDecoration: 'none' }}>OCPI Roaming</a>
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       <span style={{ fontWeight: 700, textTransform: 'uppercase', fontSize: '11px', letterSpacing: '0.1em', color: '#0f172a' }}>System</span>
-                      <a href="/settings" style={{ color: '#64748b', textDecoration: 'none' }}>Settings &amp; Branding</a>
-                      <a href="/terms" style={{ color: '#64748b', textDecoration: 'none' }}>Terms &amp; Policies</a>
-                      <a href="/profile" style={{ color: '#64748b', textDecoration: 'none' }}>Operator Profile</a>
+                      <a href={withBasePath('/settings')} style={{ color: '#64748b', textDecoration: 'none' }}>Settings &amp; Branding</a>
+                      <a href={withBasePath('/terms')} style={{ color: '#64748b', textDecoration: 'none' }}>Terms &amp; Policies</a>
+                      <a href={withBasePath('/profile')} style={{ color: '#64748b', textDecoration: 'none' }}>Operator Profile</a>
                     </div>
                   </div>
                 </div>

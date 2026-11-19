@@ -19,21 +19,34 @@ def _auth_headers() -> dict:
 
 async def api_get(path: str) -> dict:
     """GET request to Core API. Raises HTTPException on failure."""
-    async with httpx.AsyncClient(base_url=config.CORE_API, timeout=10, headers=_auth_headers()) as client:
-        r = await client.get(path)
-        r.raise_for_status()
-        return r.json()
+    try:
+        async with httpx.AsyncClient(base_url=config.CORE_API, timeout=10, headers=_auth_headers()) as client:
+            r = await client.get(path)
+            r.raise_for_status()
+            return r.json()
+    except httpx.HTTPStatusError as exc:
+        logger.warning("Core API HTTP error on GET %s: %s", path, exc)
+        raise HTTPException(status_code=exc.response.status_code, detail=f"Core API error ({exc.response.status_code})")
+    except httpx.HTTPError as exc:
+        logger.warning("Upstream Core API unavailable on GET %s: %s", path, exc)
+        raise HTTPException(status_code=502, detail=f"Upstream core API unavailable: {exc}")
 
 
 async def api_post(path: str, body: dict) -> dict:
     """POST request to Core API. Raises HTTPException with API error detail."""
-    async with httpx.AsyncClient(base_url=config.CORE_API, timeout=10, headers=_auth_headers()) as client:
-        r = await client.post(path, json=body)
-        if not r.is_success:
-            try:
-                err = r.json()
-                detail = err.get("detail", f"API error {r.status_code}")
-            except Exception:
-                detail = f"API error {r.status_code}"
-            raise HTTPException(status_code=r.status_code, detail=detail)
-        return r.json()
+    try:
+        async with httpx.AsyncClient(base_url=config.CORE_API, timeout=10, headers=_auth_headers()) as client:
+            r = await client.post(path, json=body)
+            if not r.is_success:
+                try:
+                    err = r.json()
+                    detail = err.get("detail", f"API error {r.status_code}")
+                except Exception:
+                    detail = f"API error {r.status_code}"
+                raise HTTPException(status_code=r.status_code, detail=detail)
+            return r.json()
+    except HTTPException:
+        raise
+    except httpx.HTTPError as exc:
+        logger.warning("Upstream Core API unavailable on POST %s: %s", path, exc)
+        raise HTTPException(status_code=502, detail=f"Upstream core API unavailable: {exc}")
