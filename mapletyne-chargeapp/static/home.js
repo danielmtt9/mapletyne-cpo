@@ -63,7 +63,9 @@ var lastRenderedKey = '';
 
 var TILE_DARK  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
 var TILE_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
-var TILE_ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+var TILE_OSM   = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+var TILE_ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+var usingFallbackTiles = false;
 
 function getStoredTheme() {
   try {
@@ -99,7 +101,7 @@ function applyTheme(theme) {
     if (icon) icon.textContent = 'dark_mode';
   }
 
-  if (tileLayer) {
+  if (tileLayer && !usingFallbackTiles) {
     tileLayer.setUrl(isDarkTheme ? TILE_DARK : TILE_LIGHT);
   }
   try {
@@ -129,6 +131,13 @@ function initMap() {
     subdomains: 'abcd',
     maxZoom: 19 
   });
+  tileLayer.on('tileerror', function () {
+    if (!usingFallbackTiles && tileLayer) {
+      usingFallbackTiles = true;
+      tileLayer.options.subdomains = 'abc';
+      tileLayer.setUrl(TILE_OSM);
+    }
+  });
   tileLayer.addTo(map);
   chargerLayer = L.layerGroup().addTo(map);
 
@@ -141,7 +150,14 @@ function initMap() {
   map.on('click', closeSheet);
 
   setTimeout(function () { if (map) map.invalidateSize(); }, 200);
+  setTimeout(function () { if (map) map.invalidateSize(); }, 800);
   window.addEventListener('resize', function () { if (map) map.invalidateSize(); });
+  var mapEl = document.getElementById('charger-map');
+  if (mapEl && typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(function () {
+      if (map) map.invalidateSize();
+    }).observe(mapEl);
+  }
 
   document.getElementById('zoom-in').addEventListener('click', function () { map.zoomIn(); });
   document.getElementById('zoom-out').addEventListener('click', function () { map.zoomOut(); });

@@ -282,23 +282,27 @@ export const LoginPage: React.FC = () => {
       {/* Main Glassmorphism Card */}
       <div className="w-full max-w-lg bg-surface-container border border-white/10 rounded-2xl p-8 shadow-2xl space-y-6 relative z-10 transition-all duration-300">
         
-        {/* Header Branding */}
+        {/* Centered Official Logo Header Branding */}
         <div className="text-center space-y-3">
           {activeLogo ? (
-            <div className="w-16 h-16 rounded-2xl bg-[#070d19]/80 border border-white/10 flex items-center justify-center p-2 mx-auto shadow-lg shadow-primary/20 ring-1 ring-white/20 overflow-hidden">
-              <img src={activeLogo} alt="Logo" className="w-full h-full object-contain" />
+            <div className="mx-auto flex items-center justify-center">
+              <img
+                src={activeLogo}
+                alt={branding.company_name || 'Company Logo'}
+                className="h-14 max-w-[220px] object-contain mx-auto"
+              />
             </div>
           ) : (
-            <div className="w-14 h-14 bg-gradient-to-tr from-primary to-emerald-500 text-surface-dark flex items-center justify-center font-extrabold font-headline text-2xl rounded-2xl mx-auto shadow-lg shadow-primary/20 ring-1 ring-white/20">
+            <div className="w-12 h-12 bg-gradient-to-tr from-primary to-emerald-500 text-surface-dark flex items-center justify-center font-extrabold font-headline text-2xl rounded-2xl mx-auto shadow-lg shadow-primary/20 ring-1 ring-white/20">
               <span className="material-symbols-outlined text-3xl text-[#070d19]" aria-hidden="true">bolt</span>
             </div>
           )}
           <div>
-            <h1 className="font-headline text-4xl font-bold tracking-tight text-white">
-              {branding.app_title || branding.company_name || 'Charge Station Admin Portal'}
+            <h1 className="font-headline text-2xl font-bold tracking-tight text-white">
+              {branding.app_title || branding.company_name || 'CPO Operations Portal'}
             </h1>
             <p className="text-xs font-mono uppercase tracking-widest text-slate-400 mt-1">
-              {branding.portal_tagline || 'Executive SaaS EV Charging Management'}
+              {branding.portal_tagline || 'Charge Point Operator Portal'}
             </p>
           </div>
         </div>
@@ -542,7 +546,7 @@ export const LoginPage: React.FC = () => {
               <span>•</span>
             </>
           ) : null}
-          <span>ISO 15118 & OCPP 2.0.1</span>
+          <span>Enterprise Fleet &amp; Charge Control</span>
         </div>
       </div>
 

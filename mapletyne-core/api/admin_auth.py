@@ -159,8 +159,27 @@ async def login(body: LoginRequest):
         refresh_token = kc_tokens.get("refresh_token")
         claims = verify_keycloak_token(access_token)
 
-        # Sync/Upsert user profile in ocpp.users
+        # Enforce CPO portal access boundary: drivers restricted to Driver App cannot log into CPO Admin
         role_name = claims.get("role", "admin")
+        realm_roles = [str(r).lower() for r in (claims.get("roles") or [role_name])]
+        client_cpo_roles = (
+            claims.get("resource_access", {}).get("app-cpo", {}).get("roles", [])
+            if isinstance(claims.get("resource_access"), dict)
+            else []
+        )
+        allowed_apps_attr = claims.get("allowed_apps") or []
+        is_superadmin = any("super" in r for r in realm_roles)
+        has_cpo_entitlement = (
+            is_superadmin
+            or "app:cpo" in client_cpo_roles
+            or "cpo" in allowed_apps_attr
+            or role_name.lower() in ("admin", "superadmin", "cpo-admin", "site-operator", "fleet-manager")
+        )
+        if not has_cpo_entitlement and str(role_name).lower() in ("driver", "ev_driver"):
+            raise HTTPException(
+                status_code=403,
+                detail="This account only has Driver App access. Sign in via the Driver App instead.",
+            )
         user_name = claims.get("name") or email.split("@")[0].capitalize()
         user_id = 1
         try:
@@ -224,6 +243,13 @@ async def login(body: LoginRequest):
 
     if not valid:
         raise HTTPException(status_code=401, detail="Invalid email or password")
+
+    local_role = str(row["role"] or "").lower()
+    if local_role in ("driver", "ev_driver"):
+        raise HTTPException(
+            status_code=403,
+            detail="Driver accounts cannot access the CPO operator portal.",
+        )
 
     token = _create_local_token(row["id"], row["email"], row["role"])
     logger.info(f"Local admin login fallback: email={email} role={row['role']}")

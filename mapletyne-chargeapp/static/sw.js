@@ -1,10 +1,10 @@
-const CACHE = 'chargeapp-v6';
+const CACHE = 'chargeapp-v7';
 const PRECACHE = [
   '/app/',
-  '/app/static/m3-tokens.css?v=5',
-  '/app/static/style.css?v=5',
+  '/app/static/m3-tokens.css?v=6',
+  '/app/static/style.css?v=6',
   '/app/skin/style.css?v=5',
-  '/app/static/home.js?v=6',
+  '/app/static/home.js?v=7',
   '/app/static/leaflet.js?v=2',
   '/app/static/leaflet.css?v=2',
   '/app/static/htmx.min.js?v=2',
